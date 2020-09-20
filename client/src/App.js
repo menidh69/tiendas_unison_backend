@@ -3,6 +3,7 @@ import './App.css';
 
 //componentes
 import Login from './components/Login'
+import Registro from './components/Registro'
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     <Fragment> 
       <div className="container">
         <Login/>
+        <Registro/>
       </div>
     </Fragment>
     );
