@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react'
+import Registro from './Registro'
 
 const LoginForm = ()=>{
     return( 
@@ -21,6 +22,7 @@ const LoginForm = ()=>{
                 </form>
                 
             </div>
+            <Registro></Registro>
         </Fragment>
     )
 }
