@@ -17,7 +17,7 @@ function App() {
         <Route path="/login" component={Login}/>
         <Route path="/admin" component={Admin}/>
         {/* Insertar Landing page aqui */}
-        <Route path="/" component={'Landing'}/>
+        <Route path="/" component={Login}/>
         </Switch>
     </Fragment>
     </Router>
