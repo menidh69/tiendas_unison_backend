@@ -24,6 +24,7 @@ function App() {
         <Route path="/admin" component={Admin}/>
         {/* Insertar Landing page aqui */}
         <Route path="/" component={Login}/>
+        <Route path="/registro" component={RegistroGeneral}/> {/*no me sale nose pq*/}
         </Switch>
     </Fragment>
     </Router>

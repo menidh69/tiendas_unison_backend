@@ -3,6 +3,7 @@ import AdminNavBar from './AdminNavBar';
 import TiendaTable from './TiendaTable';
 import UniversidadTable from './UniversidadesTable'
 import MainAdmin from './MainAdmin'
+import Tienda1 from './Tienda1'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 const Admin = ()=>{
@@ -16,6 +17,7 @@ const Admin = ()=>{
                 <Route path='/admin/tiendas' component={TiendaTable}></Route>
                 <Route path='/admin/universidades' component={UniversidadTable}></Route>
                 <Route path='/admin' component={MainAdmin}></Route>
+                <Route path='/admin/tiendas/tienda1' component={Tienda1}></Route> {/*no entra nose pq*/}
                 </Switch>
                 </Router>
                 </div>
