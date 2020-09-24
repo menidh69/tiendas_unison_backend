@@ -5,5 +5,6 @@ CREATE TABLE universidad(
     id SERIAL PRIMARY KEY,
     nombre VARCHAR (100),
     ciudad VARCHAR(50),
-    estado VARCHAR(50)
+    estado VARCHAR(50),
+    validada boolean
 )
