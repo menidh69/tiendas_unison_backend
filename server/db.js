@@ -7,3 +7,5 @@ const pool = new Pool({
     port: 5432,
     database: process.env.DBNAME || 'tiendas_unison'
 })
+
+module.exports = pool;

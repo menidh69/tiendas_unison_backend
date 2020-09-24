@@ -28,14 +28,14 @@ html,body{
   color: white;
 }
 
-a {
+/* a {
   text-decoration: none;
   color: white;
 }
 
 a:hover {
-  color: black;
-}
+  color: rgb(190, 48, 48);
+} */
 
 .App-link {
   color: #61dafb;

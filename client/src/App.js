@@ -7,6 +7,9 @@ import Login from './components/Login'
 import Registro from './components/Registro'
 
 import Admin from './components/Admin/Admin'
+import Panel from './components/Tienda/Panel'
+
+import Home from './components/Cliente/Home';
 
 
 import RegistroGeneral from './components/RegistroGeneral'
@@ -26,6 +29,8 @@ function App() {
         {/* Agregar aquí las interfaces principales como Routes, ver el tutorial */}
         <Route path="/login" component={Login}/>
         <Route path="/admin" component={Admin}/>
+        <Route path="/tienda" component={Panel}/>
+        <Route path="/home" component={Home}/>
         {/* Insertar Landing page aqui */}
         <Route path="/" component={Login}/>
         <Route path="/registro" component={RegistroGeneral}/>
