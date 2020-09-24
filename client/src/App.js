@@ -9,6 +9,8 @@ import Registro from './components/Registro'
 import Admin from './components/Admin/Admin'
 import Panel from './components/Tienda/Panel'
 
+import Home from './components/Cliente/Home';
+
 import RegistroGeneral from './components/RegistroGeneral'
 import RegistroTienda from './components/RegistroTienda'
 import RegistroUniversidad from './components/RegistroUniversidad'
@@ -24,6 +26,7 @@ function App() {
         <Route path="/login" component={Login}/>
         <Route path="/admin" component={Admin}/>
         <Route path="/tienda" component={Panel}/>
+        <Route path="/home" component={Home}/>
         {/* Insertar Landing page aqui */}
         <Route path="/" component={Login}/>
         </Switch>
