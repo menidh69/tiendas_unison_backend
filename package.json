@@ -1,0 +1,20 @@
+{
+  "name": "express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/menidh69/Tiendas_Unison_WEB.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/menidh69/Tiendas_Unison_WEB/issues"
+  },
+  "homepage": "https://github.com/menidh69/Tiendas_Unison_WEB#readme",
+  "keywords": [],
+  "description": ""
+}

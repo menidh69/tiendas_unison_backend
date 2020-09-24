@@ -15,6 +15,9 @@ import Home from './components/Cliente/Home';
 import RegistroGeneral from './components/RegistroGeneral'
 import RegistroTienda from './components/RegistroTienda'
 import RegistroUniversidad from './components/RegistroUniversidad'
+import OlvidarContra from './components/OlvidarContra'
+import Restablecer from './components/Restablecer'
+import LandingPage from './components/LandingPage'
 
 
 
@@ -28,12 +31,17 @@ function App() {
 
         {/* Agregar aquí las interfaces principales como Routes, ver el tutorial */}
         <Route path="/login" component={Login}/>
+        <Route path="/registrogeneral" component={RegistroGeneral}/>
         <Route path="/admin" component={Admin}/>
         <Route path="/tienda" component={Panel}/>
+
+        <Route path="/registrouniversidad" component={RegistroUniversidad}/>
+        <Route path="/Olvidarcontra" component={OlvidarContra}/>
+        <Route path="/Restablecer" component={Restablecer}/>
+        <Route path="/Login" component={Login}/>
+        <Route path="/" component={LandingPage}/>
         <Route path="/home" component={Home}/>
-        {/* Insertar Landing page aqui */}
-        <Route path="/" component={Login}/>
-        <Route path="/registro" component={RegistroGeneral}/>
+
         </Switch>
     </Fragment>
     </Router>
