@@ -10,7 +10,7 @@ const MainAdmin = ()=>{
         <div className="col-9 border-left" style={{mystyle}}>
             <div className="container my-4 mx-4">
                 <h1 className='my-4 display-4'>Módulo de Administrador</h1>
-
+                
             </div>
         </div>
         </Fragment>

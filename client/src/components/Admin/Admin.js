@@ -3,6 +3,7 @@ import AdminNavBar from './AdminNavBar';
 import TiendaTable from './TiendaTable';
 import UniversidadTable from './UniversidadesTable'
 import MainAdmin from './MainAdmin'
+import Tienda1 from './Tienda1'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import infoUni from './InfoUni';
 
@@ -14,11 +15,13 @@ const Admin = ()=>{
                 <AdminNavBar/>
                 
                 <Switch>
+
                     <Route path='/admin/tiendas' exact component={TiendaTable}></Route>
-                    <Route path='/admin/tiendas/:id' component={infoUni}></Route>
+                    <Route path='/admin/tiendas/:id' component={Tienda1}></Route>
                     <Route path='/admin/universidades/:id' component={infoUni}></Route>
                     <Route path='/admin/universidades' exact component={UniversidadTable}></Route>
                     <Route path='/admin' exact component={MainAdmin}></Route>
+
                 </Switch>
                 
             </div>

@@ -11,17 +11,21 @@ import Panel from './components/Tienda/Panel'
 
 import Home from './components/Cliente/Home';
 
+
 import RegistroGeneral from './components/RegistroGeneral'
 import RegistroTienda from './components/RegistroTienda'
 import RegistroUniversidad from './components/RegistroUniversidad'
 
 
 
+
 function App() {
   return(
+
     <Router>
     <Fragment>
         <Switch>
+
         {/* Agregar aquí las interfaces principales como Routes, ver el tutorial */}
         <Route path="/login" component={Login}/>
         <Route path="/admin" component={Admin}/>
@@ -29,6 +33,7 @@ function App() {
         <Route path="/home" component={Home}/>
         {/* Insertar Landing page aqui */}
         <Route path="/" component={Login}/>
+        <Route path="/registro" component={RegistroGeneral}/>
         </Switch>
     </Fragment>
     </Router>
