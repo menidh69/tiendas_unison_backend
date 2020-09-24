@@ -1,11 +1,29 @@
-import React, {Fragment} from 'react';
-
+import React, {Fragment, useState, useEffect} from 'react';
+import {Link} from 'react-router-dom'
 
 
 const UniversidadesTable = ()=>{
-    let valores = []
-    for(let i=0;i<10;i++){
-    valores.push(<tr><td><a class='text-primary' href='#'>1</a></td><td>2</td><td>3</td><td><button className='btn btn-sm btn-success'>Validar</button></td></tr>)
+    const style = {
+        color: 'blue'
+    }
+
+    useEffect(()=>{
+        fetchitems();
+    }, []);
+
+    const [items, setItems] = useState([])
+
+    const fetchitems = async ()=>{
+        const data = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100&offset=200');
+        const items = await data.json();
+        console.log(items)
+        setItems(items.results)
+    };
+
+    const fetchall = async (url)=>{
+       const data = await fetch(url)
+       const item = await data.json();
+       return item;
     }
     return(
         <Fragment>
@@ -22,7 +40,15 @@ const UniversidadesTable = ()=>{
                   </tr>
               </thead>
               <tbody>
-                  {valores}
+              {items.map(item => (
+                     <tr>
+                         <td>{item.itemid}</td>
+                         <Link style={style} to={`/admin/universidades/${item.name}`}>
+                         <td>{item.name}</td>
+                         </Link>
+                         <td>{item.url}</td>
+                    </tr>
+                 ))}
               </tbody>
             
           </table>
