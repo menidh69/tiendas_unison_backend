@@ -12,6 +12,7 @@ const UniversidadesTable = ()=>{
     }, []);
 
     const [items, setItems] = useState([])
+    const [data, setData] = useState({})
 
     const fetchitems = async ()=>{
         const data = await fetch('http://localhost:5000/api/v1/universidades');
@@ -19,6 +20,39 @@ const UniversidadesTable = ()=>{
         console.log(items)
         setItems(items)
     };
+
+    const eliminar = async (id)=>{
+        try{
+            const response = await fetch(`http://localhost:5000/api/v1/universidades/${id}`,
+            {
+                method: "DELETE",
+            });
+            setItems(items.filter(item => item.id !== id));
+        }catch(err){
+            console.error(err)
+        }
+    }
+
+    const validar = async (item)=>{
+        if(item.validada){
+            item.validada = 'false'
+        }else{
+            item.validada = 'true'
+        }
+        console.log(item)
+        try{
+            const body = item
+            const response = await fetch(`http://localhost:5000/api/v1/universidades/${item.id}`,
+            {
+                method: "PUT",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(body)
+            });
+            window.location = '/admin/universidades'
+        }catch(err){
+            console.error(err)
+        }
+    }
 
     return(
         <Fragment>
@@ -32,6 +66,7 @@ const UniversidadesTable = ()=>{
                       <th scope="col">Nombre</th>
                       <th scope="col">Ciudad</th>
                       <th scope="col">Estado</th>
+                      <th scope="col">Validada</th>
                       <th scope="col">Validar</th>
                       <th scope="col">Eliminar</th>
                   </tr>
@@ -43,8 +78,9 @@ const UniversidadesTable = ()=>{
                          <td>{item.nombre}</td>                       
                          <td>{item.ciudad}</td>
                          <td>{item.estado}</td>
-                         <td><button className="btn btn-sm btn-info">Validar</button></td>
-                         <td><button className="btn btn-sm btn-danger">Eliminar</button></td>
+                         <td>{item.validada ? 'si':'no'}</td>
+                         <td><button className="btn btn-sm btn-info" onClick={() => validar(item)}>{item.validada ? 'Desvalidar':'Validar'}</button></td>
+                         <td><button className="btn btn-sm btn-danger" onClick={()=>eliminar(item.id)}>Eliminar</button></td>
                     </tr>
                  ))}
               </tbody>
