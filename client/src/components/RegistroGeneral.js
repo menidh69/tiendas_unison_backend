@@ -28,7 +28,7 @@ const RegistroGeneral = ()=>{
 
                     <div className="form-group text-left">
                         <label for="tel">Telefono</label>
-                        <input className="form-control" id="tel" type="tel"></input>
+                        <input className="form-control" id="telefono" type="tel"></input>
                     </div>
 
                     <div className="form-group text-left">

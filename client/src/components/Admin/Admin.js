@@ -17,7 +17,7 @@ const Admin = ()=>{
                 <Route path='/admin/tiendas' component={TiendaTable}></Route>
                 <Route path='/admin/universidades' component={UniversidadTable}></Route>
                 <Route path='/admin' component={MainAdmin}></Route>
-                <Route path='/admin/tiendas/tienda1' component={Tienda1}></Route> {/*no entra nose pq*/}
+                <Route path='/admin/nueva' exact component={Tienda1}></Route> {/*no entra nose pq*/}
                 </Switch>
                 </Router>
                 </div>
