@@ -34,14 +34,15 @@ const UniversidadesTable = ()=>{
     }
 
     const validar = async (item)=>{
+        let body = {}
         if(item.validada){
-            item.validada = 'false'
+            body = {"validada":"false"}
         }else{
-            item.validada = 'true'
+            body= {"validada":"true"}
         }
         console.log(item)
         try{
-            const body = item
+            console.log(body)
             const response = await fetch(`http://localhost:5000/api/v1/universidades/${item.id}`,
             {
                 method: "PUT",
