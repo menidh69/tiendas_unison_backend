@@ -8,12 +8,22 @@ app.use(cors());
 app.use(express.json()) //req.body
 
 
-//ROUTES
+
 
 app.get('/', (req,res)=>{
     res.send('Hola')
 })
 
+//ROUTES 
+
+//----------------TIENDAS-----------------------------------
+
+
+
+//----------------------------------------------------------
+//----------------UNIVERSIDAD--------------------------------
+
+//GET ALL UNIVERSIDADES
 app.get("/api/v1/universidades", async (req, res)=>{
     try{
         const allUniversidades = await pool.query(
@@ -24,6 +34,8 @@ app.get("/api/v1/universidades", async (req, res)=>{
     }
 });
 
+
+//POST NUEVA UNIVERSIDAD
 app.post("/api/v1/universidades", async (req, res)=>{
     try{
         const {nombre} = req.body;
@@ -41,6 +53,7 @@ app.post("/api/v1/universidades", async (req, res)=>{
     }
 });
 
+//GET UNIVERSIDAD POR ID
 app.get("/api/v1/universidades/:id", async (req, res)=>{
     try{
         const {id} = req.params;
@@ -51,6 +64,7 @@ app.get("/api/v1/universidades/:id", async (req, res)=>{
     }
 })
 
+//PUT MODIFICAR UNIVERSIDAD 
 app.put("/api/v1/universidades/:id", async (req, res)=>{
     try{
         const {id} = req.params;
@@ -73,6 +87,7 @@ app.put("/api/v1/universidades/:id", async (req, res)=>{
     }
 });
 
+//ELIMINAR UNIVERSIDAD
 app.delete("/api/v1/universidades/:id", async (req, res)=>{
     try{
         const {id} = req.params;
