@@ -57,8 +57,11 @@ app.post("/api/v1/universidades", async (req, res)=>{
                 res.send('error: ' + err)
             })
         }else{
-            res.json({error: "Universidad ya se registró"})
+            res.json({ error: "Universidad ya se registró" })
         }
+    })
+    .catch(err =>{
+        res.send('error: ' +err)
     })
 });
 
