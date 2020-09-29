@@ -16,9 +16,13 @@ app.get('/', (req,res)=>{
     res.send('Hola')
 })
 
+
+
+
 //ROUTES
+
 //----------------USUARIOS-----------------------------------
-//POST NUEVO SUSUARIO
+//POST NUEVO USUARIO
 app.post("/api/v1/usuario", async (req, res)=>{
     const user = {
         nombre: req.body.nombre,
@@ -34,7 +38,7 @@ app.post("/api/v1/usuario", async (req, res)=>{
     })
     .then(usuario =>{
         if(!usuario){
-            Usuario.create(uni)
+            Usuario.create(user)
             .then(usuario=>{
                 res.json({status: usuario.nombre + ' registrado con exito'})
             })
@@ -50,10 +54,10 @@ app.post("/api/v1/usuario", async (req, res)=>{
     })
 });
 
-//GET USUARIO POR ID
-app.get("/api/v1/usuario/:id", async (req, res)=>{
+//GET USUARIO POR EMAIL
+app.get("/api/v1/usuario/:email", async (req, res)=>{
     try{
-        const user = await Usuario.findOne({where: {id: req.params.id}})
+        const user = await Usuario.findAll({where: {email: req.params.email, contra:req.params.contra}})
         .then(result =>{
             res.json(result);
         })

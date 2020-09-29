@@ -9,7 +9,7 @@ const RegistroUniversidad = ()=>{
         ciudad: '',
         estado: ''
     });
-    
+
     const [alert, setAlert] = useState([])
 
     const updateField = e =>{
@@ -28,7 +28,7 @@ const RegistroUniversidad = ()=>{
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
-            }) 
+            })
             .then(async resp =>{
                 const result = await resp.json()
                 if(result.error){
@@ -37,7 +37,7 @@ const RegistroUniversidad = ()=>{
                 }else{
                     history.push("/")
                 }
-            })       
+            })
         }catch(err){
 
         }
@@ -52,10 +52,10 @@ const RegistroUniversidad = ()=>{
                 <form className="my-5 text-center mx-auto w-75" onSubmit={onSubmitForm}>
                     <div className="form-group text-left">
                         <label for="Name_Universidad">Universidad</label>
-                        <input 
-                        className="form-control" 
-                        id="Name_Universidad" 
-                        type="text" 
+                        <input
+                        className="form-control"
+                        id="Name_Universidad"
+                        type="text"
                         name="nombre"
                         value={data.nombre}
                         onChange={updateField}
@@ -63,10 +63,10 @@ const RegistroUniversidad = ()=>{
                     </div>
                     <div className="form-group text-left">
                         <label for="tel">Ciudad</label>
-                        <input 
-                        className="form-control" 
-                        id="Ciudad" 
-                        type="text" 
+                        <input
+                        className="form-control"
+                        id="Ciudad"
+                        type="text"
                         name="ciudad"
                         value={data.ciudad}
                         onChange={updateField}
@@ -74,9 +74,9 @@ const RegistroUniversidad = ()=>{
                     </div>
                     <div className="form-group text-left">
                         <label for="Campus">Estado</label>
-                        <input 
-                        className="form-control" 
-                        id="Campus" 
+                        <input
+                        className="form-control"
+                        id="Campus"
                         type="text"
                         name="estado"
                         value={data.estado}

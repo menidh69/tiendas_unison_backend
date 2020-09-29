@@ -1,24 +1,24 @@
 import React, {Fragment, useState} from 'react'
-import {useHistory} from "react-router-dom"
+import {useHistory} from "react-router-dom";
 
-const RegistroGeneral = ()=>{
+  const RegistroGeneral = ()=>{
 
-  let history = useHistory()
-  const [data, setData] = useState({
-    nombre: '',
-    email: '',
-    contra: '',
-    tel: '',
-    universidad: ''});
-
-  const [alert, setAlert] = useState([])
-
-  const updateField = e => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value
+    let history = useHistory()
+    const [data, setData] = useState({
+      nombre: '',
+      email: '',
+      contra: '',
+      tel: '',
+      universidad: ''
     });
-  }
+
+
+    const updateField = e => {
+      setData({
+        ...data,
+        [e.target.name]: e.target.value
+      });
+    }
 
   const onSubmitForm = async e => {
     e.preventDefault();
@@ -117,7 +117,6 @@ const RegistroGeneral = ()=>{
                           onChange={updateField}></input>
                     </div>
                     <button className="btn btn-lg btn-warning my-4" type="submit">Registrar</button>
-
 
                 </form>
             </div>

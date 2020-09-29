@@ -20,11 +20,11 @@ module.exports = db.sequelize.define(
         },
         tel: {
             type: Sequelize.STRING
-        }
+        },
         universidad: {
             type: Sequelize.STRING
         }
-        
+
 
     },
     {
