@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors');
 const bodyParser = require('body-parser')
 const Universidad = require('./models/Universidad');
+const Usuario = require('./models/Usuario');
 const app = express()
 
 app.use(cors());
@@ -15,8 +16,69 @@ app.get('/', (req,res)=>{
     res.send('Hola')
 })
 
-//ROUTES 
+//ROUTES
+//----------------USUARIOS-----------------------------------
+//POST NUEVO SUSUARIO
+app.post("/api/v1/usuario", async (req, res)=>{
+    const user = {
+        nombre: req.body.nombre,
+        email: req.body.email,
+        contra: req.body.contra,
+        tel: req.body.tel,
+        universidad: req.body.universidad
+    }
+    Usuario.findOne({
+        where:{
+            nombre: req.body.nombre
+        }
+    })
+    .then(usuario =>{
+        if(!usuario){
+            Usuario.create(uni)
+            .then(usuario=>{
+                res.json({status: usuario.nombre + ' registrado con exito'})
+            })
+            .catch(err=>{
+                res.send('error: ' + err)
+            })
+        }else{
+            res.json({ error: "Usuario registrado" })
+        }
+    })
+    .catch(err =>{
+        res.send('error: ' +err)
+    })
+});
 
+//GET USUARIO POR ID
+app.get("/api/v1/usuario/:id", async (req, res)=>{
+    try{
+        const user = await Usuario.findOne({where: {id: req.params.id}})
+        .then(result =>{
+            res.json(result);
+        })
+
+    }catch(err){
+        console.error(err)
+    }
+})
+
+
+//ELIMINAR USUARIO
+app.delete("/api/v1/usuario/:id", async (req, res)=>{
+    try{
+        const deleteUsuario = await Universidad.destroy({where: {id: req.params.id}})
+        .then(result=>{
+            res.status(204).json({
+                status: "success",
+            });
+        })
+    }catch(err){
+        console.error(err)
+    }
+});
+
+//----------------------------------------------------------
 //----------------TIENDAS-----------------------------------
 
 
@@ -72,13 +134,13 @@ app.get("/api/v1/universidades/:id", async (req, res)=>{
         .then(result =>{
             res.json(result);
         })
-        
+
     }catch(err){
         console.error(err)
     }
 })
 
-//PUT VALIDAR UNIVERSIDAD 
+//PUT VALIDAR UNIVERSIDAD
 app.put("/api/v1/universidades/:id", async (req, res)=>{
 
     const uni = await Universidad.update({validada: req.body.validada},{where: {id: req.params.id}})
