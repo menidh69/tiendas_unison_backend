@@ -1,13 +1,14 @@
 import React, {Fragment} from 'react'
 import Registro from './Registro'
+import Facebook from './Login/Facebook'
 
 const LoginForm = ()=>{
     return(
         <Fragment>
-            <div className="container w-25 bg-primary rounded-lg text-light">
+            <div className="container w-25 bg-primary rounded-lg text-light my-2">
                 <h1 className="text-center my-5 pt-5">Login</h1>
 
-                <form className="my-5 text-center mx-auto">
+                <form className="my-2 text-center mx-auto">
                     <div className="form-group text-left">
                         <label for="email">Email address</label>
                         <input className="form-control" id="email" type="text"></input>
@@ -20,7 +21,9 @@ const LoginForm = ()=>{
                     <button className="btn btn-lg btn-warning my-4">Login</button>
 
                 </form>
-
+                <div className="text-center py-3 rounded">
+                <Facebook></Facebook>
+                </div>
             </div>
             <Registro></Registro>
         </Fragment>
