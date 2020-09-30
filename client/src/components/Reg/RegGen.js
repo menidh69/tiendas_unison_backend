@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
@@ -32,12 +32,61 @@ export class RegGen extends Component {
     return (
       <MuiThemeProvider>
         <>
-          <Dialog
+          {/* <Dialog
             open
             fullWidth
             maxWidth='sm'
-          >
-            <AppBar title="Registrate aqui" />
+          > */}
+          
+            <div className="row">
+              <div className="col-md-3"></div>
+              <div className="col-md-6">
+              <div className="container w-30 bg-primary rounded-lg text-light">
+                <h1 className="text-center my-10 pt-5">Registrate aqui</h1>
+
+                <form className="my-5 text-center mx-auto">
+                    <div className="form-group text-left">
+                        <label for="name">Nombre</label>
+                        <input className="form-control" id="name" defaultValue={values.nombre} onChange={handleChange('nombre')} type="text"></input>
+                    </div>
+
+                    <div className="form-group text-left">
+                        <label for="email">Email address</label>
+                        <input className="form-control" id="email" onChange={handleChange('email')}
+              defaultValue={values.email} type="email"></input>
+                    </div>
+
+                    <div className="form-group text-left">
+                        <label for="pwd">Contraseña</label>
+                        <input id="pwd" className="form-control" type="password"></input>
+                    </div>
+                    <div className="form-group text-left">
+                        <label for="pwd2">Confirma contraseña</label>
+                        <input id="pwd2" className="form-control"  onChange={handleChange('contra')}
+              defaultValue={values.contra} type="password"></input>
+                    </div>
+
+                    <div className="form-group text-left">
+                        <label for="tel">Telefono</label>
+                        <input className="form-control" id="telefono" onChange={handleChange('telefono')}
+              defaultValue={values.telefono} type="tel"></input>
+                    </div>
+
+                    <div className="form-group text-left">
+                        <label for="Universidad">Universidad</label>
+                        <input className="form-control" onChange={handleChange('universidad')} id="Universidad" type="text"></input>
+                    </div>
+
+                    <button className="btn btn-lg btn-warning my-4" onClick={this.continue}>Siguiente</button>
+
+                </form>
+            </div>
+            </div>
+            <div className="col-md-3"></div>
+            </div>
+            
+{/*             
+            /* <AppBar title="Registrate aqui" />
             <TextField
               label="Nombre"
               onChange={handleChange('nombre')}
@@ -101,15 +150,18 @@ export class RegGen extends Component {
               <MenuItem value={'TEC'}>TEC</MenuItem>
             </Select>
             <br />
-
+            <div className="my-4">
             <Button
               color="primary"
               variant="contained"
               onClick={this.continue}
             >Siguiente</Button>
-          </Dialog>
+            </div> */}
+          
+          {/* </Dialog> */}
         </>
-      </MuiThemeProvider>
+      </MuiThemeProvider>   
+      
     );
   }
 }
