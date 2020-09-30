@@ -26,15 +26,72 @@ export class RegTienda extends Component {
   render() {
       const { values, handleChange } = this.props;
     return (
+      
       <MuiThemeProvider>
         <>
-          <Dialog
+          {/* <Dialog
             open
             fullWidth
             maxWidth='sm'
-          >
-            <AppBar title="Detalles de la tienda" />
+          > */}
+            <div className="row">
+              <div className="col-md-3"></div>
+              <div className="col-md-6">
+            <div className="container w-30 bg-primary rounded-lg text-light">
+                <h1 className="text-center my-10 pt-5">Registra tu Tienda</h1>
+
+                <form className="my-5 text-center mx-auto">
+                    <div className="form-group text-left">
+                        <label for="Name_tienda">Nombre de Tienda</label>
+                        <input className="form-control"  onChange={handleChange('nombre_tienda')}
+              defaultValue={values.nombre_tienda} id="Name_tienda" type="text"></input>
+                    </div>
+
+                    <div className="form-group text-left">
+                        <label for="Tipo_tienda">Tipo de Tienda</label>
+                        <input className="form-control" id="Tipo_tienda" onChange={handleChange('tipo_tienda')} type="text"></input>
+                    </div>
+
+                    <div className="form-group text-left">
+                        <label for="Horario">Horario</label>
+                        <input id="Horario" className="form-control" type="text"></input>
+                    </div>
+                    <div className="form-group text-left">
+                        <label for="Universidad">Universidad</label>
+                        <input className="form-control" id="Universidad" onChange={handleChange('universidad')}
+              defaultValue={values.universidad} type="text"></input>
+                    </div>
+                    <div className="form-group text-left">
+                        <label for="img_tienda">Imagen Tienda</label>
+                        <small>*URL de la imagen</small>
+                        <input id="img_tienda" onChange={handleChange('img_tienda')}
+              defaultValue={values.img_tienda} className="form-control" type="URL"></input>
+                    </div>
+
+                    <div className="form-group text-left">
+                    <label>Aceptan tarjeta</label>
+                    <div name = 'tar'  onChange={handleChange('tarjeta')} className="form-group text-left">
+                        <label for= "Tarjeta_Si">Si</label>
+                        <input  id="Tarjeta_Si" type="radio"></input>
+                        <label for= "Tarjeta_No">No</label>
+                        <input id="Tarjeta_No" type="radio"></input>
+                    </div>
+                    </div>
+                    <div>
+                      <small>*Tiene un mes de prueba a partir de ese plazo se le hara un cobro a su tarjeta</small>
+                    </div>
+                    <div className="container text-center">
+                    <button className="btn btn-lg btn-warning my-4 mx-5" onClick={this.back}>Atras</button>
+                    <button className="btn btn-lg btn-warning my-4 mx-5" onClick={this.continue}>Siguiente</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+            <div className="col-md-3"></div>
+            </div>
+            {/* <AppBar title="Detalles de la tienda" />
             <TextField
+              required
               placeholder="Nombre tienda"
               label="Nombre tienda"
               onChange={handleChange('nombre_tienda')}
@@ -45,6 +102,7 @@ export class RegTienda extends Component {
             <br />
           <InputLabel id="tienda-label">Tipo de tienda</InputLabel>
             <Select
+            required
              placeholder="tipo de tienda"
              label="Tipo de tienda"
              id="tienda"
@@ -56,6 +114,7 @@ export class RegTienda extends Component {
             </Select>
             <br />
             <TextField
+              required
               placeholder="universidad"
               label="universidad"
               onChange={handleChange('universidad')}
@@ -66,6 +125,7 @@ export class RegTienda extends Component {
             <br />
 
             <TextField
+              required
               placeholder="img tienda"
               label="imagen"
               onChange={handleChange('img_tienda')}
@@ -77,7 +137,7 @@ export class RegTienda extends Component {
              <br />
 
             <label>Aceptan tarjeta:</label>
-            <RadioGroup aria-label="tarjeta" name="tarjeta1" onChange={handleChange('tarjeta')}>
+            <RadioGroup required aria-label="tarjeta" name="tarjeta1" onChange={handleChange('tarjeta')}>
             <FormControlLabel value="true" control={<Radio />} label="Si" />
             <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
@@ -92,8 +152,8 @@ export class RegTienda extends Component {
               color="primary"
               variant="contained"
               onClick={this.continue}
-            >Siguiente</Button>
-          </Dialog>
+            >Siguiente</Button> */}
+          {/* </Dialog> */}
         </>
       </MuiThemeProvider>
     );

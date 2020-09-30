@@ -1,6 +1,8 @@
 import React, {Fragment, useState, useEffect} from 'react'
 import Registro from './Registro'
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
+import Facebook from './Login/Facebook';
+
 
 const LoginForm = () => {
   let history = useHistory()
@@ -41,11 +43,15 @@ const LoginForm = () => {
 
       }
   }
-  return (<Fragment>
-    <div className="container w-25 bg-primary rounded-lg text-light">
-      <h1 className="text-center my-5 pt-5">Login</h1>
+  return(
+        <Fragment>
+            <div className="row">
+                <div className="col-md-4"></div>
+                <div className="col-md-4">
+            <div className="container bg-primary rounded-lg text-light my-2">
+                <h1 className="text-center my-5 pt-5">Login</h1>
 
-      <form className="my-5 text-center mx-auto" onSubmit={onSubmitForm}>
+      <form className="my-2 text-center mx-auto" onSubmit={onSubmitForm}>
         <div className="form-group text-left">
           <label for="email">Email address</label>
           <input
@@ -75,10 +81,20 @@ const LoginForm = () => {
         <button className="btn btn-lg btn-warning my-4" type='submit'>Login</button>
 
       </form>
+               
+                <div className="text-center py-3 rounded">
+                <Facebook></Facebook>
+                </div>
+            </div>
+            <Registro></Registro>
+            </div>
+                <div className="col-md-4"></div>
 
-    </div>
-    <Registro></Registro>
-  </Fragment>)
+            </div>
+            
+        </Fragment>
+    )
+
 }
 
 export default LoginForm;
