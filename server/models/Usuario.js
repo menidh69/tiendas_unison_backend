@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../db/db");
 
 module.exports = db.sequelize.define(
-    'universidad',
+    'usuario',
     {
         id: {
             type: Sequelize.INTEGER,
@@ -12,20 +12,24 @@ module.exports = db.sequelize.define(
         nombre: {
             type: Sequelize.STRING
         },
-        ciudad: {
+        email: {
             type: Sequelize.STRING
         },
-        estado: {
+        contra: {
             type: Sequelize.STRING
         },
-        validada: {
-            type: Sequelize.BOOLEAN
+        tel: {
+            type: Sequelize.STRING
+        },
+        universidad: {
+            type: Sequelize.STRING
         }
+
 
     },
     {
         timestamps: false,
         freezeTableName: true,
-        tableName: 'universidad'
+        tableName: 'usuario'
     }
 )

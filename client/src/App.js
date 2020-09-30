@@ -40,7 +40,8 @@ function App() {
         <Route path="/Restablecer" component={Restablecer}/>
         <Route path="/Login" component={Login}/>
         <Route path="/" component={LandingPage}/>
-        <Route path="/home" component={Home}/>
+
+        <Route path="/cliente" component={Home}/>
 
         </Switch>
     </Fragment>

@@ -8,3 +8,13 @@ CREATE TABLE universidad(
     estado VARCHAR(50),
     validada boolean
 )
+
+CREATE TABLE usuario(
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR (100),
+    email VARCHAR(50),
+    contra VARCHAR(50),
+    tel VARCHAR(50),
+    universidad VARCHAR(100),
+    tipo_usuario VARCHAR(50) DEFAULT 'cliente'
+)
