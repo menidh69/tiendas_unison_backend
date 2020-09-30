@@ -1,11 +1,15 @@
-import React, {Fragment} from 'react'
-import Registro from './Registro'
-import Facebook from './Login/Facebook'
+import React, {Fragment} from 'react';
+import Registro from './Registro';
+import Facebook from './Login/Facebook';
+import {Link} from 'react-router-dom';
 
 const LoginForm = ()=>{
     return(
         <Fragment>
-            <div className="container w-25 bg-primary rounded-lg text-light my-2">
+            <div className="row">
+                <div className="col-md-4"></div>
+                <div className="col-md-4">
+            <div className="container bg-primary rounded-lg text-light my-2">
                 <h1 className="text-center my-5 pt-5">Login</h1>
 
                 <form className="my-2 text-center mx-auto">
@@ -16,7 +20,9 @@ const LoginForm = ()=>{
                     <div className="form-group text-left">
                         <label for="pwd">Password</label>
                         <input id="pwd" className="form-control" type="password"></input>
-                        <small id="olvidada" class="form-text text-light"><a href="#">¿Olvidaste tu contraseña?</a></small>
+                        <Link to="/olvidarcontra">
+                        <small id="olvidada" class="form-text text-light">¿Olvidaste tu contraseña?</small>
+                        </Link>
                     </div>
                     <button className="btn btn-lg btn-warning my-4">Login</button>
 
@@ -26,6 +32,11 @@ const LoginForm = ()=>{
                 </div>
             </div>
             <Registro></Registro>
+            </div>
+                <div className="col-md-4"></div>
+
+            </div>
+            
         </Fragment>
     )
 }

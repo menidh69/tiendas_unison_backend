@@ -25,12 +25,63 @@ export class Confirm extends Component {
     return (
       <MuiThemeProvider>
         <>
-          <Dialog
+          {/* <Dialog
             open
             fullWidth
             maxWidth='sm'
-          >
-            <AppBar title="Confirma tus datos" />
+          > */}
+            <div className="row">
+              <div className="col-md-3"></div>
+              <div className="col-md-6">
+             <div className="container bg-primary">
+               <h1 className="my-4 text-center"> Confirma tus datos</h1>
+            <ul class="list-group list-group-flush bg-primary text-light">
+              <li class="list-group-item bg-primary">
+                <h5>Nombre</h5>
+                <p>{nombre}</p>
+              </li>
+              <li class="list-group-item bg-primary">
+                <h5>Email</h5>
+                <p>{email}</p>
+              </li>
+              <li class="list-group-item bg-primary">
+                <h5>Contraseña</h5>
+                <p>{contra}</p>
+              </li>
+              <li class="list-group-item bg-primary">
+                <h5>Telefono</h5>
+                <p>{telefono}</p>
+              </li>
+              <li class="list-group-item bg-primary">
+                <h5>Universidad</h5>
+                <p>{universidad}</p>
+              </li>
+              <li class="list-group-item bg-primary">
+                <h5>Nombre de la tienda</h5>
+                <p>{nombre_tienda}</p>
+              </li>
+              <li class="list-group-item bg-primary">
+                <h5>Tipo de tienda</h5>
+                <p>{tipo_tienda}</p>
+              </li>
+              <li class="list-group-item bg-primary">
+                <h5>Imagen</h5>
+                <p>{img_tienda}</p>
+              </li>
+              <li class="list-group-item bg-primary">
+                <h5>Aceptan tarjeta?</h5>
+                <p>{tarjeta}</p>
+              </li>
+            </ul>
+            <div className="container text-center my-4">
+            <button className="btn btn-lg btn-warning rounded mx-4" onClick={this.back}>Atras</button>
+            <button className="btn btn-lg btn-warning rounded mx-4" onClick={this.continue}>Confirmar y continuar</button>
+            </div>
+            </div>
+            </div>
+            <div className="col-md-3"></div>
+            </div>
+            {/* <AppBar title="Confirma tus datos" />
             <List>
               <ListItem>
                 <ListItemText primary="Nombre" secondary={nombre} />
@@ -75,8 +126,8 @@ export class Confirm extends Component {
               color="primary"
               variant="contained"
               onClick={this.continue}
-            >Confirma & Continua</Button>
-          </Dialog>
+            >Confirma & Continua</Button> */}
+          {/* </Dialog> */}
         </>
       </MuiThemeProvider>
     );

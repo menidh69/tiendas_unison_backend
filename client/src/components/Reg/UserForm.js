@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import RegistroGeneral from './RegGen';
-import RegistroTienda from './RegTienda';
+import RegTienda from './RegTienda';
 import Confirm from './Confirm';
 import Success from './Success';
+import RegGen from './RegGen'
 
 export class UserForm extends Component {
   state = {

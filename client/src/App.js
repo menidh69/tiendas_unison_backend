@@ -10,7 +10,7 @@ import Admin from './components/Admin/Admin'
 import Panel from './components/Tienda/Panel'
 
 import Home from './components/Cliente/Home';
-
+import UserForm from './components/Reg/UserForm'
 
 import RegistroGeneral from './components/RegistroGeneral'
 import RegistroTienda from './components/RegistroTienda'
@@ -31,12 +31,12 @@ function App() {
 
         {/* Agregar aquí las interfaces principales como Routes, ver el tutorial */}
         <Route path="/login" component={Login}/>
-        <Route path="/registrogeneral" component={RegistroGeneral}/>
+        <Route path="/registro" component={UserForm}/>
         <Route path="/admin" component={Admin}/>
         <Route path="/tienda" component={Panel}/>
 
         <Route path="/registrouniversidad" component={RegistroUniversidad}/>
-        <Route path="/Olvidarcontra" component={OlvidarContra}/>
+        <Route path="/olvidarcontra" component={OlvidarContra}/>
         <Route path="/Restablecer" component={Restablecer}/>
         <Route path="/Login" component={Login}/>
         <Route path="/" component={LandingPage}/>
