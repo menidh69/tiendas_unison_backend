@@ -1,9 +1,12 @@
 const express = require('express')
 const cors = require('cors');
+const bcrypt = require('bcrypt')
 const bodyParser = require('body-parser')
 const Universidad = require('./models/Universidad');
 const Usuario = require('./models/Usuario');
 const app = express()
+
+
 
 app.use(cors());
 app.use(bodyParser.json()) //req.body
@@ -33,20 +36,23 @@ app.post("/api/v1/usuario", async (req, res)=>{
     }
     Usuario.findOne({
         where:{
-            nombre: req.body.nombre
+            email: req.body.email
         }
     })
     .then(usuario =>{
         if(!usuario){
-            Usuario.create(user)
-            .then(usuario=>{
-                res.json({status: usuario.nombre + ' registrado con exito'})
-            })
-            .catch(err=>{
+            bcrypt.hash(req.body.contra, 10, (err, hash) => {
+              user.contra = hash
+              Usuario.create(user)
+              .then(usuario=> {
+                res.json({status: usuario.email + ' registrado con exito'})
+              })
+              .catch(err=>{
                 res.send('error: ' + err)
+              })
             })
         }else{
-            res.json({ error: "Usuario registrado" })
+            res.json({ error: "Ya existe un usuario con esa cuenta" })  //no me manda este mensaje
         }
     })
     .catch(err =>{
@@ -56,15 +62,36 @@ app.post("/api/v1/usuario", async (req, res)=>{
 
 //GET USUARIO POR EMAIL
 app.get("/api/v1/usuario/:email", async (req, res)=>{
-    try{
-        const user = await Usuario.findAll({where: {email: req.params.email, contra:req.params.contra}})
-        .then(result =>{
-            res.json(result);
-        })
+  try{
+      const user = await Usuario.findOne({where:{email: req.params.email}})
+      .then(result =>{
+          res.json(result);
+          status: "ok"
+      })
 
-    }catch(err){
-        console.error(err)
-    }
+  }catch(err){
+      console.error(err)
+  }
+    /*Usuario.findOne({ //eso es lo del video 
+      where: {
+        email: req.body.email
+      }
+    })
+    .then(usuario => {
+      if (usuario) {
+        if (bcrypt.compareSync(req.body.contra, usuario.contra)) {
+          let token = jwt.sign(usuario.dataValues, process.env.SECRET_KEY, {
+            expiresIn: 1440
+          })
+          res.send(token)
+        }
+      }else{
+        res.status(400).json({error: 'Usuario no existe'})
+      }
+    })
+    .catch(err => {
+      res.status(400).json({error:err})
+    })*/
 })
 
 

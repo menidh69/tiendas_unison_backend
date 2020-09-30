@@ -25,7 +25,7 @@ const LandingPage = ()=> {
       e.preventDefault();
       try{
           const body = data;
-          const response = await fetch('http://localhost:5000/api/v1/usuario/:email',
+          const response = await fetch('http://localhost:5000/api/v1/usuario/${email}',
           {
               method: "GET",
               headers: {"Content-Type": "application/json"},

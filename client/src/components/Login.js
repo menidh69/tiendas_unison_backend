@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react'
+import React, {Fragment, useState, useEffect} from 'react'
 import Registro from './Registro'
 import {useHistory} from "react-router-dom";
 
@@ -34,7 +34,7 @@ const LoginForm = () => {
                   console.log(result.error)
                   history.push("/")
               }else{
-                  history.push("/")
+                  history.push("/admin")
               }
           })
       }catch(err){
