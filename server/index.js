@@ -52,7 +52,7 @@ app.post("/api/v1/usuario", async (req, res)=>{
               })
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })  //no me manda este mensaje
+            res.json({ error: "Ya existe un usuario con esa cuenta" })  
         }
     })
     .catch(err =>{
@@ -72,7 +72,7 @@ app.get("/api/v1/usuario/:email", async (req, res)=>{
   }catch(err){
       console.error(err)
   }
-    /*Usuario.findOne({ //eso es lo del video 
+    /*Usuario.findOne({ //eso es lo del video  necesita agregar const jwt=require)'jsonwebtoken' y process.env.SECRET_KEY = 'secret'
       where: {
         email: req.body.email
       }
