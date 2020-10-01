@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const bodyParser = require('body-parser')
 const Universidad = require('./models/Universidad');
 const Usuario = require('./models/Usuario');
+const Tienda = require('./models/Tienda');
+const { response } = require('express');
 const app = express()
 
 
@@ -173,7 +175,97 @@ app.delete("/api/v1/usuario/:id", async (req, res)=>{
 //----------------------------------------------------------
 //----------------TIENDAS-----------------------------------
 
+app.post("/api/v1/tienda", async (req, res)=>{
+    const tienda = {
+        id_usuario: '',
+        id_tipo_tienda: req.body.id_tipo_tienda,
+        nombre: req.body.nombretienda,
+        horario: req.body.horario,
+        url_imagen: '',
+        tarjeta: req.body.tarjeta
+    }
+    const user = {
+        nombre: req.body.nombre,
+        email: req.body.email,
+        contra: req.body.contra,
+        tel: req.body.tel,
+        universidad: req.body.universidad
+    }
+    Usuario.findOne({
+        where:{
+            email: req.body.email
+        }
+    })
+    .then(usuario =>{
+        if(!usuario){
+            bcrypt.hash(req.body.contra, 10, (err, hash) => {
+              user.contra = hash
+              Usuario.create(user)
+              .then(usuario=> {
+                res.json({status: usuario.email + ' registrado con exito'})
+                tienda.id_usuario = usuario.id
+                Tienda.create(tienda)
+                .then(tiendacreada=>{
+                    return res.json({
+                        message: tiendacreada.nombre + ': Tienda creada con exito'
+                    })
+                })
+                .catch(err=>{
+                    return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
+                })
+              })
+              .catch(err=>{
+                res.send('error: ' + err)
+              })
+            })
+        }else{
+            res.json({ error: "Ya existe un usuario con esa cuenta" })  
+        }
+    })
+    .catch(err =>{
+        res.send('error: ' +err)
+    })
+    //registro tienda
+    // await Usuario.findOne({
+    //     where: {
+    //         id: tienda.id_usuario
+    //     }
+    // })
+    // .then(async usuario =>{
+    //     if(!usuario){
+    //         return res.json({status: 'No pueden crearse tiendas sin usuario'})
+    //     }
 
+    //     await Tienda.findOne({
+    //         where:{
+    //             id_usuario: usuario.id
+    //         }
+    //     })
+    //     .then(async tienda=>{
+    //         if(!tienda || tienda==''){
+    //             Tienda.create(tienda)
+    //             .then(tiendacreada=>{
+    //                 return res.json({
+    //                     message: tiendacreada.nombre + ': Tienda creada con exito'
+    //                 })
+    //             })
+    //             .catch(err=>{
+    //                 return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
+    //             })
+    //         }else{
+    //             return res.json('Ya existe una tienda para este usuario')
+    //         }
+    //     })
+    //     .catch(err=>{
+    //         return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
+    //     })
+    // })
+    // .catch(err=>{
+    //     return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
+    // })
+
+
+})
 
 //----------------------------------------------------------
 //----------------UNIVERSIDAD--------------------------------
