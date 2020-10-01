@@ -13,7 +13,7 @@ export class Confirm extends Component {
     this.props.nextStep();
   };
 
-  /*submit = ()=>{
+  submit = ()=>{
     try{
             const body = data;
             const response = await fetch('http://localhost:5000/api/v1/universidades',
@@ -34,7 +34,7 @@ export class Confirm extends Component {
         }catch(err){
 
         }
-  }*/
+  }
 
   back = e => {
     e.preventDefault();
