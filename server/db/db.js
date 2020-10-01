@@ -1,7 +1,12 @@
 //------------MYSQL CONFIG -----------------------
 const Sequelize = require('sequelize')
 const db = {}
-const sequelize = new Sequelize("tiendas_unison", "meni", "meni", {
+
+//Cada quien configure las variables de conexion
+//Primer argumento=nombre de BD, Segundo argumento=usuario, Tercer argumento=contraseña
+const sequelize = new Sequelize("", "", "", {
+
+
     host: 'localhost',
     dialect: 'mysql',
     operatorsAliases: '0',

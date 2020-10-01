@@ -34,6 +34,8 @@ function App() {
         <Route path="/registro" component={UserForm}/>
         <Route path="/admin" component={Admin}/>
         <Route path="/tienda" component={Panel}/>
+
+        <Route path="/cliente" component={Home}/>
         <Route path="/registrogeneral" component={RegistroGeneral}/>
         <Route path="/registrouniversidad" component={RegistroUniversidad}/>
         <Route path="/olvidarcontra" component={OlvidarContra}/>
@@ -41,7 +43,7 @@ function App() {
         <Route path="/Login" component={Login}/>
         <Route path="/" component={LandingPage}/>
 
-        <Route path="/cliente" component={Home}/>
+        
 
         </Switch>
     </Fragment>

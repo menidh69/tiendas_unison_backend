@@ -48,14 +48,14 @@ const LandingPage = ()=> {
 
     return(
         <Fragment>
-        <div class = "row">
+        <div className = "row">
 
-            <div class = "lpleft col-sm-5">
+            <div className = "lpleft col-sm-5">
                  <h1>Tiendas</h1>
                  <h1>Universitarias</h1>
                  <Link to="/registrouniversidad">
-                 <div class = "badge">
-                 <div class="alert alert-info" role="alert"> ¿No encuentras tu Universidad?<span class="alert-link">¡Regístrala aquí!</span></div>
+                 <div className = "badge">
+                 <div className="alert alert-info" role="alert"> ¿No encuentras tu Universidad?<span class="alert-link">¡Regístrala aquí!</span></div>
                  </div>
                  </Link>
             </div>
