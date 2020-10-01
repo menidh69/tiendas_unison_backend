@@ -34,7 +34,7 @@ function App() {
         <Route path="/registro" component={UserForm}/>
         <Route path="/admin" component={Admin}/>
         <Route path="/tienda" component={Panel}/>
-
+        <Route path="/registrogeneral" component={RegistroGeneral}/>
         <Route path="/registrouniversidad" component={RegistroUniversidad}/>
         <Route path="/olvidarcontra" component={OlvidarContra}/>
         <Route path="/Restablecer" component={Restablecer}/>

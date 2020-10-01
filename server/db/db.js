@@ -1,7 +1,7 @@
 //------------MYSQL CONFIG -----------------------
 const Sequelize = require('sequelize')
 const db = {}
-const sequelize = new Sequelize("tiendas_unison", "root", "", {
+const sequelize = new Sequelize("tiendas_unison", "meni", "meni", {
     host: 'localhost',
     dialect: 'mysql',
     operatorsAliases: '0',
