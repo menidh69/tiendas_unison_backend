@@ -23,22 +23,25 @@ import {useHistory} from "react-router-dom";
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
-      const body = data;
-      const response = await fetch('http://localhost:5000/api/v1/usuario', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-      }).then(async resp => {
-        const result = await resp.json()
-        if (result.error) {
-          console.log(result.error)
-          history.push("/")
-        } else {
-          history.push("/")
-        }
-      })
+      if (data.nombre!="" && data.email !="" && data.contra!="" && data.tel!="" && data.universidad!="") {
+        const body = data;
+        const response = await fetch('http://localhost:5000/api/v1/usuario', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        }).then(async resp => {
+          const result = await resp.json()
+          if (result.error) {
+            console.log(result.error)
+            history.push("/")
+          } else {
+            history.push("/")
+          }
+        })
+      }
+
     } catch (err) {}
   }
 

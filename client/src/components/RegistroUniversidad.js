@@ -22,22 +22,24 @@ const RegistroUniversidad = ()=>{
     const onSubmitForm = async e =>{
         e.preventDefault();
         try{
-            const body = data;
-            const response = await fetch('http://localhost:5000/api/v1/universidades',
-            {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
-            })
-            .then(async resp =>{
-                const result = await resp.json()
-                if(result.error){
-                    console.log(result.error)
-                    history.push("/")
-                }else{
-                    history.push("/")
-                }
-            })
+            if (data.nombre!="" && data.ciudad !="" && data.estado!="") {
+              const body = data;
+              const response = await fetch('http://localhost:5000/api/v1/universidades',
+              {
+                  method: "POST",
+                  headers: {"Content-Type": "application/json"},
+                  body: JSON.stringify(body)
+              })
+              .then(async resp =>{
+                  const result = await resp.json()
+                  if(result.error){
+                      console.log(result.error)
+                      history.push("/")
+                  }else{
+                      history.push("/")
+                  }
+              })
+            }
         }catch(err){
 
         }
