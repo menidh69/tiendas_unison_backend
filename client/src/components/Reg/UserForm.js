@@ -3,22 +3,26 @@ import RegistroGeneral from './RegGen';
 import RegTienda from './RegTienda';
 import Confirm from './Confirm';
 import Success from './Success';
-import RegGen from './RegGen'
+import RegGen from './RegGen';
+import {useHistory} from "react-router-dom";
+
 
 export class UserForm extends Component {
   state = {
     step: 1,
-    nombre: '',
+      nombre: '',
     email: '',
     contra: '',
     telefono: '',
     universidad: '',
-    nombre_tienda: '',
+    nombretienda: '',
+    horario: '',
     tipo_tienda: '',
     img_tienda: '',
     tarjeta: '',
 
   };
+
 
   // Proceed to next step
   nextStep = () => {
@@ -41,7 +45,35 @@ export class UserForm extends Component {
     this.setState({ [input]: e.target.value });
   };
 
-
+  submit = async ()=>{
+    
+    try{
+      const body = this.state;
+      console.log(JSON.stringify(body))
+      const response = await fetch('http://localhost:5000/api/v1/tienda',
+      {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(body)
+      })
+      .then(async resp =>{
+          const result = await resp.json()
+          if(result.error){
+              console.log(result.error)
+              console.log(result.status)
+              console.log(result)
+              this.props.history.push("/")
+          }else{
+            console.log(result.status)
+              console.log(result)
+              this.props.history.push("/")
+          }
+      })
+  this.nextStep()
+  }catch(err){
+    console.log('algo salio mal')
+  }
+  }
 
 
   handleMouseDownPassword = (event) => {
@@ -50,7 +82,7 @@ export class UserForm extends Component {
 
   render() {
       const { step } = this.state;
-      const { nombre, email, contra, telefono, universidad, nombre_tienda, tipo_tienda, img_tienda, tarjeta } = this.state;
+      const { nombre, email, contra, telefono, universidad, nombre_tienda, tipo_tienda, img_tienda, tarjeta, horario } = this.state;
       const values = { nombre, email, contra, telefono, universidad, nombre_tienda, tipo_tienda, img_tienda, tarjeta };
 
     switch (step) {
@@ -74,7 +106,7 @@ export class UserForm extends Component {
       case 3:
         return (
           <Confirm
-            nextStep={this.nextStep}
+            nextStep={this.submit}
             prevStep={this.prevStep}
             values={values}
           />
