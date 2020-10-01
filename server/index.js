@@ -94,6 +94,67 @@ app.get("/api/v1/usuario/:email", async (req, res)=>{
     })*/
 })
 
+//POST USUARIO LOGIN
+app.post("/api/v1/usuario/login", async (req, res)=>{
+    Usuario.findOne({
+        where:{
+            email: req.body.email 
+        } 
+        
+    })
+
+    .then (user => {
+        if (user.length < 1) {
+            return res.status(401).json({
+                message: 'Usuario o contraseña incorrecto'
+            });
+        }
+        
+        // bcrypt.hash(req.body.contra, 10, function(err,hash) {
+        //     if(err) {
+        //         throw (err);
+        //     }
+        //     console.log(user.contra)
+        //     console.log(req.body.contra)
+        //     console.log(hash)
+        //     bcrypt.compare(req.body.contra, user.contra).then((result) => {
+        //         console.log(result)
+        //         if (result) {
+        //             return res.status(200).json({
+        //                 message: 'Auth succesful'
+        //             })
+        //         } else {
+        //             res.status(404).json({
+        //                 message: 'fallobrother'
+        //             })
+        //         }
+        //     })
+        // })
+        
+        bcrypt.compare(req.body.contra, user.contra).then ((result) => {
+            console.log(result)
+            if (result) {
+                return res.status(200).json({
+                    message: 'we did it'
+                })
+            }else {
+                res.status(404).json({
+                    message: 'fallo bro',
+                })
+            }
+            
+        });
+    })
+
+    .catch (err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    })
+      
+  })
+
 
 //ELIMINAR USUARIO
 app.delete("/api/v1/usuario/:id", async (req, res)=>{
