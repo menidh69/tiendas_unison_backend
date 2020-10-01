@@ -128,34 +128,36 @@ app.post("/api/v1/tienda", async (req, res)=>{
         email: req.body.email,
         contra: req.body.contra,
         tel: req.body.tel,
-        universidad: req.body.universidad
+        universidad: req.body.universidad,
+        tipo_usuario: 'tienda'
     }
     Usuario.findOne({
         where:{
             email: req.body.email
         }
     })
-    .then(usuario =>{
+    .then(async usuario =>{
         if(!usuario){
-            bcrypt.hash(req.body.contra, 10, (err, hash) => {
+            bcrypt.hash(req.body.contra, 10, async (err, hash) => {
               user.contra = hash
-              Usuario.create(user)
-              .then(usuario=> {
-                res.json({status: usuario.email + ' registrado con exito'})
+              await Usuario.create(user)
+              .then(async usuario=> {
                 tienda.id_usuario = usuario.id
-                Tienda.create(tienda)
-                .then(tiendacreada=>{
+                await Tienda.create(tienda)
+                .then(async tiendacreada=>{
                     return res.json({
-                        message: tiendacreada.nombre + ': Tienda creada con exito'
+                        message: tiendacreada.nombre + ': Tienda y usuario creada con exito'
                     })
                 })
                 .catch(err=>{
-                    return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
+                    res.json({
+                        error: 'Ocurrio un error al crear la tienda, vuelve a intentarlo'}
+                        )
                 })
+              }).catch(err=>{
+                res.json({'error: ': err})
               })
-              .catch(err=>{
-                res.send('error: ' + err)
-              })
+            
             })
         }else{
             res.json({ error: "Ya existe un usuario con esa cuenta" })  
@@ -164,46 +166,6 @@ app.post("/api/v1/tienda", async (req, res)=>{
     .catch(err =>{
         res.send('error: ' +err)
     })
-    //registro tienda
-    // await Usuario.findOne({
-    //     where: {
-    //         id: tienda.id_usuario
-    //     }
-    // })
-    // .then(async usuario =>{
-    //     if(!usuario){
-    //         return res.json({status: 'No pueden crearse tiendas sin usuario'})
-    //     }
-
-    //     await Tienda.findOne({
-    //         where:{
-    //             id_usuario: usuario.id
-    //         }
-    //     })
-    //     .then(async tienda=>{
-    //         if(!tienda || tienda==''){
-    //             Tienda.create(tienda)
-    //             .then(tiendacreada=>{
-    //                 return res.json({
-    //                     message: tiendacreada.nombre + ': Tienda creada con exito'
-    //                 })
-    //             })
-    //             .catch(err=>{
-    //                 return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
-    //             })
-    //         }else{
-    //             return res.json('Ya existe una tienda para este usuario')
-    //         }
-    //     })
-    //     .catch(err=>{
-    //         return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
-    //     })
-    // })
-    // .catch(err=>{
-    //     return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
-    // })
-
-
 })
 
 //----------------------------------------------------------
