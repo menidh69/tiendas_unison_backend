@@ -47,14 +47,26 @@ export class RegTienda extends Component {
               defaultValue={values.nombre_tienda} id="Name_tienda" type="text"></input>
                     </div>
 
-                    <div className="form-group text-left">
-                        <label for="Tipo_tienda">Tipo de Tienda</label>
-                        <input className="form-control" id="Tipo_tienda" onChange={handleChange('tipo_tienda')} type="text"></input>
+                    <div className="form-group text-left" onChange={handleChange('tipo_tienda')}>
+                        <label for="Tipo_tienda">Tipo de Tienda</label>          
+                        <div class="form-check">
+                          <input  className="form-check-input" id="cooperativa" type="radio" value="1"></input>
+                          <label for= "cooperativa" className="form-check-label">Cooperativa</label>
+                        </div>
+                          <div class="form-check">
+                          <input className="form-check-input" id="puesto" type="radio" value="2"></input>
+                            <label for= "puesto" className="form-check-label">Puesto</label>
+                          </div>
+                          <div class="form-check">
+                          <input className="form-check-input" id="cafeteria" type="radio" value="3"></input>
+                            <label for= "cafeteria" className="form-check-label">Cafetería</label>
+                          </div>
+                       
                     </div>
 
                     <div className="form-group text-left">
                         <label for="Horario">Horario</label>
-                        <input id="Horario" className="form-control" type="text"></input>
+                        <input id="Horario" className="form-control" onChange={handleChange('horario')} type="text"></input>
                     </div>
                     <div className="form-group text-left">
                         <label for="Universidad">Universidad</label>
@@ -72,9 +84,9 @@ export class RegTienda extends Component {
                     <label>Aceptan tarjeta</label>
                     <div name = 'tar'  onChange={handleChange('tarjeta')} className="form-group text-left">
                         <label for= "Tarjeta_Si">Si</label>
-                        <input  id="Tarjeta_Si" type="radio"></input>
+                        <input  id="Tarjeta_Si" type="radio" value="true"></input>
                         <label for= "Tarjeta_No">No</label>
-                        <input id="Tarjeta_No" type="radio"></input>
+                        <input id="Tarjeta_No" type="radio" value="false"></input>
                     </div>
                     </div>
                     <div>
