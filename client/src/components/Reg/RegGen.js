@@ -7,15 +7,22 @@ import Button from '@material-ui/core/Button';
 import { InputLabel } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Errorflash from '../Errorflash';
 
 
 
 
 export class RegGen extends Component {
+ 
   continue = e => {
     e.preventDefault();
-    this.props.nextStep();
+  
+    
+      this.props.nextStep();
+
   };
+
+
 
     showHide(e) {
         e.preventDefault();
@@ -43,7 +50,9 @@ export class RegGen extends Component {
               <div className="col-md-6">
               <div className="container w-30 bg-primary rounded-lg text-light">
                 <h1 className="text-center my-10 pt-5">Registrate aqui</h1>
-
+                <div>
+                
+                </div>
                 <form className="my-5 text-center mx-auto">
                     <div className="form-group text-left">
                         <label for="name">Nombre</label>
