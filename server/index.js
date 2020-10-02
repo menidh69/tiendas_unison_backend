@@ -203,6 +203,7 @@ app.delete("/api/v1/usuario/:id", async (req, res)=>{
 //----------------TIENDAS-----------------------------------
 //----------------------------------------------------------
 
+//CREAR TIENDA Y USUARIO
 app.post("/api/v1/tienda", async (req, res)=>{
     const tienda = {
         id_usuario: '',
@@ -257,6 +258,12 @@ app.post("/api/v1/tienda", async (req, res)=>{
     })
 })
 
+app.get("/api/v1/tiendas", async (req, res)=>{
+    const todas = await Tienda.findAll({raw:true})
+    .then(result => {
+        res.json(result)
+    })
+})
 //----------------------------------------------------------
 //----------------------------------------------------------
 
