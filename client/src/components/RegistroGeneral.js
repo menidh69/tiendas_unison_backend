@@ -1,5 +1,6 @@
 import React, {Fragment, useState} from 'react'
 import {useHistory} from "react-router-dom";
+import Errorflash from './Errorflash'
 
   const RegistroGeneral = ()=>{
 
@@ -12,6 +13,8 @@ import {useHistory} from "react-router-dom";
       universidad: ''
     });
 
+    const [error, setError] = useState(false)
+
 
     const updateField = e => {
       setData({
@@ -23,7 +26,7 @@ import {useHistory} from "react-router-dom";
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
-      if (data.nombre!="" && data.email !="" && data.contra!="" && data.tel!="" && data.universidad!="") {
+      if (data.nombre!=="" && data.email !=="" && data.contra!="" && data.tel!=="" && data.universidad!=="") {
         const body = data;
         const response = await fetch('http://localhost:5000/api/v1/usuario', {
           method: "POST",
@@ -41,15 +44,25 @@ import {useHistory} from "react-router-dom";
           }
         })
       }
+      else{
+        
+        setError(true)
+        console.log(error)
+      }
 
-    } catch (err) {}
+    } catch (err) {
+      console.log(err)
+    }
   }
 
     return(
         <Fragment>
+          
             <div className="container w-30 bg-primary rounded-lg text-light">
                 <h1 className="text-center my-10 pt-5">Registrate aqui</h1>
-
+                <div className="my-2">
+                  {error ? <Errorflash/> : '' }
+                </div>
                 <form className="my-5 text-center mx-auto" onSubmit={onSubmitForm}>
                     <div className="form-group text-left">
                         <label for="name">Nombre</label>
