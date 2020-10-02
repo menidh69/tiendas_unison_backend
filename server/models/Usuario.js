@@ -23,6 +23,9 @@ module.exports = db.sequelize.define(
         },
         universidad: {
             type: Sequelize.STRING
+        },
+        tipo_usuario: {
+            type: Sequelize.STRING
         }
 
 
