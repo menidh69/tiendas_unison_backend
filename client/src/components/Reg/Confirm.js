@@ -7,34 +7,12 @@ import Button from '@material-ui/core/Button';
 
 
 export class Confirm extends Component {
-  continue = e => {
+  submit = e => {
     e.preventDefault();
     // PROCESS FORM //
-    this.props.nextStep();
+    this.props.submit();
   };
 
-  submit = ()=>{
-    try{
-            const body = data;
-            const response = await fetch('http://localhost:5000/api/v1/universidades',
-            {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
-            })
-            .then(async resp =>{
-                const result = await resp.json()
-                if(result.error){
-                    console.log(result.error)
-                    history.push("/")
-                }else{
-                    history.push("/")
-                }
-            })
-        }catch(err){
-
-        }
-  }
 
   back = e => {
     e.preventDefault();
@@ -98,7 +76,7 @@ export class Confirm extends Component {
             </ul>
             <div className="container text-center my-4">
             <button className="btn btn-lg btn-warning rounded mx-4" onClick={this.back}>Atras</button>
-            <button className="btn btn-lg btn-warning rounded mx-4" onClick={this.continue}>Confirmar y continuar</button>
+            <button className="btn btn-lg btn-warning rounded mx-4" onClick={this.submit}>Confirmar y continuar</button>
             </div>
             </div>
             </div>

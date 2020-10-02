@@ -26,7 +26,11 @@ app.get('/', (req,res)=>{
 
 //ROUTES
 
+
+//----------------------------------------------------------
 //----------------USUARIOS-----------------------------------
+//----------------------------------------------------------
+
 //POST NUEVO USUARIO
 app.post("/api/v1/usuario", async (req, res)=>{
     const user = {
@@ -96,6 +100,67 @@ app.get("/api/v1/usuario/:email", async (req, res)=>{
     })*/
 })
 
+//POST USUARIO LOGIN
+app.post("/api/v1/usuario/login", async (req, res)=>{
+    Usuario.findOne({
+        where:{
+            email: req.body.email 
+        } 
+        
+    })
+
+    .then (user => {
+        if (user.length < 1) {
+            return res.status(401).json({
+                message: 'Usuario o contraseña incorrecto'
+            });
+        }
+        
+        // bcrypt.hash(req.body.contra, 10, function(err,hash) {
+        //     if(err) {
+        //         throw (err);
+        //     }
+        //     console.log(user.contra)
+        //     console.log(req.body.contra)
+        //     console.log(hash)
+        //     bcrypt.compare(req.body.contra, user.contra).then((result) => {
+        //         console.log(result)
+        //         if (result) {
+        //             return res.status(200).json({
+        //                 message: 'Auth succesful'
+        //             })
+        //         } else {
+        //             res.status(404).json({
+        //                 message: 'fallobrother'
+        //             })
+        //         }
+        //     })
+        // })
+        
+        bcrypt.compare(req.body.contra, user.contra).then ((result) => {
+            console.log(result)
+            if (result) {
+                return res.status(200).json({
+                    message: 'we did it'
+                })
+            }else {
+                res.status(404).json({
+                    message: 'fallo bro',
+                })
+            }
+            
+        });
+    })
+
+    .catch (err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    })
+      
+  })
+
 
 //ELIMINAR USUARIO
 app.delete("/api/v1/usuario/:id", async (req, res)=>{
@@ -112,7 +177,11 @@ app.delete("/api/v1/usuario/:id", async (req, res)=>{
 });
 
 //----------------------------------------------------------
+//----------------------------------------------------------
+
+//----------------------------------------------------------
 //----------------TIENDAS-----------------------------------
+//----------------------------------------------------------
 
 app.post("/api/v1/tienda", async (req, res)=>{
     const tienda = {
@@ -128,34 +197,36 @@ app.post("/api/v1/tienda", async (req, res)=>{
         email: req.body.email,
         contra: req.body.contra,
         tel: req.body.tel,
-        universidad: req.body.universidad
+        universidad: req.body.universidad,
+        tipo_usuario: 'tienda'
     }
     Usuario.findOne({
         where:{
             email: req.body.email
         }
     })
-    .then(usuario =>{
+    .then(async usuario =>{
         if(!usuario){
-            bcrypt.hash(req.body.contra, 10, (err, hash) => {
+            await bcrypt.hash(req.body.contra, 10, async (err, hash) => {
               user.contra = hash
-              Usuario.create(user)
-              .then(usuario=> {
-                res.json({status: usuario.email + ' registrado con exito'})
+              await Usuario.create(user)
+              .then(async usuario=> {
                 tienda.id_usuario = usuario.id
-                Tienda.create(tienda)
-                .then(tiendacreada=>{
-                    return res.json({
-                        message: tiendacreada.nombre + ': Tienda creada con exito'
+                await Tienda.create(tienda)
+                .then(async tiendacreada=>{
+                    res.json({
+                        status: tiendacreada.nombre + ': Tienda y usuario creada con exito'
                     })
                 })
                 .catch(err=>{
-                    return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
+                    res.json({
+                        status: 'Ocurrio un error al crear la tienda, vuelve a intentarlo'}
+                        )
                 })
+              }).catch(err=>{
+                res.status(204).json({'error: ': err})
               })
-              .catch(err=>{
-                res.send('error: ' + err)
-              })
+            
             })
         }else{
             res.json({ error: "Ya existe un usuario con esa cuenta" })  
@@ -164,50 +235,14 @@ app.post("/api/v1/tienda", async (req, res)=>{
     .catch(err =>{
         res.send('error: ' +err)
     })
-    //registro tienda
-    // await Usuario.findOne({
-    //     where: {
-    //         id: tienda.id_usuario
-    //     }
-    // })
-    // .then(async usuario =>{
-    //     if(!usuario){
-    //         return res.json({status: 'No pueden crearse tiendas sin usuario'})
-    //     }
-
-    //     await Tienda.findOne({
-    //         where:{
-    //             id_usuario: usuario.id
-    //         }
-    //     })
-    //     .then(async tienda=>{
-    //         if(!tienda || tienda==''){
-    //             Tienda.create(tienda)
-    //             .then(tiendacreada=>{
-    //                 return res.json({
-    //                     message: tiendacreada.nombre + ': Tienda creada con exito'
-    //                 })
-    //             })
-    //             .catch(err=>{
-    //                 return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
-    //             })
-    //         }else{
-    //             return res.json('Ya existe una tienda para este usuario')
-    //         }
-    //     })
-    //     .catch(err=>{
-    //         return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
-    //     })
-    // })
-    // .catch(err=>{
-    //     return res.send('Ocurrio un error al crear la tienda, vuelve a intentarlo')
-    // })
-
-
 })
 
 //----------------------------------------------------------
+//----------------------------------------------------------
+
+//----------------------------------------------------------
 //----------------UNIVERSIDAD--------------------------------
+//----------------------------------------------------------
 
 //GET ALL UNIVERSIDADES
 app.get("/api/v1/universidades", async (req, res)=>{
@@ -286,6 +321,8 @@ app.delete("/api/v1/universidades/:id", async (req, res)=>{
     }
 });
 
+//-----------------------------------------------
+//----------------------------------------------------------
 app.listen(5000, ()=>{
     console.log('Server is running')
 })
