@@ -24,7 +24,7 @@ const Contenido = () => {
                 </div>
                 <div className="rowItems">
                     <div className="item">
-                        <a href="#">
+                        <a href="">
                             <div className="image"></div>
                             <p className="nombre">Tienda 1</p>
                         </a>
