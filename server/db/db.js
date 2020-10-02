@@ -6,7 +6,6 @@ const db = {}
 //Primer argumento=nombre de BD, Segundo argumento=usuario, Tercer argumento=contraseña
 const sequelize = new Sequelize("tiendas_unison", "meni", "meni", {
 
-
     host: 'localhost',
     dialect: 'mysql',
     operatorsAliases: '0',
