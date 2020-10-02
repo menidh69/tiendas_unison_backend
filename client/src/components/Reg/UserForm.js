@@ -10,7 +10,7 @@ import {useHistory} from "react-router-dom";
 export class UserForm extends Component {
   state = {
     step: 1,
-      nombre: '',
+    nombre: '',
     email: '',
     contra: '',
     telefono: '',
@@ -45,8 +45,7 @@ export class UserForm extends Component {
     this.setState({ [input]: e.target.value });
   };
 
-  submit = async ()=>{
-    
+  submit = async () =>{
     try{
       const body = this.state;
       console.log(JSON.stringify(body))
@@ -58,19 +57,21 @@ export class UserForm extends Component {
       })
       .then(async resp =>{
           const result = await resp.json()
+          console.log(result)
           if(result.error){
               console.log(result.error)
-              console.log(result.status)
+              console.log(result)
               console.log(result)
               this.props.history.push("/")
           }else{
             console.log(result.status)
-              console.log(result)
+              console.log(result.message)
               this.props.history.push("/")
           }
       })
   this.nextStep()
   }catch(err){
+    console.log(err)
     console.log('algo salio mal')
   }
   }
@@ -106,7 +107,7 @@ export class UserForm extends Component {
       case 3:
         return (
           <Confirm
-            nextStep={this.submit}
+            submit={this.submit}
             prevStep={this.prevStep}
             values={values}
           />

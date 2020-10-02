@@ -26,7 +26,11 @@ app.get('/', (req,res)=>{
 
 //ROUTES
 
+
+//----------------------------------------------------------
 //----------------USUARIOS-----------------------------------
+//----------------------------------------------------------
+
 //POST NUEVO USUARIO
 app.post("/api/v1/usuario", async (req, res)=>{
     const user = {
@@ -173,7 +177,11 @@ app.delete("/api/v1/usuario/:id", async (req, res)=>{
 });
 
 //----------------------------------------------------------
+//----------------------------------------------------------
+
+//----------------------------------------------------------
 //----------------TIENDAS-----------------------------------
+//----------------------------------------------------------
 
 app.post("/api/v1/tienda", async (req, res)=>{
     const tienda = {
@@ -199,24 +207,24 @@ app.post("/api/v1/tienda", async (req, res)=>{
     })
     .then(async usuario =>{
         if(!usuario){
-            bcrypt.hash(req.body.contra, 10, async (err, hash) => {
+            await bcrypt.hash(req.body.contra, 10, async (err, hash) => {
               user.contra = hash
               await Usuario.create(user)
               .then(async usuario=> {
                 tienda.id_usuario = usuario.id
                 await Tienda.create(tienda)
                 .then(async tiendacreada=>{
-                    return res.json({
-                        message: tiendacreada.nombre + ': Tienda y usuario creada con exito'
+                    res.json({
+                        status: tiendacreada.nombre + ': Tienda y usuario creada con exito'
                     })
                 })
                 .catch(err=>{
                     res.json({
-                        error: 'Ocurrio un error al crear la tienda, vuelve a intentarlo'}
+                        status: 'Ocurrio un error al crear la tienda, vuelve a intentarlo'}
                         )
                 })
               }).catch(err=>{
-                res.json({'error: ': err})
+                res.status(204).json({'error: ': err})
               })
             
             })
@@ -230,7 +238,11 @@ app.post("/api/v1/tienda", async (req, res)=>{
 })
 
 //----------------------------------------------------------
+//----------------------------------------------------------
+
+//----------------------------------------------------------
 //----------------UNIVERSIDAD--------------------------------
+//----------------------------------------------------------
 
 //GET ALL UNIVERSIDADES
 app.get("/api/v1/universidades", async (req, res)=>{
@@ -309,6 +321,8 @@ app.delete("/api/v1/universidades/:id", async (req, res)=>{
     }
 });
 
+//-----------------------------------------------
+//----------------------------------------------------------
 app.listen(5000, ()=>{
     console.log('Server is running')
 })

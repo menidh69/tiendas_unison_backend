@@ -43,7 +43,7 @@ export class RegTienda extends Component {
                 <form className="my-5 text-center mx-auto">
                     <div className="form-group text-left">
                         <label for="Name_tienda">Nombre de Tienda</label>
-                        <input className="form-control"  onChange={handleChange('nombre_tienda')}
+                        <input className="form-control"  onChange={handleChange('nombretienda')}
               defaultValue={values.nombre_tienda} id="Name_tienda" type="text"></input>
                     </div>
 
