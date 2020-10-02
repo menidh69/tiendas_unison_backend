@@ -1,9 +1,14 @@
-import React, {Fragment, useState} from 'react'
+import React, {Fragment, useState, useMemo, useContext} from 'react'
 import Registro from './Registro'
 import {useHistory} from "react-router-dom";
+import { UserContext } from '../UserContext'
 import Facebook from './Login/Facebook'
 
+
 const LoginForm = () => {
+
+  const {user, setUser} = useContext(UserContext);
+
   let history = useHistory()
   const [data, setData] = useState({
       email: '',
@@ -20,6 +25,7 @@ const LoginForm = () => {
   }
 
   const onSubmitForm = async e =>{
+      
       e.preventDefault();
       try{
           const body = data;
@@ -36,8 +42,10 @@ const LoginForm = () => {
                   console.log(result.error)
                   history.push("/home")
               }else{
-                  console.log(result)
-                  history.push("/")
+                  // console.log(result.user);
+                  setUser(result.user);
+                  history.push("/home")
+                  
               }
           })
       }catch(err){
