@@ -6,6 +6,7 @@ const Universidad = require('./models/Universidad');
 const Usuario = require('./models/Usuario');
 const Tienda = require('./models/Tienda');
 const { response } = require('express');
+const jwt = require('jsonwebtoken');
 const app = express()
 
 
@@ -110,11 +111,43 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
     })
 
     .then (user => {
-        if (user.length < 1) {
+        if (!user) {
             return res.status(401).json({
-                message: 'Usuario o contraseña incorrecto'
+                message: 'Usuario no existe'
             });
         }
+        bcrypt.compare(req.body.contra, user.contra).then ((result) => {
+            console.log(result)
+            if(!result) return res.status(400).json({message: 'Invalid credentials'});
+            jwt.sign(
+                {id: user.id},
+                'secretosupersecreto', //ESTE SECRETO DEBERA GUARDARSE EN ARCHIVO DE CONGIFURACION DESPUES
+                {expiresIn: 3600},
+                (err, token) =>{
+                    if(err) throw err;
+                    res.json({
+                        token,
+                        user: {
+                            id: user.id,
+                            nombre: user.nombre,
+                            email: user.email,
+                            tipo: user.tipo_usuario
+                        }
+                    })
+                }
+            )
+            
+            // if (result) {
+            //     return res.status(200).json({
+            //         message: 'we did it'
+            //     })
+            // }else {
+            //     res.status(404).json({
+            //         message: 'fallo bro',
+            //     })
+            // }
+            
+        });
         
         // bcrypt.hash(req.body.contra, 10, function(err,hash) {
         //     if(err) {
@@ -137,19 +170,6 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
         //     })
         // })
         
-        bcrypt.compare(req.body.contra, user.contra).then ((result) => {
-            console.log(result)
-            if (result) {
-                return res.status(200).json({
-                    message: 'we did it'
-                })
-            }else {
-                res.status(404).json({
-                    message: 'fallo bro',
-                })
-            }
-            
-        });
     })
 
     .catch (err => {
