@@ -16,5 +16,8 @@
   },
   "homepage": "https://github.com/menidh69/Tiendas_Unison_WEB#readme",
   "keywords": [],
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@sendgrid/mail": "^7.2.6"
+  }
 }
