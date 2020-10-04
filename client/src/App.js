@@ -71,8 +71,8 @@ function App() {
           <Router>
             <UserContext.Provider value={value}>
               <Switch>
-                
-                  <Route path="/" component={Home}/>
+              <Route path="/home" component={Home}/>
+              <Redirect from="/" to="/home"/>
               </Switch>
             </UserContext.Provider>
           </Router>
@@ -83,7 +83,9 @@ function App() {
           <Router>
             <UserContext.Provider value={value}>
               <Switch>
+              <Route path="/admin" component={Admin}/>
                 <Route path="/" component={Admin}/>
+                <Redirect from="/" to="/admin"/>
               </Switch>
             </UserContext.Provider>
           </Router>
@@ -94,7 +96,8 @@ function App() {
           <Router>
             <UserContext.Provider value={value}>
               <Switch>
-                <Route path="/" component={Panel}/>
+              <Route path="/panel" component={Panel}/>
+                <Redirect from="/" to="/panel"/>
               </Switch>
             </UserContext.Provider>
           </Router>
