@@ -8,6 +8,7 @@ const Tienda = require('./models/Tienda');
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
 const app = express()
+const auth = require('./middleware/auth');
 
 
 
@@ -101,6 +102,21 @@ app.get("/api/v1/usuario/:email", async (req, res)=>{
     })*/
 })
 
+app.get('/api/v1/auth/user', auth, async (req, res)=>{
+    await Usuario.findOne({
+        where:{
+            id: req.user.id
+        }})
+        .then(async user => {
+            console.log(user.dataValues)
+            res.json(user.dataValues)
+        })
+        .catch(err=>{
+            console.log(err)
+            res.json(err)
+        });
+})
+
 //POST USUARIO LOGIN
 app.post("/api/v1/usuario/login", async (req, res)=>{
     Usuario.findOne({
@@ -125,13 +141,15 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
                 {expiresIn: 3600},
                 (err, token) =>{
                     if(err) throw err;
+                    console.log(token)
                     res.json({
-                        token,
                         user: {
+                            token,
+                            isLoggedIn: result,
                             id: user.id,
                             nombre: user.nombre,
                             email: user.email,
-                            tipo: user.tipo_usuario
+                            tipo_usuario: user.tipo_usuario
                         }
                     })
                 }

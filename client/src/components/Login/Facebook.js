@@ -7,8 +7,7 @@ const Facebook = ()=>{
         isLoggedIn: false,
         userID: '',
         name: '',
-        email: '',
-        picture: ''
+        email: ''
     })
 
     const componentClicked = ()=>{
@@ -23,12 +22,12 @@ const Facebook = ()=>{
             userID: response.userID,
             name: response.name,
             email: response.email,
-            picture: response.picture.data.url
-        })
-    }
+        });
+    };
 
     return(
-        <Fragment><FacebookLogin
+        <Fragment>
+            <FacebookLogin
         appId="2718234125104025"
         autoLoad={true}
         fields="name,email,picture"
