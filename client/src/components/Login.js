@@ -3,11 +3,23 @@ import Registro from './Registro'
 import {useHistory} from "react-router-dom";
 import { UserContext } from '../UserContext'
 import Facebook from './Login/Facebook'
+import {Router, Switch, Route} from 'react-router-dom';
+import Home from './Cliente/Home';
+import Admin from './Admin/Admin';
+import Panel from './Tienda/Panel'
 
-
+// const Login = ()=>{
+//   const {user, setUser} = useContext(UserContext);
+//   if(user!==null && user.isLoggedIn){
+//     return <LoginFactory></LoginFactory>
+//   }else{
+//     return <LoginForm></LoginForm>
+//   }
+// }
 const LoginForm = () => {
 
   const {user, setUser} = useContext(UserContext);
+
 
   let history = useHistory()
   const [data, setData] = useState({
@@ -15,9 +27,11 @@ const LoginForm = () => {
       contra: ''
   });
 
+
   const [alert, setAlert] = useState([])
 
   const updateField = e =>{
+    e.preventDefault()
       setData({
           ...data,
           [e.target.name]: e.target.value
@@ -42,9 +56,13 @@ const LoginForm = () => {
                   console.log(result.error)
                   history.push("/home")
               }else{
-                  // console.log(result.user);
+                console.log(result)
+                  console.log(result.user);
+                  console.log(result)
+                  console.log(resp)
+                  localStorage.setItem("token.tuw", result.user.token)
                   setUser(result.user);
-                  history.push("/home")
+                  history.push("/")
                   
               }
           })
@@ -52,7 +70,9 @@ const LoginForm = () => {
 
       }
   }
-  return (<Fragment>
+
+  return (
+  <Fragment>
     <div className="row">
         <div className="col-md-4">
 
@@ -91,9 +111,9 @@ const LoginForm = () => {
         <button className="btn btn-lg btn-warning my-4" type='submit'>Login</button>
       </form>
       
-      <div className="text-center">
-      <Facebook/>
-      </div>
+      {/* <div className="text-center">
+      <Facebook></Facebook>
+      </div> */}
       </div>
       <Registro></Registro>
         
@@ -108,4 +128,54 @@ const LoginForm = () => {
   </Fragment>)
 }
 
+const LoginFactory = ()=>{
+  const {user, setUser} = useContext(UserContext);
+
+    switch (user.tipo) {
+      case 'cliente':
+        return(
+          <Router>
+            <UserContext.Provider value={user}>
+              <Switch>
+                <Route path="/home" component={Home}/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+      case 'admin':
+        return(
+          <Router>
+            <UserContext.Provider value={user}>
+              <Switch>
+                <Route path="/admin" component={Admin}/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+      case 'tienda':
+        return(
+          <Router>
+            <UserContext.Provider value={user}>
+              <Switch>
+                <Route path="/tienda" component={Panel}/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+      case 'default':
+        return(
+          <Router>
+            <UserContext.Provider value={user}>
+              <Switch>
+                <Route path="/home" component={Home}/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+    }
+}
 export default LoginForm;
