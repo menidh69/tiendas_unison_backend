@@ -1,17 +1,37 @@
-import React, {Fragment, useState} from 'react'
+import React, {Fragment, useState, useMemo, useContext} from 'react'
 import Registro from './Registro'
 import {useHistory} from "react-router-dom";
+import { UserContext } from '../UserContext'
+import Facebook from './Login/Facebook'
+import {Router, Switch, Route} from 'react-router-dom';
+import Home from './Cliente/Home';
+import Admin from './Admin/Admin';
+import Panel from './Tienda/Panel'
 
+// const Login = ()=>{
+//   const {user, setUser} = useContext(UserContext);
+//   if(user!==null && user.isLoggedIn){
+//     return <LoginFactory></LoginFactory>
+//   }else{
+//     return <LoginForm></LoginForm>
+//   }
+// }
 const LoginForm = () => {
+
+  const {user, setUser} = useContext(UserContext);
+
+
   let history = useHistory()
   const [data, setData] = useState({
       email: '',
       contra: ''
   });
 
+
   const [alert, setAlert] = useState([])
 
   const updateField = e =>{
+    e.preventDefault()
       setData({
           ...data,
           [e.target.name]: e.target.value
@@ -19,6 +39,7 @@ const LoginForm = () => {
   }
 
   const onSubmitForm = async e =>{
+      
       e.preventDefault();
       try{
           const body = data;
@@ -35,19 +56,32 @@ const LoginForm = () => {
                   console.log(result.error)
                   history.push("/home")
               }else{
+                console.log(result)
+                  console.log(result.user);
                   console.log(result)
+                  console.log(resp)
+                  localStorage.setItem("token.tuw", result.user.token)
+                  setUser(result.user);
                   history.push("/")
+                  
               }
           })
       }catch(err){
 
       }
   }
-  return (<Fragment>
-    <div className="container w-25 bg-primary rounded-lg text-light">
-      <h1 className="text-center my-5 pt-5">Login</h1>
 
-      <form className="my-5 text-center mx-auto" onSubmit={onSubmitForm}>
+  return (
+  <Fragment>
+    <div className="row">
+        <div className="col-md-4">
+
+        </div>
+        <div className="col-md-4">
+    <div className="container bg-primary rounded-lg text-light my-2 pb-2">
+      <h1 className="text-center my-5 pt-5">Login</h1>
+      
+        <form className="my-2 text-center mx-auto" onSubmit={onSubmitForm}>
         <div className="form-group text-left">
           <label for="email">Email address</label>
           <input
@@ -75,12 +109,73 @@ const LoginForm = () => {
           </small>
         </div>
         <button className="btn btn-lg btn-warning my-4" type='submit'>Login</button>
-
       </form>
-
+      
+      {/* <div className="text-center">
+      <Facebook></Facebook>
+      </div> */}
+      </div>
+      <Registro></Registro>
+        
+        </div>
+        <div className="col-md-4">
+          
+        </div>
+      
+      
     </div>
-    <Registro></Registro>
+    
   </Fragment>)
 }
 
+const LoginFactory = ()=>{
+  const {user, setUser} = useContext(UserContext);
+
+    switch (user.tipo) {
+      case 'cliente':
+        return(
+          <Router>
+            <UserContext.Provider value={user}>
+              <Switch>
+                <Route path="/home" component={Home}/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+      case 'admin':
+        return(
+          <Router>
+            <UserContext.Provider value={user}>
+              <Switch>
+                <Route path="/admin" component={Admin}/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+      case 'tienda':
+        return(
+          <Router>
+            <UserContext.Provider value={user}>
+              <Switch>
+                <Route path="/tienda" component={Panel}/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+      case 'default':
+        return(
+          <Router>
+            <UserContext.Provider value={user}>
+              <Switch>
+                <Route path="/home" component={Home}/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+    }
+}
 export default LoginForm;

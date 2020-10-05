@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useMemo, useEffect, useLayoutEffect } from 'react';
 import './App.css';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 
 //componentes
 import Login from './components/Login'
@@ -18,37 +18,125 @@ import RegistroUniversidad from './components/RegistroUniversidad'
 import OlvidarContra from './components/OlvidarContra'
 import Restablecer from './components/Restablecer'
 import LandingPage from './components/LandingPage'
+import LoginFactory from './components/Factory'
+import { UserContext } from './UserContext'
 
 
 
 
 function App() {
-  return(
 
-    <Router>
-    <Fragment>
-        <Switch>
+  const [user, setUser] = useState(null);
+  const value = useMemo(() => ({ user, setUser}), [user, setUser]);
 
-        {/* Agregar aquí las interfaces principales como Routes, ver el tutorial */}
-        <Route path="/login" component={Login}/>
-        <Route path="/registro" component={UserForm}/>
-        <Route path="/admin" component={Admin}/>
-        <Route path="/tienda" component={Panel}/>
+  const storedToken = localStorage.getItem('token.tuw');
+  const [token, setToken] = useState(storedToken || null);
+  
+  const checkSignIn = async ()=>{
+      if(token){
+        const response = await fetch('http://localhost:5000/api/v1/auth/user',
+              {
+                  method: "GET",
+                  headers: {
+                    "x-auth-token": token
+                }
+              })
+              .then(async resp=>{
+                const usuario = await resp.json();
+                if(resp.status==400){
+                  console.log('no user')
+                  console.log(usuario)
+                }else{
+                  console.log(usuario)
+                console.log(resp)
+                setUser(usuario)
+                }
+              })
+      }
+  }
+  // checkSignIn();
+  
+  useLayoutEffect(()=>{
+    checkSignIn();
+  }, [])
 
-        <Route path="/cliente" component={Home}/>
-        <Route path="/registrogeneral" component={RegistroGeneral}/>
-        <Route path="/registrouniversidad" component={RegistroUniversidad}/>
-        <Route path="/olvidarcontra" component={OlvidarContra}/>
-        <Route path="/Restablecer" component={Restablecer}/>
-        <Route path="/Login" component={Login}/>
-        <Route path="/" component={LandingPage}/>
 
-        
+  if (user != null) {
+    console.log(value.user)
+    const usuario = value.user;
+    console.log(usuario)
+    switch (usuario.tipo_usuario) {
+      case 'cliente':
+        return(
+          <Router>
+            <UserContext.Provider value={value}>
+              <Switch>
+              <Route path="/home" component={Home}/>
+              <Redirect from="/" to="/home"/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+      case 'admin':
+        return(
+          <Router>
+            <UserContext.Provider value={value}>
+              <Switch>
+              <Route path="/admin" component={Admin}/>
+                <Route path="/" component={Admin}/>
+                <Redirect from="/" to="/admin"/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+      case 'tienda':
+        return(
+          <Router>
+            <UserContext.Provider value={value}>
+              <Switch>
+              <Route path="/panel" component={Panel}/>
+                <Redirect from="/" to="/panel"/>
+              </Switch>
+            </UserContext.Provider>
+          </Router>
+          );
+          break;
+          case 'default':
+            return(<h1>Algo esta mal</h1>)
+    }
 
-        </Switch>
-    </Fragment>
-    </Router>
-    );
+
+  } else {
+    
+    console.log(value);
+    
+    return(
+
+      <Router>
+      <Fragment>
+ 
+          <UserContext.Provider value={value}>
+            <Switch>         
+              <Route path="/login" exact component={Login}/>
+              <Route path="/registro" exact component={UserForm}/>
+  
+              
+              <Route path="/registrogeneral" exact component={RegistroGeneral}/>
+              <Route path="/registrouniversidad" exact component={RegistroUniversidad}/>
+              <Route path="/olvidarcontra" exact component={OlvidarContra}/>
+              <Route path="/Restablecer" exact component={Restablecer}/>
+              <Route path="/" exact component={LandingPage}/>
+              <Redirect to="/" />
+            </Switch>
+          </UserContext.Provider>
+      </Fragment>
+      </Router>
+      );
+  }
+
+
 }
 
 export default App;

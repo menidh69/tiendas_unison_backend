@@ -8,9 +8,11 @@ const Tienda = require('./models/Tienda');
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
 const app = express()
+const auth = require('./middleware/auth');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
 //  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
+
 
 
 app.use(cors());
@@ -112,6 +114,21 @@ app.get("/api/v1/usuario/:email", async (req, res)=>{
     })*/
 })
 
+app.get('/api/v1/auth/user', auth, async (req, res)=>{
+    await Usuario.findOne({
+        where:{
+            id: req.user.id
+        }})
+        .then(async user => {
+            console.log(user.dataValues)
+            res.json(user.dataValues)
+        })
+        .catch(err=>{
+            console.log(err)
+            res.json(err)
+        });
+})
+
 //POST USUARIO LOGIN
 app.post("/api/v1/usuario/login", async (req, res)=>{
     Usuario.findOne({
@@ -135,13 +152,15 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
                 {expiresIn: 3600},
                 (err, token) =>{
                     if(err) throw err;
+                    console.log(token)
                     res.json({
-                        token,
                         user: {
+                            token,
+                            isLoggedIn: result,
                             id: user.id,
                             nombre: user.nombre,
                             email: user.email,
-                            tipo: user.tipo_usuario
+                            tipo_usuario: user.tipo_usuario
                         }
                     })
                 }
@@ -267,6 +286,7 @@ app.post("/olvidarcontra",(req,res)=>{
 //----------------TIENDAS-----------------------------------
 //----------------------------------------------------------
 
+//CREAR TIENDA Y USUARIO
 app.post("/api/v1/tienda", async (req, res)=>{
     const tienda = {
         id_usuario: '',
@@ -321,6 +341,12 @@ app.post("/api/v1/tienda", async (req, res)=>{
     })
 })
 
+app.get("/api/v1/tiendas", async (req, res)=>{
+    const todas = await Tienda.findAll({raw:true})
+    .then(result => {
+        res.json(result)
+    })
+})
 //----------------------------------------------------------
 //----------------------------------------------------------
 

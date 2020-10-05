@@ -10,6 +10,7 @@ import {useHistory} from "react-router-dom";
 export class UserForm extends Component {
   state = {
     step: 1,
+    error: false,
     nombre: '',
     email: '',
     contra: '',
@@ -45,7 +46,20 @@ export class UserForm extends Component {
     this.setState({ [input]: e.target.value });
   };
 
+  checkempty = ()=>{
+    let empty = false;
+    Object.values(this.state).map((value, index)=>{
+      if(!value || value==''){
+        empty = true;
+      }
+    });
+    return empty;
+  }
+
   submit = async () =>{
+    if(this.checkempty){
+      alert('Llena todos los campos')
+    }else{
     try{
       const body = this.state;
       console.log(JSON.stringify(body))
@@ -74,8 +88,9 @@ export class UserForm extends Component {
     console.log(err)
     console.log('algo salio mal')
   }
+}
   }
-
+  
 
   handleMouseDownPassword = (event) => {
     this.event.preventDefault();
