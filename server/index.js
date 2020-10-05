@@ -206,6 +206,8 @@ app.delete("/api/v1/usuario/:id", async (req, res)=>{
     }
 })
 // OLVIDAR CONTRASEÑA
+// nuevo ??? 
+
 app.post("/olvidarcontra",(req,res)=>{
     crypto.randomBytes(32,(err,buffer)=>{
         if(err){
