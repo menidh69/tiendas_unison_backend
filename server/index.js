@@ -9,6 +9,9 @@ const { response } = require('express');
 const jwt = require('jsonwebtoken');
 const app = express()
 const auth = require('./middleware/auth');
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey('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');
+//  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
 
 
 
@@ -34,6 +37,7 @@ app.get('/', (req,res)=>{
 //----------------------------------------------------------
 
 //POST NUEVO USUARIO
+//POST NUEVO USUARIO
 app.post("/api/v1/usuario", async (req, res)=>{
     const user = {
         nombre: req.body.nombre,
@@ -53,7 +57,15 @@ app.post("/api/v1/usuario", async (req, res)=>{
               user.contra = hash
               Usuario.create(user)
               .then(usuario=> {
-                res.json({status: usuario.email + ' registrado con exito'})
+                res.json({status: usuario.email + ' registrado con exito'})  
+                const msg ={
+                    to: user.email,
+                    from: "tiendasuniv@hotmail.com",
+                    subject: "Registro a Tiendas Universitarias",
+                    text: "Bienvenida",
+                    html: "<h1>Espero y la pases bomba y te guste la pagina bye</h1>",
+                }
+                sgMail.send(msg);
               })
               .catch(err=>{
                 res.send('error: ' + err)
@@ -66,7 +78,7 @@ app.post("/api/v1/usuario", async (req, res)=>{
     .catch(err =>{
         res.send('error: ' +err)
     })
-});
+})
 
 //GET USUARIO POR EMAIL
 app.get("/api/v1/usuario/:email", async (req, res)=>{
@@ -125,7 +137,6 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
         } 
         
     })
-
     .then (user => {
         if (!user) {
             return res.status(401).json({
@@ -212,7 +223,61 @@ app.delete("/api/v1/usuario/:id", async (req, res)=>{
     }catch(err){
         console.error(err)
     }
-});
+})
+// OLVIDAR CONTRASEÑA
+// nuevo ??? 
+
+app.post("/olvidarcontra",(req,res)=>{
+    crypto.randomBytes(32,(err,buffer)=>{
+        if(err){
+            console.log(err)
+        }
+        const token = buffer.toString("hex")
+        User.findOne({email:req.body.email})
+        .then(user=>{
+            if(!user){
+               return res.status(422).json({error:"User doesnt exist with that email"})
+            }
+            user.resetToken = token
+            user.expireToken = Date.now() + 3600000
+            user.save().then((result)=>{
+                const msg ={
+                    to: user.email,
+                    from: "tiendasuniv@hotmail.com",
+                    subject: "olvida contras",
+                    text: "Bienvenida",
+                    html: "<h1>lo siento bye </h1>",
+                }
+                sgMail.send(msg);
+              })
+            })
+
+        })
+    })
+
+
+
+
+/* app.post('/new-password',(req,res)=>{
+   const newPassword = req.body.password
+   const sentToken = req.body.token
+   Usuario.findOne({resetToken:sentToken,expireToken:{$gt:Date.now()}})
+   .then(user=>{
+       if(!user){
+           return res.status(422).json({error:"Try again session expired"})
+       }
+       bcrypt.hash(newPassword,12).then(hashedpassword=>{
+          user.password = hashedpassword
+          user.resetToken = undefined
+          user.expireToken = undefined
+          user.save().then((saveduser)=>{
+              res.json({message:"password updated success"})
+          })
+       })
+   }).catch(err=>{
+       console.log(err)
+   })
+}) */
 
 //----------------------------------------------------------
 //----------------------------------------------------------
@@ -296,7 +361,7 @@ app.get("/api/v1/universidades", async (req, res)=>{
         ).then(result =>{
             res.json(result);
         })
-});
+})
 
 
 //POST NUEVA UNIVERSIDAD
@@ -328,7 +393,7 @@ app.post("/api/v1/universidades", async (req, res)=>{
     .catch(err =>{
         res.send('error: ' +err)
     })
-});
+})
 
 //GET UNIVERSIDAD POR ID
 app.get("/api/v1/universidades/:id", async (req, res)=>{
@@ -364,7 +429,7 @@ app.delete("/api/v1/universidades/:id", async (req, res)=>{
     }catch(err){
         console.error(err)
     }
-});
+})
 
 //-----------------------------------------------
 //----------------------------------------------------------
