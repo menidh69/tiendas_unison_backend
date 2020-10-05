@@ -10,7 +10,6 @@ const jwt = require('jsonwebtoken');
 const app = express()
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
-// sendgrid_api_key variable de entorno es aki abao
 //  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
 
 
@@ -121,7 +120,6 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
         } 
         
     })
-
     .then (user => {
         if (!user) {
             return res.status(401).json({
@@ -208,19 +206,35 @@ app.delete("/api/v1/usuario/:id", async (req, res)=>{
     }
 })
 // OLVIDAR CONTRASEÑA
-app.post("/api/v1/usuario/olvidarcontra", async (req, res)=>{
-   
-            const msg ={
-                to: req.body.email,
-                from: "tiendasuniv@hotmail.com",
-                subject: "Registro a Tiendas Universitarias",
-                text: "Bienvenida",
-                html: "<h1>Espero y la pases bomba y te guste la pagina bye</h1>",
+app.post("/olvidarcontra",(req,res)=>{
+    crypto.randomBytes(32,(err,buffer)=>{
+        if(err){
+            console.log(err)
+        }
+        const token = buffer.toString("hex")
+        User.findOne({email:req.body.email})
+        .then(user=>{
+            if(!user){
+               return res.status(422).json({error:"User dont exists with that email"})
             }
-            sgMail.send(msg);
+            user.resetToken = token
+            user.expireToken = Date.now() + 3600000
+            user.save().then((result)=>{
+                const msg ={
+                    to: user.email,
+                    from: "tiendasuniv@hotmail.com",
+                    subject: "Registro a Tiendas Universitarias",
+                    text: "Bienvenida",
+                    html: "<h1>Espero y la pases bomba y te guste la pagina bye</h1>",
+                }
+                sgMail.send(msg);
+              })
+            })
 
-        })   
-   
+        })
+    })
+
+
 
 
 /* app.post('/new-password',(req,res)=>{

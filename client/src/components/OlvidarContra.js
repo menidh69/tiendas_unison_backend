@@ -1,7 +1,69 @@
 import React, {Fragment, useState} from 'react'
 import {useHistory} from "react-router-dom";
 import './LandingPage.css';
+import {ToastContainer, toast, Zoom, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 
+
+    const OlvidarContra  =() =>{
+        const history = useHistory()
+        const [email,setEmail] = useState("")
+        const PostData = ()=>{
+            if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
+                toast({html: "invalid email",classes:"#c62828 red darken-3"})
+                return
+            }
+            fetch('/olvidarcontra   ',{
+                method:"post",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    email
+                })
+            }).then(res=>res.json())
+            .then(data=>{
+               if(data.error){
+                   toast({html: data.error,classes:"#c62828 red darken-3"})
+               }
+               else{
+                   toast({html:data.message,classes:"#43a047 green darken-1"})
+                   history.push('/')
+               }
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
+       return (
+        <div className="container w-25 p-3 bg-primary rounded-lg text-light">
+        <h4 className="text-center my-5 pt-5">Restablece tu contraseña</h4>
+           <form className="my-5 text-center mx-auto"  >
+           
+           <div className="form-group text-left">
+                  <label for="email">Email address</label>
+                    <input
+                     className="form-control"
+                     
+                     type="text"
+                     placeholder="email" 
+                     value={email}
+                     onChange={(e)=>setEmail(e.target.value)}
+                     
+                     ></input>
+           </div> 
+           <button className="btn btn-lg btn-warning my-5" onClick={()=>PostData()} > Enviar correo </button>
+    
+         </form>
+     </div>
+ 
+    
+       )
+    }
+
+export default OlvidarContra
+
+// https://www.youtube.com/watch?v=VdVGPov7Yqc  toastify 
+/*
 const OlvidarContra = ()=> {
         let history = useHistory()
         const [data, setData] = useState({
@@ -69,5 +131,5 @@ const OlvidarContra = ()=> {
 )
 }
 
-export default OlvidarContra; 
+export default OlvidarContra; */
       
