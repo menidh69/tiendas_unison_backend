@@ -223,9 +223,9 @@ app.post("/olvidarcontra",(req,res)=>{
                 const msg ={
                     to: user.email,
                     from: "tiendasuniv@hotmail.com",
-                    subject: "Registro a Tiendas Universitarias",
+                    subject: "olvida contras",
                     text: "Bienvenida",
-                    html: "<h1>Espero y la pases bomba y te guste la pagina bye</h1>",
+                    html: "<h1>lo siento bye </h1>",
                 }
                 sgMail.send(msg);
               })
