@@ -10,6 +10,9 @@ const jwt = require('jsonwebtoken');
 const app = express()
 const auth = require('./middleware/auth');
 const sgMail = require("@sendgrid/mail");
+const crypto = require("crypto")
+const {Op} = require('sequelize');
+const moment = require('moment')
 sgMail.setApiKey('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');
 //  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
 
@@ -18,7 +21,7 @@ sgMail.setApiKey('SG.4RzcJCa_TqeKwOhkUdCWsg.T4_DM8rGt_7w4zgNVUnya0QYJ7dcM1E5H7CE
 app.use(cors());
 app.use(bodyParser.json()) //req.body
 app.use(bodyParser.urlencoded({extended: false}))
-
+moment().format();
 
 
 
@@ -46,9 +49,10 @@ app.post("/api/v1/usuario", async (req, res)=>{
         tel: req.body.tel,
         universidad: req.body.universidad
     }
+    console.log(user)
     Usuario.findOne({
         where:{
-            email: req.body.email
+            email: user.email
         }
     })
     .then(usuario =>{
@@ -233,7 +237,7 @@ app.post("/olvidarcontra",(req,res)=>{
             console.log(err)
         }
         const token = buffer.toString("hex")
-        User.findOne({email:req.body.email})
+        Usuario.findOne({where:{email:req.body.email}})
         .then(user=>{
             if(!user){
                return res.status(422).json({error:"User doesnt exist with that email"})
@@ -244,11 +248,14 @@ app.post("/olvidarcontra",(req,res)=>{
                 const msg ={
                     to: user.email,
                     from: "tiendasuniv@hotmail.com",
-                    subject: "olvida contras",
-                    text: "Bienvenida",
-                    html: "<h1>lo siento bye </h1>",
+                    subject: "Reestablecer Contraseña",
+                    html: `
+                    <h1> Reestablece tu contraseña </h1>
+                    <h5> Haz click en este <a href="https://localhost:3000/reestablecer/${token}">link</a> para reestablecer tu contraseña.
+                    `,
                 }
                 sgMail.send(msg);
+                res.json({message: 'Revisa tu correo'})
               })
             })
 
@@ -258,18 +265,25 @@ app.post("/olvidarcontra",(req,res)=>{
 
 
 
-/* app.post('/new-password',(req,res)=>{
+ app.post('/new-password',(req,res)=>{
    const newPassword = req.body.password
    const sentToken = req.body.token
-   Usuario.findOne({resetToken:sentToken,expireToken:{$gt:Date.now()}})
+   console.log(sentToken)
+   console.log(new Date(Date.now()))
+   Usuario.findOne({
+       where:{
+           resetToken:sentToken,
+           expireToken:{[Op.gt]: new Date(Date.now()),}
+        }
+    })
    .then(user=>{
        if(!user){
            return res.status(422).json({error:"Try again session expired"})
        }
-       bcrypt.hash(newPassword,12).then(hashedpassword=>{
-          user.password = hashedpassword
-          user.resetToken = undefined
-          user.expireToken = undefined
+       bcrypt.hash(newPassword,10).then(hashedpassword=>{
+          user.contra = hashedpassword
+          user.resetToken = null
+          user.expireToken = null
           user.save().then((saveduser)=>{
               res.json({message:"password updated success"})
           })
@@ -277,7 +291,7 @@ app.post("/olvidarcontra",(req,res)=>{
    }).catch(err=>{
        console.log(err)
    })
-}) */
+}) 
 
 //----------------------------------------------------------
 //----------------------------------------------------------

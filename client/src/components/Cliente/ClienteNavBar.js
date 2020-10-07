@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState, useContext} from 'react';
 import './ClienteNavBar.css';
 import {ReactComponent as Dropdown} from './icons/dropdown.svg';
 import {ReactComponent as Settings} from './icons/configuracion.svg';
@@ -6,6 +6,8 @@ import {ReactComponent as Panel} from './icons/panel.svg';
 import {ReactComponent as Logout} from './icons/cerrarsesion.svg';
 import {ReactComponent as Home} from './icons/home.svg';
 import {ReactComponent as Cart} from './icons/shoppingcart.svg';
+import { useHistory, Link } from 'react-router-dom';
+import { UserContext } from '../../UserContext'
 
 
 const ClienteNavBar = ()=>{
@@ -19,7 +21,10 @@ const ClienteNavBar = ()=>{
             </NavBar>
         </Fragment>
     )
-}
+    }
+
+
+
 
 function NavBar(props) {
     return (
@@ -43,6 +48,7 @@ function NavItem(props) {
 
     const [open, setOpen] = useState(false);
 
+
     return (
         <li className="nav-item">
             <a href="#" className="icon-button" onClick={() => setOpen(!open)}>
@@ -55,10 +61,18 @@ function NavItem(props) {
 }
 
 function DropdownMenu(){
+    const {user, setUser} = useContext(UserContext);
+    const history = useHistory();
+    const logout = ()=>{
+        localStorage.removeItem('token.tuw')
+        alert('Hiciste logout')
+        setUser(null);
+        history.push('/')
+    }
 
     function DropdownItem(props){
         return(
-            <a href="#" className="menu-item">
+            <a className="menu-item" onClick={props.func}>
                 <span className="icon-button">{props.leftIcon}</span>
 
                 {props.children}
@@ -69,21 +83,27 @@ function DropdownMenu(){
     return(
         <div className="dropdown">
             <DropdownItem 
+            href='#'
             leftIcon={<Panel/>}>
                 Mi perfil
             </DropdownItem>
             <DropdownItem
+            href='#'
             leftIcon={<Cart/>}>
                 Carrito
             </DropdownItem>
             <DropdownItem
+            href='#'
             leftIcon={<Settings/>}>
                 Configuracion
             </DropdownItem>
-            <DropdownItem 
-            leftIcon={<Logout/>}>
+            <Link to="/">
+            <DropdownItem
+            leftIcon={<Logout/>}
+            func={()=>logout()}>
                 Cerrar Sesion
             </DropdownItem>
+            </Link>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React, {Fragment, useState, useMemo, useContext} from 'react'
-import Registro from './Registro'
+import Registro from './Landing-Registro/Registro'
 import {useHistory} from "react-router-dom";
 import { UserContext } from '../UserContext'
 import Facebook from './Login/Facebook'
@@ -7,7 +7,7 @@ import {Router, Switch, Route} from 'react-router-dom';
 import Home from './Cliente/Home';
 import Admin from './Admin/Admin';
 import Panel from './Tienda/Panel';
-import LoginForm from './Login';
+import LoginForm from './Login/Login';
 
 const Login = ()=>{
   const {user, setUser} = useContext(UserContext);

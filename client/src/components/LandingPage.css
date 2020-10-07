@@ -4,7 +4,6 @@
     height: 100vh;
     /* width: 40%; */
     background: #c7e2ff;
-    text-align: center;
     padding-top: 100px;
 }
 
@@ -13,6 +12,10 @@
     /* width: 60%;  */
     background: #66acf7;
     padding-top : 20px;
+}
+
+#carrito{
+    max-width: 100%;
 }
 
 .contra {

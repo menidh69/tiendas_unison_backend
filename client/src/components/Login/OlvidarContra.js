@@ -1,19 +1,21 @@
 import React, {Fragment, useState} from 'react'
 import {useHistory} from "react-router-dom";
-import './LandingPage.css';
+import '../LandingPage.css';
 import {ToastContainer, toast, Zoom, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
+import LandingNav from '../Landing-Registro/LandingNav';
 
 
     const OlvidarContra  =() =>{
         const history = useHistory()
         const [email,setEmail] = useState("")
+
         const PostData = ()=>{
             if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
                 toast({html: "invalid email",classes:"#c62828 red darken-3"})
                 return
             }
-            fetch('/olvidarcontra   ',{
+            fetch('http://localhost:5000/olvidarcontra   ',{
                 method:"post",
                 headers:{
                     "Content-Type":"application/json"
@@ -35,9 +37,11 @@ import "react-toastify/dist/ReactToastify.css"
             })
         }
        return (
-        <div className="container w-25 p-3 bg-primary rounded-lg text-light">
+           <Fragment>
+           <LandingNav></LandingNav>
+        <div className="container w-25 my-5 p-3 bg-primary rounded-lg text-light">
         <h4 className="text-center my-5 pt-5">Restablece tu contraseña</h4>
-           <form className="my-5 text-center mx-auto"  >
+           
            
            <div className="form-group text-left">
                   <label for="email">Email address</label>
@@ -53,8 +57,9 @@ import "react-toastify/dist/ReactToastify.css"
            </div> 
            <button className="btn btn-lg btn-warning my-5" onClick={()=>PostData()} > Enviar correo </button>
     
-         </form>
+         
      </div>
+     </Fragment>
  
     
        )

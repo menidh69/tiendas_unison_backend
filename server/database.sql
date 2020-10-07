@@ -16,7 +16,9 @@ CREATE TABLE usuario(
     contra VARCHAR(100),
     tel VARCHAR(50),
     universidad VARCHAR(100),
-    tipo_usuario VARCHAR(50) DEFAULT 'cliente'
+    tipo_usuario VARCHAR(50) DEFAULT 'cliente',
+    resetToken VARCHAR(100) DEFAULT NULL,
+    expireToken DATETIME DEFAULT NULL
 );
 
 CREATE TABLE tienda(

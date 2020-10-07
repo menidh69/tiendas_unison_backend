@@ -26,6 +26,12 @@ module.exports = db.sequelize.define(
         },
         tipo_usuario: {
             type: Sequelize.STRING
+        },
+        resetToken: {
+            type: Sequelize.STRING
+        },
+        expireToken: {
+            type: Sequelize.DATE
         }
 
 

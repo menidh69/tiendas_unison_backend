@@ -8,6 +8,7 @@ import { InputLabel } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Errorflash from '../Errorflash';
+import LandingNav from '../Landing-Registro/LandingNav';
 
 
 
@@ -44,11 +45,11 @@ export class RegGen extends Component {
             fullWidth
             maxWidth='sm'
           > */}
-          
-            <div className="row">
+            <LandingNav></LandingNav>
+            <div className="row my-4">
               <div className="col-md-3"></div>
               <div className="col-md-6">
-              <div className="container w-30 bg-primary rounded-lg text-light">
+              <div className="container bg-primary rounded-lg text-light">
                 <h1 className="text-center my-10 pt-5">Registrate aqui</h1>
                 <div>
                 

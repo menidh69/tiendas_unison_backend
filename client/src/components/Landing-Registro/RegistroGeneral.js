@@ -1,6 +1,7 @@
-import React, {Fragment, useState} from 'react'
+import React, {Fragment, useState} from 'react';
 import {useHistory} from "react-router-dom";
-import Errorflash from './Errorflash'
+import Errorflash from '../Errorflash';
+import LandingNav from './LandingNav';
 
   const RegistroGeneral = ()=>{
 
@@ -57,13 +58,16 @@ import Errorflash from './Errorflash'
 
     return(
         <Fragment>
-          
-            <div className="container w-30 bg-primary rounded-lg text-light">
+          <LandingNav></LandingNav>
+            <div className="container bg-primary w-75 rounded-lg my-4 text-light">
                 <h1 className="text-center my-10 pt-5">Registrate aqui</h1>
                 <div className="my-2">
                   {error ? <Errorflash/> : '' }
                 </div>
-                <form className="my-5 text-center mx-auto" onSubmit={onSubmitForm}>
+                <div className="row">
+                  <div className="col-md-3"></div>
+                  <div className="col-md-6">
+                  <form className="my-5 text-center mx-auto" onSubmit={onSubmitForm}>
                     <div className="form-group text-left">
                         <label for="name">Nombre</label>
                           <input
@@ -135,6 +139,11 @@ import Errorflash from './Errorflash'
                     <button className="btn btn-lg btn-warning my-4" type="submit">Registrar</button>
 
                 </form>
+                  </div>
+                  <div className="col-md-3"></div>
+
+                </div>
+                
             </div>
         </Fragment>
     )
