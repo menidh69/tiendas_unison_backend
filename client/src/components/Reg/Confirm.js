@@ -4,6 +4,8 @@ import AppBar from '@material-ui/core/AppBar';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { List, ListItem, ListItemText } from '@material-ui/core/';
 import Button from '@material-ui/core/Button';
+import LandingNav from '../Landing-Registro/LandingNav';
+
 
 
 export class Confirm extends Component {
@@ -21,7 +23,7 @@ export class Confirm extends Component {
 
   render() {
       const {
-          values: { nombre, email, telefono, contra, universidad, nombre_tienda, tipo_tienda, img_tienda, tarjeta }
+          values: { nombre, email, telefono, contra, universidad, nombretienda, tipo_tienda, img_tienda, tarjeta, horario }
     } = this.props;
     return (
       <MuiThemeProvider>
@@ -31,10 +33,11 @@ export class Confirm extends Component {
             fullWidth
             maxWidth='sm'
           > */}
-            <div className="row">
+          <LandingNav></LandingNav>
+            <div className="row my-4">
               <div className="col-md-3"></div>
               <div className="col-md-6">
-             <div className="container bg-primary">
+             <div className="container bg-primary rounded py-4">
                <h1 className="my-4 text-center"> Confirma tus datos</h1>
             <ul class="list-group list-group-flush bg-primary text-light">
               <li class="list-group-item bg-primary">
@@ -59,7 +62,7 @@ export class Confirm extends Component {
               </li>
               <li class="list-group-item bg-primary">
                 <h5>Nombre de la tienda</h5>
-                <p>{nombre_tienda}</p>
+                <p>{nombretienda}</p>
               </li>
               <li class="list-group-item bg-primary">
                 <h5>Tipo de tienda</h5>
@@ -72,6 +75,10 @@ export class Confirm extends Component {
               <li class="list-group-item bg-primary">
                 <h5>Aceptan tarjeta?</h5>
                 <p>{tarjeta}</p>
+              </li>
+              <li class="list-group-item bg-primary">
+                <h5>Horario</h5>
+                <p>{horario}</p>
               </li>
             </ul>
             <div className="container text-center my-4">

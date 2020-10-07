@@ -3,8 +3,8 @@ import './App.css';
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 
 //componentes
-import Login from './components/Login'
-import Registro from './components/Registro'
+import Login from './components/Login/Login'
+import Registro from './components/Landing-Registro/Registro'
 
 import Admin from './components/Admin/Admin'
 import Panel from './components/Tienda/Panel'
@@ -12,14 +12,15 @@ import Panel from './components/Tienda/Panel'
 import Home from './components/Cliente/Home';
 import UserForm from './components/Reg/UserForm'
 
-import RegistroGeneral from './components/RegistroGeneral'
-import RegistroTienda from './components/RegistroTienda'
-import RegistroUniversidad from './components/RegistroUniversidad'
-import OlvidarContra from './components/OlvidarContra'
-import Restablecer from './components/Restablecer'
-import LandingPage from './components/LandingPage'
+import RegistroGeneral from './components/Landing-Registro/RegistroGeneral'
+import RegistroTienda from './components/Landing-Registro/RegistroTienda'
+import RegistroUniversidad from './components/Landing-Registro/RegistroUniversidad'
+import OlvidarContra from './components/Login/OlvidarContra'
+import Restablecer from './components/Login/Restablecer'
+import LandingPage from './components/Landing-Registro/LandingPage'
 import LoginFactory from './components/Factory'
 import { UserContext } from './UserContext'
+import RegistroTipo from './components/Landing-Registro/RegistroTipo'
 
 
 
@@ -46,6 +47,7 @@ function App() {
                 if(resp.status==400){
                   console.log('no user')
                   console.log(usuario)
+                  localStorage.removeItem('token.utw')
                 }else{
                   console.log(usuario)
                 console.log(resp)
@@ -120,13 +122,12 @@ function App() {
           <UserContext.Provider value={value}>
             <Switch>         
               <Route path="/login" exact component={Login}/>
-              <Route path="/registro" exact component={UserForm}/>
-  
-              
-              <Route path="/registrogeneral" exact component={RegistroGeneral}/>
+              <Route path="/registro/tienda" exact component={UserForm}/>
+              <Route path="/registro" exact component={RegistroTipo}/>
+              <Route path="/registro/cliente" exact component={RegistroGeneral}/>
               <Route path="/registrouniversidad" exact component={RegistroUniversidad}/>
               <Route path="/olvidarcontra" exact component={OlvidarContra}/>
-              <Route path="/Restablecer" exact component={Restablecer}/>
+              <Route path="/reestablecer/:token" component={Restablecer}/>
               <Route path="/" exact component={LandingPage}/>
               <Redirect to="/" />
             </Switch>

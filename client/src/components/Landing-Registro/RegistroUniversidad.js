@@ -1,6 +1,7 @@
 import React, {Fragment, useState} from 'react'
 import {useHistory} from "react-router-dom";
-import Errorflash from './Errorflash'
+import Errorflash from '../Errorflash';
+import LandingNav from './LandingNav';
 
 const RegistroUniversidad = ()=>{
 
@@ -52,6 +53,7 @@ const RegistroUniversidad = ()=>{
 
     return(
         <Fragment>
+            <LandingNav></LandingNav>
             <div className=""></div>
             <div className="container w-50 my-4 py-2 bg-primary rounded-lg text-light">
                 <h1 className="text-center my-10 pt-5">Registra tu Universidad</h1>

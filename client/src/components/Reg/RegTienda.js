@@ -11,6 +11,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import { InputLabel } from '@material-ui/core';
+import LandingNav from '../Landing-Registro/LandingNav';
+
 
 export class RegTienda extends Component {
   continue = e => {
@@ -34,7 +36,8 @@ export class RegTienda extends Component {
             fullWidth
             maxWidth='sm'
           > */}
-            <div className="row">
+          <LandingNav></LandingNav>
+            <div className="row my-4">
               <div className="col-md-3"></div>
               <div className="col-md-6">
             <div className="container w-30 bg-primary rounded-lg text-light">
@@ -44,7 +47,7 @@ export class RegTienda extends Component {
                     <div className="form-group text-left">
                         <label for="Name_tienda">Nombre de Tienda</label>
                         <input className="form-control"  onChange={handleChange('nombretienda')}
-              defaultValue={values.nombre_tienda} id="Name_tienda" type="text"></input>
+              defaultValue={values.nombretienda} id="Name_tienda" type="text"></input>
                     </div>
 
                     <div className="form-group text-left" onChange={handleChange('tipo_tienda')}>

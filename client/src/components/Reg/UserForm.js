@@ -10,7 +10,6 @@ import {useHistory} from "react-router-dom";
 export class UserForm extends Component {
   state = {
     step: 1,
-    error: false,
     nombre: '',
     email: '',
     contra: '',
@@ -47,17 +46,19 @@ export class UserForm extends Component {
   };
 
   checkempty = ()=>{
-    let empty = false;
+    let empty;
+    console.log(this.state)
     Object.values(this.state).map((value, index)=>{
-      if(!value || value==''){
+      if(value==''){
         empty = true;
+        console.log(index);
       }
     });
     return empty;
   }
 
   submit = async () =>{
-    if(this.checkempty){
+    if(this.checkempty()){
       alert('Llena todos los campos')
     }else{
     try{
@@ -98,8 +99,8 @@ export class UserForm extends Component {
 
   render() {
       const { step } = this.state;
-      const { nombre, email, contra, telefono, universidad, nombre_tienda, tipo_tienda, img_tienda, tarjeta, horario } = this.state;
-      const values = { nombre, email, contra, telefono, universidad, nombre_tienda, tipo_tienda, img_tienda, tarjeta };
+      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, img_tienda, tarjeta, horario } = this.state;
+      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, img_tienda, tarjeta, horario };
 
     switch (step) {
       case 1:

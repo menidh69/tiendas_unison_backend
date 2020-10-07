@@ -1,4 +1,6 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useContext} from 'react';
+import { UserContext } from '../../UserContext';
+import {useHistory} from 'react-router-dom';
 import './TiendaNavBar.css';
 import {ReactComponent as Dropdown} from './icons/dropdown.svg';
 import {ReactComponent as Settings} from './icons/configuracion.svg';
@@ -54,10 +56,18 @@ function NavItem(props) {
 }
 
 function DropdownMenu(){
+    const {user, setUser} = useContext(UserContext);
+    const history = useHistory();
+    const logout = ()=>{
+        localStorage.removeItem('token.tuw')
+        alert('Hiciste logout')
+        setUser(null);
+        history.push('/')
+    }
 
     function DropdownItem(props){
         return(
-            <a href="#" className="menu-item">
+            <a className="menu-item" onClick={props.func}>
                 <span className="icon-button">{props.leftIcon}</span>
 
                 {props.children}
@@ -75,7 +85,7 @@ function DropdownMenu(){
             leftIcon={<Settings/>}>
                 Configuracion
             </DropdownItem>
-            <DropdownItem 
+            <DropdownItem func={()=>logout()}
             leftIcon={<Logout/>}>
                 Cerrar Sesion
             </DropdownItem>
