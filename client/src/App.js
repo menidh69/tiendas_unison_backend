@@ -22,6 +22,7 @@ import LoginFactory from './components/Factory'
 import { UserContext } from './UserContext'
 import RegistroTipo from './components/Landing-Registro/RegistroTipo'
 
+import MiInfo from './components/Tienda/MiInfo'
 
 
 
@@ -32,7 +33,7 @@ function App() {
 
   const storedToken = localStorage.getItem('token.tuw');
   const [token, setToken] = useState(storedToken || null);
-  
+
   const checkSignIn = async ()=>{
       if(token){
         const response = await fetch('http://localhost:5000/api/v1/auth/user',
@@ -57,7 +58,7 @@ function App() {
       }
   }
   // checkSignIn();
-  
+
   useLayoutEffect(()=>{
     checkSignIn();
   }, [])
@@ -111,16 +112,16 @@ function App() {
 
 
   } else {
-    
+
     console.log(value);
-    
+
     return(
 
       <Router>
       <Fragment>
- 
+
           <UserContext.Provider value={value}>
-            <Switch>         
+            <Switch>
               <Route path="/login" exact component={Login}/>
               <Route path="/registro/tienda" exact component={UserForm}/>
               <Route path="/registro" exact component={RegistroTipo}/>
@@ -129,6 +130,8 @@ function App() {
               <Route path="/olvidarcontra" exact component={OlvidarContra}/>
               <Route path="/reestablecer/:token" component={Restablecer}/>
               <Route path="/" exact component={LandingPage}/>
+
+              <Route path="/MiInfo" exact component={MiInfo}/>
               <Redirect to="/" />
             </Switch>
           </UserContext.Provider>
