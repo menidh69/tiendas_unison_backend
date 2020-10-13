@@ -29,15 +29,16 @@ CREATE TABLE tienda(
     horario VARCHAR (50),
     url_imagen VARCHAR(255),
     tarjeta boolean,
+    fechaSub Date
 
-    CONSTRAINT fk_tipo_tienda 
+    CONSTRAINT fk_tipo_tienda
     FOREIGN KEY (id_tipo_tienda)
-    REFERENCES tipo_tienda(id) 
+    REFERENCES tipo_tienda(id)
     ON DELETE SET NULL,
 
-    CONSTRAINT fk_usuario 
+    CONSTRAINT fk_usuario
     FOREIGN KEY (id_usuario)
-    REFERENCES usuario(id) 
+    REFERENCES usuario(id)
     ON DELETE SET NULL
 );
 

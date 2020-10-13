@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react';
 import './Opciones.css';
-
+import {Link} from 'react-router-dom';
+import MiInfo from './MiInfo';
 
 const Opciones = ()=> {
     return(
@@ -20,7 +21,11 @@ function Items() {
             </div>
             <hr />
             <div className="itemsContainer">
-                <button className="boton">Editar informacion</button>
+
+                <Link to='/panel/MiInfo'>
+                <button className="boton">Mi información</button>
+                </Link>
+
                 <button className="boton">Ventas</button>
                 <button className="boton">Tarjeta</button>
             </div>

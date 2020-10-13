@@ -40,7 +40,6 @@ app.get('/', (req,res)=>{
 //----------------------------------------------------------
 
 //POST NUEVO USUARIO
-//POST NUEVO USUARIO
 app.post("/api/v1/usuario", async (req, res)=>{
     const user = {
         nombre: req.body.nombre,
@@ -61,7 +60,7 @@ app.post("/api/v1/usuario", async (req, res)=>{
               user.contra = hash
               Usuario.create(user)
               .then(usuario=> {
-                res.json({status: usuario.email + ' registrado con exito'})  
+                res.json({status: usuario.email + ' registrado con exito'})
                 const msg ={
                     to: user.email,
                     from: "tiendasuniv@hotmail.com",
@@ -76,7 +75,7 @@ app.post("/api/v1/usuario", async (req, res)=>{
               })
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })  
+            res.json({ error: "Ya existe un usuario con esa cuenta" })
         }
     })
     .catch(err =>{
@@ -137,9 +136,9 @@ app.get('/api/v1/auth/user', auth, async (req, res)=>{
 app.post("/api/v1/usuario/login", async (req, res)=>{
     Usuario.findOne({
         where:{
-            email: req.body.email 
-        } 
-        
+            email: req.body.email
+        }
+
     })
     .then (user => {
         if (!user) {
@@ -169,7 +168,7 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
                     })
                 }
             )
-            
+
             // if (result) {
             //     return res.status(200).json({
             //         message: 'we did it'
@@ -179,9 +178,9 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
             //         message: 'fallo bro',
             //     })
             // }
-            
+
         });
-        
+
         // bcrypt.hash(req.body.contra, 10, function(err,hash) {
         //     if(err) {
         //         throw (err);
@@ -202,7 +201,7 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
         //         }
         //     })
         // })
-        
+
     })
 
     .catch (err => {
@@ -211,7 +210,7 @@ app.post("/api/v1/usuario/login", async (req, res)=>{
             error: err
         });
     })
-      
+
   })
 
 
@@ -229,7 +228,7 @@ app.delete("/api/v1/usuario/:id", async (req, res)=>{
     }
 })
 // OLVIDAR CONTRASEÑA
-// nuevo ??? 
+// nuevo ???
 
 app.post("/olvidarcontra",(req,res)=>{
     crypto.randomBytes(32,(err,buffer)=>{
@@ -291,7 +290,7 @@ app.post("/olvidarcontra",(req,res)=>{
    }).catch(err=>{
        console.log(err)
    })
-}) 
+})
 
 //----------------------------------------------------------
 //----------------------------------------------------------
@@ -308,7 +307,8 @@ app.post("/api/v1/tienda", async (req, res)=>{
         nombre: req.body.nombretienda,
         horario: req.body.horario,
         url_imagen: '',
-        tarjeta: req.body.tarjeta
+        tarjeta: req.body.tarjeta,
+        fechaSub: req.body.fechaSub
     }
     const user = {
         nombre: req.body.nombre,
@@ -344,10 +344,10 @@ app.post("/api/v1/tienda", async (req, res)=>{
               }).catch(err=>{
                 res.status(204).json({'error: ': err})
               })
-            
+
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })  
+            res.json({ error: "Ya existe un usuario con esa cuenta" })
         }
     })
     .catch(err =>{
@@ -361,6 +361,19 @@ app.get("/api/v1/tiendas", async (req, res)=>{
         res.json(result)
     })
 })
+
+//GET TIENDA POR ID
+app.get("/api/v1/mitienda:id", async (req, res)=>{
+  try{
+      const mitienda = await Tienda.findOne({where:{id: req.params.id}})
+      .then(result =>{
+          res.json(result);
+      })
+  }catch(err){
+      console.error(err)
+  }
+})
+
 //----------------------------------------------------------
 //----------------------------------------------------------
 

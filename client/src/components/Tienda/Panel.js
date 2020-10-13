@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react';
 import TiendaNavBar from './TiendaNavBar';
 import Opciones from './Opciones';
+import MiInfo from './MiInfo';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -9,6 +10,7 @@ const Panel = ()=>{
         <Fragment>
             <TiendaNavBar/>
             <Opciones/>
+
         </Fragment>
     )
 }
