@@ -10,7 +10,6 @@ const Panel = ()=>{
         <Fragment>
             <TiendaNavBar/>
             <Opciones/>
-
         </Fragment>
     )
 }

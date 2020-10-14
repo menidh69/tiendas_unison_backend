@@ -365,7 +365,7 @@ app.get("/api/v1/tiendas", async (req, res)=>{
 //GET TIENDA POR ID
 app.get("/api/v1/mitienda:id", async (req, res)=>{
   try{
-      const mitienda = await Tienda.findOne({where:{id: req.params.id}})
+      const todas = await Tienda.findOne({where:{id: req.params.id}})
       .then(result =>{
           res.json(result);
       })

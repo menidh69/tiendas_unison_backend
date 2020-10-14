@@ -2,8 +2,10 @@ import React, {Fragment, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import TiendaNavBar from './TiendaNavBar';
+import './MiInfo.css';
 
-const MiInfo = ()=>{
+function MiInfo({match}){
+
   useEffect(()=>{
       fetchitems();
   }, []);
@@ -12,20 +14,16 @@ const MiInfo = ()=>{
   const [data, setData] = useState({})
 
   const fetchitems = async ()=>{
-      const data = await fetch(`http://localhost:5000/api/v1/$mitienda{id}`);
+      const data = await fetch(`http://localhost:5000/api/v1/mitienda/${match.params.id}`);
       const items = await data.json();
       console.log(items)
       setItems(items)
   };
 
-
     return(
         <Fragment>
           <TiendaNavBar/>
-
-
-
-          <div class="mainContainer">
+          <div class="container">
                   <div class="row">
                       <div class="col-12">
                           <div class="card">
@@ -43,7 +41,7 @@ const MiInfo = ()=>{
                                       </div>
                                       <div class="userData ml-3">
                                           <h2 class="d-block" >Mi Información</h2>
-                                          <hr />
+                                          <hr/>
                                           <h2 class="d-block">Tienda Domo</h2>
                                       </div>
                                       <div class="ml-auto">
@@ -55,61 +53,33 @@ const MiInfo = ()=>{
                               <div class="row">
                                 <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Info de Tienda</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="MapaInfo-tab" data-toggle="tab" href="#MapaInfo" role="tab" aria-controls="MapaInfo" aria-selected="false">Mapa</a>
-                                        </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link active" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Perfil</a>
+                                      </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link" id="MapaInfo-tab" data-toggle="tab" href="#MapaInfo" role="tab" aria-controls="MapaInfo" aria-selected="false">Mapa</a>
+                                      </li>
                                     </ul>
+
                                     <div class="tab-content ml-1" id="myTabContent">
                                         <div class="tab-pane fade show active" id="MyInfo" role="tabpanel" aria-labelledby="MyInfo-tab">
+                                          <table className="table table-striped">
 
-
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label>Nombre de Tienda</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Tienda Domo
-                                                </div>
-                                            </div>
-                                            <hr />
-
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label>Tipo de Tienda</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Cooperativa
-                                                </div>
-                                            </div>
-                                            <hr />
-
-
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label>Horario</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    8AM - 4PM
-                                                </div>
-                                            </div>
-                                            <hr />
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label>Aceptan Tarjeta</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    Si
-                                                </div>
-                                            </div>
-
-                                            <hr />
-
+                                              <tbody>
+                                                <tr><th>ID</th><td>i</td></tr>
+                                                <tr><th>Nombre tienda</th><td>nombre</td></tr>
+                                                <tr><th>Horario</th><td>horario</td></tr>
+                                                <tr><th>id Usuario q no importa</th><td>id_usuario</td></tr>
+                                              </tbody>
+                                          </table>
                                         </div>
+
                                         <div class="tab-pane fade" id="MapaInfo" role="tabpanel" aria-labelledby="MapaInfo-tab">
-                                            Mapa va aqui
+                                          Mapa para otro Sprint
+
+                                        
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -119,6 +89,8 @@ const MiInfo = ()=>{
                   </div>
               </div>
             </div>
+
+
 
 
         </Fragment>
