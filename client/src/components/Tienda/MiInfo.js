@@ -26,24 +26,25 @@ function MiInfo(){
       setItems(items)
   };
 
-  const Editar = e => { //que se habiliten los campos
-    var td = ['nombre', 'horario', 'tarjeta', 'url_imagen'];
-    for (var i = 0; i < td.length; i++) {
-      var x = document.getElementById(td[i]);
-      if (x.contentEditable == "true") {
-      x.contentEditable = "false";
-      } else {
-        x.contentEditable = "true";
+  const Editar = e => { //que se habiliten los campos con el tag 'td'
+      var x = document.getElementsByTagName('td');
+      for (var i = 0; i < x.length; i++) {
+        x[i].contentEditable = "true";
       }
     }
-  }
+
 
   const updateField = e => { //HACER QUE SE GUARDEN EN LA BD AHORA DE AQUI METER FUNCION
     setData({
       ...data,
       [e.target.name]: e.target.value
     });
-    var td = ['nombre', 'horario', 'tarjeta', 'url_imagen']; //los regresa a no editar
+    var x = document.getElementsByTagName('td');
+    for (var i = 0; i < x.length; i++) {
+      x[i].contentEditable = "false";
+    }
+
+    /*var td = ['nombre', 'horario', 'tarjeta', 'url_imagen']; //los regresa a no editar
     console.log(td);
     for (var i = 0; i < td.length; i++) {
       var x = document.getElementById(td[i]);
@@ -52,7 +53,8 @@ function MiInfo(){
       } else {
         x.contentEditable = "true";
       }
-    }
+    }*/
+
   }
 
     return(
