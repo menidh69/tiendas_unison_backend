@@ -362,14 +362,16 @@ app.get("/api/v1/tiendas", async (req, res)=>{
     })
 })
 
-//GET TIENDA POR ID
-app.get("/api/v1/mitienda:id", async (req, res)=>{
+//GET TIENDA POR ID falta comprobar el :id pq como no puedo hacer que habra la pag desde adentro no entra digo yo
+app.get("/api/v1/tiendainfo:id", async (req, res)=>{
   try{
       const todas = await Tienda.findOne({where:{id: req.params.id}})
       .then(result =>{
+          console.log("kepedo");
           res.json(result);
       })
   }catch(err){
+      console.log("COMO QUE NO", err);
       console.error(err)
   }
 })
