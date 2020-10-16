@@ -84,7 +84,7 @@ const LandingPage = ()=> {
             <div className= "lpright col-sm-7">
                 <div className="container LandingPage">
                 <div className="form-group text-left">
-                    <form class = "ini1" onSubmit={onSubmitForm}>
+                    <form class ="ini1" onSubmit={onSubmitForm}>
                         <div className="row">
                             <div className="col-md-3 mx-auto">
                                 <div className="form-group">

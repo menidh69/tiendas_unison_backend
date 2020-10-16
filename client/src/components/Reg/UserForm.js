@@ -64,7 +64,7 @@ export class UserForm extends Component {
     try{
       const body = this.state;
       console.log(JSON.stringify(body))
-      const response = await fetch('http://localhost:5000/api/v1/tienda',
+      const response = await fetch('http://localhost:5000/api/v1/tiendas',
       {
           method: "POST",
           headers: {"Content-Type": "application/json"},
