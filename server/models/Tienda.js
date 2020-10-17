@@ -26,7 +26,11 @@ module.exports = db.sequelize.define(
         },
         tarjeta: {
             type: Sequelize.BOOLEAN
-        }
+        },
+        fechaSub: {
+          type: Sequelize.DATE
+        },
+        
     },
     {
         timestamps: false,

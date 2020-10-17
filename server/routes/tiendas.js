@@ -46,10 +46,12 @@ router.post("/tiendas", async (req, res)=>{
               }).catch(err=>{
                 res.status(204).json({'error: ': err})
               })
+
             
             })
         }else{
             res.json({ error: "Ya existe un usuario con esa cuenta" })  
+
         }
     })
     .catch(err =>{
@@ -82,3 +84,4 @@ router.get("/tiendas/activas", async (req, res)=>{
 })
 
 module.exports = router;
+

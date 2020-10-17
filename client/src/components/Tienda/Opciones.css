@@ -28,3 +28,7 @@
 .boton:hover {
     background-color: #8d5454;
 }
+
+.image-container {
+    position: relative;
+}
