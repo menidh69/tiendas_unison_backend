@@ -22,7 +22,6 @@ import LoginFactory from './components/Factory'
 import { UserContext } from './UserContext'
 import RegistroTipo from './components/Landing-Registro/RegistroTipo'
 
-import MiInfo from './components/Tienda/MiInfo'
 
 
 
@@ -131,7 +130,6 @@ function App() {
               <Route path="/reestablecer/:token" component={Restablecer}/>
               <Route path="/" exact component={LandingPage}/>
 
-              <Route path="/MiInfo" exact component={MiInfo}/>
               <Redirect to="/" />
             </Switch>
           </UserContext.Provider>
