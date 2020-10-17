@@ -29,7 +29,7 @@ import LandingNav from './LandingNav';
     try {
       if (data.nombre!=="" && data.email !=="" && data.contra!="" && data.tel!=="" && data.universidad!=="") {
         const body = data;
-        const response = await fetch('http://localhost:5000/api/v1/usuario', {
+        const response = await fetch('http://localhost:5000/api/v1/usuarios', {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
