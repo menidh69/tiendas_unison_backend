@@ -29,7 +29,8 @@ module.exports = db.sequelize.define(
         },
         fechaSub: {
           type: Sequelize.DATE
-        }
+        },
+        
     },
     {
         timestamps: false,

@@ -1,12 +1,12 @@
 import React, {Fragment, useEffect, useState} from 'react';
+import TiendaNavBar from './TiendaNavBar';
 import {Link} from 'react-router-dom';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import TiendaNavBar from './TiendaNavBar';
 import './MiInfo.css';
 
 function MiInfo(){
 
-  const [data, setData] = useState({
+  const [data, setData] = useState({ //??????????/
     nombre: '',
     horario: '',
     url_imagen: '',
@@ -34,28 +34,20 @@ function MiInfo(){
     }
 
 
-  const updateField = e => { //HACER QUE SE GUARDEN EN LA BD AHORA DE AQUI METER FUNCION
+  const updateField = e => { //se supone que hace que cambie el valors
     setData({
       ...data,
       [e.target.name]: e.target.value
     });
-    var x = document.getElementsByTagName('td');
+  }
+
+  const Guardar = e => { //que se deshabiliten los campos con el tag 'td' GUARDAR NUEVOS DATOS EN BD
+    var x = document.getElementsByTagName('td'); //los regresa a no edita
     for (var i = 0; i < x.length; i++) {
       x[i].contentEditable = "false";
     }
-
-    /*var td = ['nombre', 'horario', 'tarjeta', 'url_imagen']; //los regresa a no editar
-    console.log(td);
-    for (var i = 0; i < td.length; i++) {
-      var x = document.getElementById(td[i]);
-      if (x.contentEditable == "true") {
-      x.contentEditable = "false";
-      } else {
-        x.contentEditable = "true";
-      }
-    }*/
-
-  }
+    console.log("no cambio los datos porqueeeeeeeee");
+    }
 
     return(
         <Fragment>
@@ -92,16 +84,17 @@ function MiInfo(){
 
                                 <button type="button" class="btn btn-primary" onClick={Editar}>Editar</button>
                                 <hr/>
-                                <button type="button" class="btn btn-primary" onClick={updateField}>Guardar</button>
+                                <button type="button" class="btn btn-primary" onClick={Guardar}>Guardar</button>
 
                                 <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-                                      <li class="nav-item">
+                                      <li class = "nav-item">
                                         <a class="nav-link active" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Perfil</a>
                                       </li>
-                                      <li class="nav-item">
+                                      <li class = "nav-item">
                                         <a class="nav-link" id="MapaInfo-tab" data-toggle="tab" href="#MapaInfo" role="tab" aria-controls="MapaInfo" aria-selected="false">Mapa</a>
                                       </li>
+
                                     </ul>
 
                                     <div class="tab-content ml-1" id="myTabContent">
@@ -116,22 +109,26 @@ function MiInfo(){
                                                             <td
                                                               id="nombre"
                                                               name="nombre"
+                                                              value={data.nombre}
                                                               onChange={updateField}>{item.nombre}</td></tr>
                                                       <tr><th>Horario</th>
                                                             <td
                                                               contenteditable="false"
                                                               id="horario"
                                                               name='horario'
+                                                              value={item.horario}
                                                               onChange={updateField}>{item.horario}</td></tr>
                                                       <tr><th>Acepta tarjeta</th>
                                                             <td
                                                               id='tarjeta'
                                                               name='tarjeta'
+                                                              value={item.tarjeta}
                                                               onChange={updateField}>{item.tarjeta ? 'si':'no'}</td></tr>
                                                       <tr><th>Url Imagen</th>
                                                             <td
                                                               id='url_imagen'
                                                               name='url_imagen'
+                                                              value={item.url_imagen}
                                                               onChange={updateField}>{item.url_imagen}</td></tr>
                                                   </tr>
                                               ))}

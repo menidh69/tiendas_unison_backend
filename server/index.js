@@ -376,6 +376,14 @@ app.get("/api/v1/tiendainfo:id", async (req, res)=>{
   }
 })
 
+app.get("/api/v1/tienda/actualizaInfo", async (req, res)=>{ //no sirve
+
+  const todas = await Tienda.findOne({where:{id:req.params.id}, })
+  .then(result => {
+      res.json(result)
+  })
+})
+
 //----------------------------------------------------------
 //----------------------------------------------------------
 
