@@ -1,0 +1,29 @@
+textarea {
+    resize: none;
+}
+
+.formulario {
+    width: 57%;
+    display: inline-block;
+}
+
+.imagenContainer {
+    width: 42.5%;
+    display: inline-block;
+}
+
+.alinear {
+    text-align: center;
+}
+
+.imagenP {
+    width: 21.875rem;
+    height: 15.625rem;
+    background-color: #a7a7a7;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.ml {
+    margin-left: 10px;
+}

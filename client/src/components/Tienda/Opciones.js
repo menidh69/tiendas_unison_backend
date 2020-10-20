@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import './Opciones.css';
 import {Link} from 'react-router-dom';
-import MiInfo from './MiInfo';
+
 import Banner from 'react-js-banner'
 
 const Opciones = ()=> {
@@ -21,7 +21,9 @@ function Items() {
           <Banner title="SU PERIODO DE PRUEBA VENCE X DIA" visibleTime={3000}/>
             <div className="itemsContainer">
                 <button className="boton">Cuenta</button>
-                <button className="boton">Editar Menu</button>
+                <Link to='/panel/Menu'>
+                <button className="boton">Menu</button>
+                </Link>
                 <button className="boton">Promociones</button>
             </div>
             <hr />

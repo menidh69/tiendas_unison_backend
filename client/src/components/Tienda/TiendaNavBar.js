@@ -26,7 +26,7 @@ function NavBar(props) {
     return (
         <nav className="navbar">
             <div className="leftNav">
-                    <NavItem icon={<Home/>} />
+                    <NavItem href={"/"} icon={<Home/>} />
             </div>
             <div className="centerNav">
                     <a>
@@ -46,7 +46,7 @@ function NavItem(props) {
 
     return (
         <li className="nav-item">
-            <a href="#" className="icon-button" onClick={() => setOpen(!open)}>
+            <a href={props} className="icon-button" onClick={() => setOpen(!open)}>
                 {props.icon}
             </a>
 

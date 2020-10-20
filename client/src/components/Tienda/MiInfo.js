@@ -51,7 +51,6 @@ function MiInfo(){
 
     return(
         <Fragment>
-          <TiendaNavBar/>
           <div class="container">
                   <div class="row">
                       <div class="col-12">

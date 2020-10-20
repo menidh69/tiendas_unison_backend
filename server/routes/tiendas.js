@@ -3,6 +3,10 @@ const router = express.Router();
 const Usuario = require('../models/Usuario');
 const Tienda = require('../models/Tienda');
 
+const bcrypt = require('bcrypt');
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey('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');
+
 router.post("/tiendas", async (req, res)=>{
     const tienda = {
         id_usuario: '',
