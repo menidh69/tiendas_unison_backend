@@ -88,7 +88,7 @@ router.get("/tiendas/activas", async (req, res)=>{
     })
 })
 
-router.get("/tiendainfo", async (req, res)=>{
+router.get("/tiendainfo:id", async (req, res)=>{
   try{
       const tienda = await Tienda.findAll({where: {id: req.params.id}}) //jalar info de tienda especifica usando el id del usuario ?
       .then(result =>{
@@ -110,9 +110,31 @@ router.get("/tiendafecha:id", async (req, res)=>{
 
   }catch(err){
       console.error(err)
+      console.log(err);
   }
 })
 
+router.post("/actualizarInfo:id", async (req, res)=>{
+    const tienda = await Tienda.update({nombre: req.params.nombre}, {horario: req.params.horario},
+      {url_imagen: req.params.url_imagen}, {tarjeta:req.params.tarjeta},{where: {id: req.params.id}})
+      .then(result=>{
+          res.json({status: 'success', Tienda:result})
+      })
+})
+
+//BORRAR Tienda
+router.delete("/tienda/:id", async (req, res)=>{
+    try{
+        const deleteTienda = await Tienda.destroy({where: {id: req.params.id}})
+        .then(result=>{
+            res.status(204).json({
+                status: "success",
+            });
+        })
+    }catch(err){
+        console.error(err)
+    }
+})
 
 
 module.exports = router;

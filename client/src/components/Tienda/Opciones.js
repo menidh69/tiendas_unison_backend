@@ -17,6 +17,7 @@ const Opciones = ()=> {
 }
 
 function Items() {
+    const [items, setItems] = useState([])
     const {user, setUser} = useContext(UserContext);
     const fetchitems = async (id)=>{
         const data = await fetch('http://localhost:5000/api/v1/tiendafecha/${id}'); //nojala
@@ -25,7 +26,6 @@ function Items() {
     };
 
 
-    const [items, setItems] = useState([])
 
 
     return(
@@ -33,8 +33,7 @@ function Items() {
           <h2>{user.id}</h2>
 
             {items.map(item =>(
-              <h2 class="d-block">{item.nombretienda}</h2
-              <h2>item.fechaSub</h2>
+              <h2 class="d-block">{item.fechaSub}</h2>
             ))}
 
           <Banner title="SU PERIODO DE PRUEBA VENCE X DIA" visibleTime={3000}/>
