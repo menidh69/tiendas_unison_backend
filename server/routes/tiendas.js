@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
 const Tienda = require('../models/Tienda');
+const bcrypt = require('bcrypt');
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey('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');
+
+
 
 router.post("/tiendas", async (req, res)=>{
     const tienda = {
@@ -47,10 +52,10 @@ router.post("/tiendas", async (req, res)=>{
                 res.status(204).json({'error: ': err})
               })
 
-            
+
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })  
+            res.json({ error: "Ya existe un usuario con esa cuenta" })
 
         }
     })
@@ -83,5 +88,31 @@ router.get("/tiendas/activas", async (req, res)=>{
     })
 })
 
-module.exports = router;
+router.get("/tiendainfo", async (req, res)=>{
+  try{
+      const tienda = await Tienda.findAll({where: {id: req.params.id}}) //jalar info de tienda especifica usando el id del usuario ?
+      .then(result =>{
+          res.json(result);
+      })
 
+  }catch(err){
+      console.error(err)
+      console.log(err);
+  }
+})
+
+router.get("/tiendafecha:id", async (req, res)=>{
+  try{
+      const tienda = await Tienda.findOne({where: {id_usuario: req.params.id}}) //jalar toda la info de la tienda para luego usar solo la fecha
+      .then(result =>{
+          res.json(result);
+      })
+
+  }catch(err){
+      console.error(err)
+  }
+})
+
+
+
+module.exports = router;

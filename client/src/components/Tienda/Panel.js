@@ -7,10 +7,16 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 const Panel = ()=>{
     return(
-        <Fragment>
-            <TiendaNavBar/>
-            <Opciones/>
-        </Fragment>
+        <Router>
+                <TiendaNavBar/>
+
+                <Switch>
+                    <Route path='/panel' exact component= {Opciones}></Route>
+                    <Route path='/panel/MiInfo' exact component={MiInfo}></Route>
+                </Switch>
+
+
+        </Router>
     )
 }
 

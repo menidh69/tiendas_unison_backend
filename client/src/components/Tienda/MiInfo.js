@@ -19,12 +19,14 @@ function MiInfo(){
 
   const [items, setItems] = useState([])
 
-  const fetchitems = async ()=>{
-      const data = await fetch(`http://localhost:5000/api/v1/tiendas`); //cambiar a /tiendainfo
+  const fetchitems = async (id)=>{
+      const data = await fetch(`http://localhost:5000/api/v1/tiendas`); //tiendainfo/{id} //spero dice q id: no especificado ?
       const items = await data.json();
       console.log(items)
       setItems(items)
   };
+
+
 
   const Editar = e => { //que se habiliten los campos con el tag 'td'
       var x = document.getElementsByTagName('td');
@@ -51,7 +53,7 @@ function MiInfo(){
 
     return(
         <Fragment>
-          <TiendaNavBar/>
+
           <div class="container">
                   <div class="row">
                       <div class="col-12">
@@ -62,7 +64,7 @@ function MiInfo(){
                               <div class="card-title mb-4">
                                   <div class="d-flex justify-content-start">
                                       <div class="image-container">
-                                          <img src="http://placehold.it/300x300" id="imgProfile"  class="img-thumbnail" />
+                                          <img src="https://www.thedome.org/wp-content/uploads/2019/06/300x300-Placeholder-Image.jpg" id="imgProfile"  class="img-thumbnail" />
                                           <div class="middle">
                                               <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />
                                               <input type="file" id="profilePicture" name="file"/>
@@ -71,7 +73,10 @@ function MiInfo(){
                                       <div class="userData ml-3">
                                           <h2 class="d-block" >Mi Información</h2>
                                           <hr/>
-                                          <h2 class="d-block">Tienda Domo</h2>
+                                          {items.map(item =>(
+                                            <h2 class="d-block">{item.nombre}</h2>
+                                          ))}
+
                                       </div>
                                       <div class="ml-auto">
                                           <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
