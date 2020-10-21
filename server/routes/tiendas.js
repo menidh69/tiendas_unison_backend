@@ -88,10 +88,26 @@ router.get("/tiendas/activas", async (req, res)=>{
     })
 })
 
-router.get("/tiendainfo:id", async (req, res)=>{
+router.get("/tiendainfo/:id", async (req, res)=>{
   try{
-      const tienda = await Tienda.findAll({where: {id: req.params.id}}) //jalar info de tienda especifica usando el id del usuario ?
+      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}})
       .then(result =>{
+          //console.log(result);
+          res.json(result);
+          //console.log(res.json(result));
+      })
+
+  }catch(err){
+      console.error(err)
+      console.log(err);
+  }
+})
+
+router.get("/tiendafecha/:id", async (req, res)=>{
+  try{
+      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}}) //jalar toda la info de la tienda para luego usar solo la fecha
+      .then(result =>{
+          console.log(result);
           res.json(result);
       })
 
@@ -101,31 +117,19 @@ router.get("/tiendainfo:id", async (req, res)=>{
   }
 })
 
-router.get("/tiendafecha:id", async (req, res)=>{
-  try{
-      const tienda = await Tienda.findOne({where: {id_usuario: req.params.id}}) //jalar toda la info de la tienda para luego usar solo la fecha
-      .then(result =>{
-          res.json(result);
-      })
-
-  }catch(err){
-      console.error(err)
-      console.log(err);
-  }
-})
-
-router.post("/actualizarInfo:id", async (req, res)=>{
+router.post("/actualizarInfo/:id", async (req, res)=>{
     const tienda = await Tienda.update({nombre: req.params.nombre}, {horario: req.params.horario},
-      {url_imagen: req.params.url_imagen}, {tarjeta:req.params.tarjeta},{where: {id: req.params.id}})
+      {url_imagen: req.params.url_imagen}, {tarjeta:req.params.tarjeta},{where: {id_usuario: req.params.id}})
       .then(result=>{
           res.json({status: 'success', Tienda:result})
       })
 })
 
-//BORRAR Tienda
-router.delete("/tienda/:id", async (req, res)=>{
+//BORRAR Tienda y Usuario
+router.delete("/tiendas/:id", async (req, res)=>{
     try{
-        const deleteTienda = await Tienda.destroy({where: {id: req.params.id}})
+        const deleteTienda = await Tienda.destroy({where: {id_usuario: req.params.id}})
+        const deleteUsuario = await Usuario.destroy({where: {id: req.params.id}})
         .then(result=>{
             res.status(204).json({
                 status: "success",

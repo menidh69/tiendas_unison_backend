@@ -1,22 +1,34 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState,  useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import TiendaNavBar from './TiendaNavBar';
 import {Link} from 'react-router-dom';
+import { UserContext } from '../../UserContext'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './MiInfo.css';
 
 function MiInfo(){
   let history = useHistory()
-  const [data, setData] = useState({ //??????????/
+  const [data, setData] = useState({
     nombre: '',
     horario: '',
     url_imagen: '',
     tarjeta: ''
   });
 
+  const [items, setItems] = useState([])
+  const {user, setUser} = useContext(UserContext);
   useEffect(()=>{
       fetchitems();
   }, []);
+
+  const fetchitems = async ()=>{
+
+      const data = await fetch(`http://localhost:5000/api/v1/tiendainfo/${user.id}`);
+      const items = await data.json();
+      //console.log(items)
+      setItems(items)
+  };
+
   const updateField = e => {
     setData({
       ...data,
@@ -24,18 +36,8 @@ function MiInfo(){
     });
   }
 
-  const [items, setItems] = useState([])
-
-  const fetchitems = async ()=>{
-      const data = await fetch('http://localhost:5000/api/v1/tiendas'); //tiendainfo/${id} //spero dice q id: no especificado ?
-      const items = await data.json();
-      console.log(items)
-      setItems(items)
-  };
-
-
   const nuevaimg = e =>{ //src al input new pero no jala
-    document.getElementsById('imgProfile').src('https://www.shitpostbot.com/resize/585/400?img=%2Fimg%2Fsourceimages%2Fdanny-devito-crying-5a39eaaadf642.jpeg');
+    document.getElementsById('imgProfile').src(`https://www.shitpostbot.com/resize/585/400?img=%2Fimg%2Fsourceimages%2Fdanny-devito-crying-5a39eaaadf642.jpeg`);
 
 
   }
@@ -54,22 +56,27 @@ function MiInfo(){
         x[i].contentEditable = "false";
       }
 
-
       let body = {}
+
       body = { //????  data nunca cambia de valores
         "nombre": data.nombre,
         "horario": data.horario,
         "url_imagen": data.url_imagen,
         "tarjeta": data.tarjeta
       }
+      console.log("ANTES DEL TRY", body)
       try{
-          console.log(body)
-          const response = await fetch(`http://localhost:5000/api/v1/actualizarInfo/${item.id}`,
-          {
-              method: "PUT",
-              headers: {"Content-Type":"application/json"},
-              body: JSON.stringify(body)
-          });
+          if (data.nombre!=="" && data.horario!=="") {
+            console.log("EN EL TRY", body) //los datos no han cambiado de ""
+
+            const response = await fetch(`http://localhost:5000/api/v1/actualizarInfo/${user.id}`,
+            {
+                method: "PUT",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(body)
+            });
+            window.location = '/panel/MiInfo'
+          }
 
       }catch(err){
           console.error(err)
@@ -138,30 +145,45 @@ function MiInfo(){
 
 
                                                       <tr><th>Nombre tienda</th>
-                                                            <td
-                                                              id="nombre"
-                                                              name="nombre"
-                                                              value={data.nombre}
-                                                              onChange={updateField}>{item.nombre}</td></tr>
+                                                            <td>
+                                                              <input
+
+                                                                id="nombre"
+                                                                type="text"
+                                                                name="nombre"
+
+                                                                onChange={updateField}
+                                                              ></input>
+                                                            </td>
+
+                                                      </tr>
                                                       <tr><th>Horario</th>
                                                             <td
-                                                              contenteditable="false"
+                                                              type="text"
                                                               id="horario"
                                                               name='horario'
-                                                              value={data.horario}
-                                                              onChange={updateField}>{item.horario}</td></tr>
+                                                              value={item.horario}
+                                                              onChange={updateField}
+                                                              >{item.horario}</td>
+                                                      </tr>
                                                       <tr><th>Acepta tarjeta</th>
                                                             <td
+                                                              type="text"
                                                               id='tarjeta'
                                                               name='tarjeta'
-                                                              value={data.tarjeta}
-                                                              onChange={updateField}>{item.tarjeta ? 'si':'no'}</td></tr>
+                                                              value={item.tarjeta}
+                                                              onChange={updateField}
+                                                              >{item.tarjeta ? 'si':'no'}</td>
+                                                      </tr>
                                                       <tr><th>Url Imagen</th>
                                                             <td
+                                                              type="text"
                                                               id='url_imagen'
                                                               name='url_imagen'
-                                                              value={data.url_imagen}
-                                                              onChange={updateField}>{item.url_imagen}</td></tr>
+                                                              value={item.url_imagen}
+                                                              onChange={updateField}
+                                                              >{item.url_imagen}</td>
+                                                      </tr>
                                                   </tr>
                                               ))}
                                             </tbody>

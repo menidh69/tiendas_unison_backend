@@ -101,8 +101,6 @@ function App() {
               <Switch>
               <Route path="/panel" component={Panel}/>
                 <Redirect from="/" to="/panel"/>
-              <Route path="/panel/MiInfo" component={MiInfo}/>
-                
               </Switch>
             </UserContext.Provider>
           </Router>
