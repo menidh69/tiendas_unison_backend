@@ -11,8 +11,10 @@ function MiInfo(){
   const [data, setData] = useState({
     nombre: '',
     horario: '',
-    url_imagen: '',
-    tarjeta: ''
+    tarjeta: '',
+    id_tipo_tienda: "",
+    url_imagen: ' '
+
   });
 
   const [items, setItems] = useState([])
@@ -25,9 +27,14 @@ function MiInfo(){
 
       const data = await fetch(`http://localhost:5000/api/v1/tiendainfo/${user.id}`);
       const items = await data.json();
-      //console.log(items)
-      setItems(items)
+
+      setItems(items[0]);
   };
+
+
+    const nuevaimg = e =>{ //src al input new pero no jala
+      document.getElementsById('imgProfile').src(`https://www.shitpostbot.com/resize/585/400?img=%2Fimg%2Fsourceimages%2Fdanny-devito-crying-5a39eaaadf642.jpeg`);
+    }
 
   const updateField = e => {
     setData({
@@ -36,50 +43,53 @@ function MiInfo(){
     });
   }
 
-  const nuevaimg = e =>{ //src al input new pero no jala
-    document.getElementsById('imgProfile').src(`https://www.shitpostbot.com/resize/585/400?img=%2Fimg%2Fsourceimages%2Fdanny-devito-crying-5a39eaaadf642.jpeg`);
 
+  const Guardar = async (id)=>{
 
-  }
-
-  const Editar = e => { //que se habiliten los campos con el tag 'td'
-      var x = document.getElementsByTagName('td');
-      for (var i = 0; i < x.length; i++) {
-        x[i].contentEditable = "true";
+      if (data.nombre==""){
+        data.nombre = items.nombre
       }
-    }
-
-
-  const Guardar = async (item)=>{
-      var x = document.getElementsByTagName('td'); //los regresa a no edita
-      for (var i = 0; i < x.length; i++) {
-        x[i].contentEditable = "false";
+      if (data.horario=="") {
+        data.horario = items.horario
+      }
+      if (data.tarjeta!=="") {
+        if(data.tarjeta=="no" || data.tarjeta=="No" ){
+            data.tarjeta = 0
+        }else if (data.tarjeta=="si" || data.tarjeta=="Si") {
+              data.tarjeta = 1
+        }
+      }else if (data.tarjeta =="") {
+        data.tarjeta = items.tarjeta
       }
 
-      let body = {}
-
-      body = { //????  data nunca cambia de valores
-        "nombre": data.nombre,
-        "horario": data.horario,
-        "url_imagen": data.url_imagen,
-        "tarjeta": data.tarjeta
+      if (data.id_tipo_tienda!=="") {
+        if(data.id_tipo_tienda=="cooperativa" || data.id_tipo_tienda=="Cooperativa"){
+            data.id_tipo_tienda = 1
+        }else if (data.id_tipo_tienda=="tienda" || data.id_tipo_tienda=="Tienda") {
+              data.id_tipo_tienda = 2
+        }
+      }else if (data.id_tipo_tienda =="") {
+        data.tarjeta = items.id_tipo_tienda
       }
-      console.log("ANTES DEL TRY", body)
+
+      if (data.url_imagen=="") {
+        data.url_imagen = items.url_imagen
+      }
+      const body = data;
       try{
-          if (data.nombre!=="" && data.horario!=="") {
-            console.log("EN EL TRY", body) //los datos no han cambiado de ""
-
-            const response = await fetch(`http://localhost:5000/api/v1/actualizarInfo/${user.id}`,
+            const response = await fetch(`http://localhost:5000/api/v1/tiendas/${user.id}`,
             {
                 method: "PUT",
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify(body)
+
             });
             window.location = '/panel/MiInfo'
-          }
+
 
       }catch(err){
           console.error(err)
+          console.log(err);
       }
   }
 
@@ -106,9 +116,9 @@ function MiInfo(){
                                       <div class="userData ml-3">
                                           <h2 class="d-block" >Mi Información</h2>
                                           <hr/>
-                                          {items.map(item =>(
-                                            <h2 class="d-block">{item.nombre}</h2>
-                                          ))}
+
+                                            <h2 class="d-block">{items.nombre}</h2>
+
 
                                       </div>
                                       <div class="ml-auto">
@@ -119,10 +129,8 @@ function MiInfo(){
                               </div>
 
                               <div class="row">
-
-                                <button type="button" class="btn btn-primary" onClick={Editar}>Editar</button>
                                 <hr/>
-                                <button type="button" class="btn btn-primary" onClick={Guardar}>Guardar</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" href="#Editar">Editar</button>
 
                                 <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
@@ -140,52 +148,25 @@ function MiInfo(){
                                           <table className="table table-striped">
 
                                               <tbody>
-                                                {items.map(item => (
-                                                    <tr key={item.id}>
 
-
+                                                <tr>
                                                       <tr><th>Nombre tienda</th>
-                                                            <td>
-                                                              <input
-
-                                                                id="nombre"
-                                                                type="text"
-                                                                name="nombre"
-
-                                                                onChange={updateField}
-                                                              ></input>
-                                                            </td>
-
+                                                            <td>{items.nombre}</td>
                                                       </tr>
                                                       <tr><th>Horario</th>
-                                                            <td
-                                                              type="text"
-                                                              id="horario"
-                                                              name='horario'
-                                                              value={item.horario}
-                                                              onChange={updateField}
-                                                              >{item.horario}</td>
+                                                            <td>{items.horario}</td>
                                                       </tr>
                                                       <tr><th>Acepta tarjeta</th>
-                                                            <td
-                                                              type="text"
-                                                              id='tarjeta'
-                                                              name='tarjeta'
-                                                              value={item.tarjeta}
-                                                              onChange={updateField}
-                                                              >{item.tarjeta ? 'si':'no'}</td>
+                                                            <td>{items.tarjeta ? 'Si':'No'}</td>
+                                                      </tr>
+                                                      <tr><th>Tipo de tienda</th>
+                                                            <td>{items.id_tipo_tienda ? 'Cooperativa':'Tienda'}</td>
                                                       </tr>
                                                       <tr><th>Url Imagen</th>
-                                                            <td
-                                                              type="text"
-                                                              id='url_imagen'
-                                                              name='url_imagen'
-                                                              value={item.url_imagen}
-                                                              onChange={updateField}
-                                                              >{item.url_imagen}</td>
+                                                            <td>{items.url_imagen}</td>
                                                       </tr>
                                                   </tr>
-                                              ))}
+
                                             </tbody>
                                           </table>
                                         </div>
@@ -200,6 +181,77 @@ function MiInfo(){
                       </div>
                   </div>
               </div>
+            </div>
+            <div id="Editar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Editar Mi Información</h4>
+                        </div>
+                        <div class="modal-body">
+
+                              <label for="nombre">Nombre de Tienda</label>
+                              <div>
+                                <input
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                value={data.nombre}
+                                onChange={updateField}
+                                ></input>
+                              </div>
+                              <label for="horario">Horario</label>
+                              <div>
+                                <input
+                                    id="horario"
+                                    type="text"
+                                    name="horario"
+                                    value={data.horario}
+                                    onChange={updateField}
+                                    ></input>
+                              </div>
+                              <label for="tarjeta">Acepta tarjeta?</label>
+                              <p><small>Si/No</small></p>
+                              <div>
+                                <input
+                                    id="tarjeta"
+                                    type="text"
+                                    name="tarjeta"
+                                    value={data.tarjeta}
+                                    onChange={updateField}
+                                    ></input>
+                              </div>
+                              <label for="id_tipo_tienda">Tipo de tienda</label>
+                              <p><small>Cooperativa/Tienda</small></p>
+                              <div>
+                                <input
+                                    id="id_tipo_tienda"
+                                    type="text"
+                                    name="id_tipo_tienda"
+                                    value={data.id_tipo_tienda}
+                                    onChange={updateField}
+                                    ></input>
+                              </div>
+                              <label for="url_imagen">Url imagen</label>
+                              <div>
+                                <input
+                                    id="url_imagen"
+                                    type="text"
+                                    name="url_imagen"
+                                    value={data.url}
+                                    onChange={updateField}
+                                    ></input>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={()=>Guardar(user.id)}>Guardar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 

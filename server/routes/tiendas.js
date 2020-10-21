@@ -105,22 +105,21 @@ router.get("/tiendainfo/:id", async (req, res)=>{
 
 router.get("/tiendafecha/:id", async (req, res)=>{
   try{
-      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}}) //jalar toda la info de la tienda para luego usar solo la fecha
+      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}})
       .then(result =>{
-          console.log(result);
           res.json(result);
       })
-
   }catch(err){
       console.error(err)
-      console.log(err);
   }
 })
 
-router.post("/actualizarInfo/:id", async (req, res)=>{
-    const tienda = await Tienda.update({nombre: req.params.nombre}, {horario: req.params.horario},
-      {url_imagen: req.params.url_imagen}, {tarjeta:req.params.tarjeta},{where: {id_usuario: req.params.id}})
+//PUT nueva info en tiendas
+router.put("/tiendas/:id", async (req, res)=>{
+    const tienda = await Tienda.update({id_tipo_tienda: req.body.id_tipo_tienda, nombre: req.body.nombre, horario: req.body.horario,
+      url_imagen: req.body.url_imagen, tarjeta:req.body.tarjeta},{where: {id_usuario: req.params.id}})
       .then(result=>{
+
           res.json({status: 'success', Tienda:result})
       })
 })

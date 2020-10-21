@@ -28,7 +28,7 @@ function Items() {
     const fetchitems = async (id)=>{
         const data = await fetch(`http://localhost:5000/api/v1/tiendafecha/${user.id}`);
         const items = await data.json();
-        setItems(items)
+        setItems(items[0])
     };
 
     const eliminar = async (id)=>{
@@ -46,18 +46,16 @@ function Items() {
             console.error(err)
         }
     }
-
+    
 
 
 
     return(
         <div className="mainContainer">
+
             <Banner title="SU PERIODO DE PRUEBA VENCE:" visibleTime={3000}/>
+            <Banner title= {items.fechaSub} visibleTime={3000}/>
 
-          {items.map(item =>(
-
-            <Banner title= {item.fechaSub} visibleTime={3000}/>
-            ))}
 
 
 
