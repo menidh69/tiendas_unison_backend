@@ -6,14 +6,58 @@ import { UserContext } from '../../UserContext'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './MiInfo.css';
 
+import {storage} from '../../firebase'
+import { render } from "react-dom" ;
+
 function MiInfo(){
+    const [image, setImage] = useState(null);
+    const [url, setUrl] = useState("");
+    const [progress, setProgress] = useState(0);
+
+    const handleChange = e => {
+      if (e.target.files[0]){
+        setImage(e.target.files[0]);
+      }
+    };
+
+    const handleUpload = () => {
+      const uploadTask = storage.ref(`images/${image.name}`).put(image);
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(progress);
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then(url => {
+              setUrl(url)
+            });
+          }
+        );
+    };
+
+
+
+
+
+
+
   let history = useHistory()
   const [data, setData] = useState({
     nombre: '',
     horario: '',
     tarjeta: '',
-    id_tipo_tienda: "",
-    url_imagen: ' '
+    id_tipo_tienda: '',
+    url_imagen: ''
 
   });
 
@@ -30,11 +74,6 @@ function MiInfo(){
 
       setItems(items[0]);
   };
-
-
-    const nuevaimg = e =>{ //src al input new pero no jala
-      document.getElementsById('imgProfile').src(`https://www.shitpostbot.com/resize/585/400?img=%2Fimg%2Fsourceimages%2Fdanny-devito-crying-5a39eaaadf642.jpeg`);
-    }
 
   const updateField = e => {
     setData({
@@ -68,14 +107,20 @@ function MiInfo(){
         }else if (data.id_tipo_tienda=="tienda" || data.id_tipo_tienda=="Tienda") {
               data.id_tipo_tienda = 2
         }
-      }else if (data.id_tipo_tienda =="") {
-        data.tarjeta = items.id_tipo_tienda
+      }else if (data.id_tipo_tienda == "") {
+        data.id_tipo_tienda = items.id_tipo_tienda
       }
 
       if (data.url_imagen=="") {
-        data.url_imagen = items.url_imagen
+        if (url == "") {
+          data.url_imagen = items.url_imagen
+        }else {
+          data.url_imagen = url
+        }
+
       }
       const body = data;
+      console.log(data);
       try{
             const response = await fetch(`http://localhost:5000/api/v1/tiendas/${user.id}`,
             {
@@ -85,6 +130,7 @@ function MiInfo(){
 
             });
             window.location = '/panel/MiInfo'
+            history.push("/panel/MiInfo")
 
 
       }catch(err){
@@ -92,6 +138,8 @@ function MiInfo(){
           console.log(err);
       }
   }
+
+
 
 
     return(
@@ -107,10 +155,9 @@ function MiInfo(){
                               <div class="card-title mb-4">
                                   <div class="d-flex justify-content-start">
                                       <div class="image-container">
-                                          <img src="https://www.thedome.org/wp-content/uploads/2019/06/300x300-Placeholder-Image.jpg" id="imgProfile"  class="img-thumbnail" />
+                                          <img src= {items.url_imagen ||"https://via.placeholder.com/300x300"} id="imgProfile"   width="300" height="300"/>
                                           <div class="middle">
-                                              <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" onClick={nuevaimg} />
-                                              //<input type="file" id="profilePicture" name="file" />
+
                                           </div>
                                       </div>
                                       <div class="userData ml-3">
@@ -161,9 +208,6 @@ function MiInfo(){
                                                       </tr>
                                                       <tr><th>Tipo de tienda</th>
                                                             <td>{items.id_tipo_tienda ? 'Cooperativa':'Tienda'}</td>
-                                                      </tr>
-                                                      <tr><th>Url Imagen</th>
-                                                            <td>{items.url_imagen}</td>
                                                       </tr>
                                                   </tr>
 
@@ -233,16 +277,21 @@ function MiInfo(){
                                     onChange={updateField}
                                     ></input>
                               </div>
-                              <label for="url_imagen">Url imagen</label>
                               <div>
-                                <input
-                                    id="url_imagen"
-                                    type="text"
-                                    name="url_imagen"
-                                    value={data.url}
-                                    onChange={updateField}
-                                    ></input>
-                            </div>
+                                <label>Subir Imagen</label>
+                                <div>
+                                  <input type="file" id="profilePicture" name="file" onChange={handleChange} />
+                                  <br/>
+                                  <progress value={progress} max="100"/>
+                                  <br/>
+                                  <button onClick={handleUpload}>UPLOAD</button>
+
+
+
+                                </div>
+
+
+                              </div>
 
 
                         </div>
