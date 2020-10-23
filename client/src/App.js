@@ -8,6 +8,7 @@ import Registro from './components/Landing-Registro/Registro'
 
 import Admin from './components/Admin/Admin'
 import Panel from './components/Tienda/Panel'
+import MiInfo from './components/Tienda/MiInfo'
 
 import Home from './components/Cliente/Home';
 import UserForm from './components/Reg/UserForm'
