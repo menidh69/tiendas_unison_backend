@@ -5,6 +5,10 @@ const Tienda = require('../models/Tienda');
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
+const bcrypt = require('bcrypt');
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey('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');
+
 
 
 
@@ -52,10 +56,12 @@ router.post("/tiendas", async (req, res)=>{
               }).catch(err=>{
                 res.status(204).json({'error: ': err})
               })
-            
+
+
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })  
+            res.json({ error: "Ya existe un usuario con esa cuenta" })
+
         }
     })
     .catch(err =>{
@@ -77,6 +83,20 @@ router.get("/tiendas", async (req, res)=>{
     })
 })
 
+
+
+router.get("/miTienda/:id", async (req, res)=>{
+    
+    const todas = await Tienda.findAll(
+        {
+        where:{
+            id_usuario: req.params.id
+        }})
+    .then(result => {
+        console.log(result);
+        res.json(result)
+    })
+})
 
 //GET INDEX TIENDAS ACTIVAS
 router.get("/tiendas/activas", async (req, res)=>{
@@ -105,4 +125,57 @@ router.get("/tiendas/:id", async (req, res)=>{
 })
 
 
+router.get("/tiendainfo/:id", async (req, res)=>{
+  try{
+      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}})
+      .then(result =>{
+          //console.log(result);
+          res.json(result);
+          //console.log(res.json(result));
+      })
+
+  }catch(err){
+      console.error(err)
+      console.log(err);
+  }
+})
+
+router.get("/tiendafecha/:id", async (req, res)=>{
+  try{
+      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}})
+      .then(result =>{
+          res.json(result);
+      })
+  }catch(err){
+      console.error(err)
+  }
+})
+
+//PUT nueva info en tiendas
+router.put("/tiendas/:id", async (req, res)=>{
+    const tienda = await Tienda.update({id_tipo_tienda: req.body.id_tipo_tienda, nombre: req.body.nombre, horario: req.body.horario,
+      url_imagen: req.body.url_imagen, tarjeta:req.body.tarjeta},{where: {id_usuario: req.params.id}})
+      .then(result=>{
+
+          res.json({status: 'success', Tienda:result})
+      })
+})
+
+//BORRAR Tienda y Usuario
+router.delete("/tiendas/:id", async (req, res)=>{
+    try{
+        const deleteTienda = await Tienda.destroy({where: {id_usuario: req.params.id}})
+        const deleteUsuario = await Usuario.destroy({where: {id: req.params.id}})
+        .then(result=>{
+            res.status(204).json({
+                status: "success",
+            });
+        })
+    }catch(err){
+        console.error(err)
+    }
+})
+
+
 module.exports = router;
+

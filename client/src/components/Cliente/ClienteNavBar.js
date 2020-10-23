@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState, useContext} from 'react';
-import './ClienteNavBar.css';
+import './ClienteNav.css';
 import {ReactComponent as Dropdown} from './icons/dropdown.svg';
 import {ReactComponent as Settings} from './icons/configuracion.svg';
 import {ReactComponent as Panel} from './icons/panel.svg';

@@ -2,39 +2,36 @@ const Sequelize = require("sequelize");
 const db = require("../db/db");
 
 module.exports = db.sequelize.define(
-    'tienda',
+    'productos',
     {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        id_usuario:{
+        id_tienda:{
             type: Sequelize.INTEGER
         },
-        id_tipo_tienda:{
-            type: Sequelize.INTEGER
-        },
-        nombre: {
+        nombre:{
             type: Sequelize.STRING
         },
-        horario: {
+        precio: {
+            type: Sequelize.FLOAT
+        },
+        categoria: {
             type: Sequelize.STRING
         },
         url_imagen:{
             type: Sequelize.STRING
         },
-        tarjeta: {
-            type: Sequelize.BOOLEAN
-        },
-        fechaSub: {
-          type: Sequelize.DATE
+        descripcion: {
+            type: Sequelize.STRING
         },
         
     },
     {
         timestamps: false,
         freezeTableName: true,
-        tableName: 'tienda'
+        tableName: 'productos'
     }
 )

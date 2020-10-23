@@ -34,7 +34,7 @@ const TiendaTable = ()=>{
                       <th scope="col">Nombre</th>
                       <th scope="col">Horario</th>
                       <th scope="col">ID Encargado</th>
-                      
+
                   </tr>
               </thead>
               <tbody>
@@ -51,7 +51,7 @@ const TiendaTable = ()=>{
                     </tr>
                  ))}
               </tbody>
-            
+
           </table>
         </div>
         </div>

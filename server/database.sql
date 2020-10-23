@@ -34,15 +34,16 @@ CREATE TABLE tienda(
     horario VARCHAR (50),
     url_imagen VARCHAR(255),
     tarjeta boolean,
+    fechaSub Date
 
-    CONSTRAINT fk_tipo_tienda 
+    CONSTRAINT fk_tipo_tienda
     FOREIGN KEY (id_tipo_tienda)
-    REFERENCES tipo_tienda(id) 
+    REFERENCES tipo_tienda(id)
     ON DELETE SET NULL,
 
-    CONSTRAINT fk_usuario 
+    CONSTRAINT fk_usuario
     FOREIGN KEY (id_usuario)
-    REFERENCES usuario(id) 
+    REFERENCES usuario(id)
     ON DELETE SET NULL
 );
 
@@ -50,4 +51,19 @@ CREATE TABLE tipo_tienda(
     id SERIAL PRIMARY KEY,
     tipo_tienda VARCHAR(50),
     descripcion VARCHAR(150)
+);
+
+CREATE TABLE productos (
+    id SERIAL PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    nombre VARCHAR (50),
+    precio FLOAT (6,2),
+    categoria VARCHAR (20),
+    url_imagen VARCHAR (255),
+    descripcion VARCHAR (150),
+
+    CONSTRAINT fk_tienda
+    FOREIGN KEY (id_tienda)
+    REFERENCES tienda(id)
+    ON DELETE SET NULL
 );

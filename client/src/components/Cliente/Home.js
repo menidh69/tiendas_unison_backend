@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import IndexTiendas from './IndexTiendas';
 import TiendaInfo from './TiendaInfo'
 const Home = ()=>{
+  
     const {user, setUser} = useContext(UserContext);
     return(
         <Router>
