@@ -21,6 +21,11 @@ CREATE TABLE usuario(
     expireToken DATETIME DEFAULT NULL
 );
 
+CREATE TABLE fbuser(
+    user_id INT PRIMARY KEY,
+    token VARCHAR(255)
+);
+
 CREATE TABLE tienda(
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,

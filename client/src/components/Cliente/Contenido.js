@@ -11,9 +11,9 @@ const Contenido = () => {
             <div className="arriba">
                 <h3>Tiendas en Universidad de Sonora</h3>
             </div>
-            <div className="container my-4">
+            
                 <IndexTiendas/>
-            </div>
+            
         </div>
     </Fragment>
   );

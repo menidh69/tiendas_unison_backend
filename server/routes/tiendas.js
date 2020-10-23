@@ -5,13 +5,14 @@ const Tienda = require('../models/Tienda');
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
-
-
-
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
 
+
+
+
+//POST TIENDA + NEW USUARIO
 router.post("/tiendas", async (req, res)=>{
     const tienda = {
         id_usuario: '',
@@ -68,6 +69,8 @@ router.post("/tiendas", async (req, res)=>{
     })
 })
 
+
+//GET INDEX TIENDAS
 router.get("/tiendas", async (req, res)=>{
     const todas = await Tienda.findAll(
         //{
@@ -79,6 +82,8 @@ router.get("/tiendas", async (req, res)=>{
         res.json(result)
     })
 })
+
+
 
 router.get("/miTienda/:id", async (req, res)=>{
     
@@ -93,17 +98,32 @@ router.get("/miTienda/:id", async (req, res)=>{
     })
 })
 
+//GET INDEX TIENDAS ACTIVAS
 router.get("/tiendas/activas", async (req, res)=>{
     const todas = await Tienda.findAll(
-        {
-        where:{
-            activo: 'True'
-        }},
+        // {
+        // where:{
+        //     activo: 'True'
+        // }},
         {raw:true})
     .then(result => {
         res.json(result)
     })
 })
+
+//GET TIENDA BY ID
+router.get("/tiendas/:id", async (req, res)=>{
+    const todas = await Tienda.findAll(
+        {
+        where:{
+            id: req.params.id
+        }},
+        {raw:true})
+    .then(result => {
+        res.json({tienda: result})
+    })
+})
+
 
 router.get("/tiendainfo/:id", async (req, res)=>{
   try{
@@ -158,3 +178,4 @@ router.delete("/tiendas/:id", async (req, res)=>{
 
 
 module.exports = router;
+
