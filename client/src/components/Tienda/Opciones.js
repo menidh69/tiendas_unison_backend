@@ -1,7 +1,7 @@
 import React, {Fragment, useContext, useState, useEffect} from 'react';
 import './Opciones.css';
 import {Link} from 'react-router-dom';
-import MiInfo from './MiInfo';
+
 import Banner from 'react-js-banner'
 import { UserContext } from '../../UserContext'
 import {useHistory} from "react-router-dom";
@@ -61,7 +61,9 @@ function Items() {
 
             <div className="itemsContainer">
                 <button className="boton">Cuenta</button>
-                <button className="boton">Editar Menu</button>
+                <Link to='/panel/Menu'>
+                <button className="boton">Menu</button>
+                </Link>
                 <button className="boton">Promociones</button>
             </div>
             <hr />

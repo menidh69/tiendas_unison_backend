@@ -8,6 +8,10 @@ sgMail.setApiKey('SG.4RzcJCa_TqeKwOhkUdCWsg.T4_DM8rGt_7w4zgNVUnya0QYJ7dcM1E5H7CE
 
 
 
+const bcrypt = require('bcrypt');
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey('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');
+
 router.post("/tiendas", async (req, res)=>{
     const tienda = {
         id_usuario: '',
@@ -72,6 +76,19 @@ router.get("/tiendas", async (req, res)=>{
         // }},
         {raw:true})
     .then(result => {
+        res.json(result)
+    })
+})
+
+router.get("/miTienda/:id", async (req, res)=>{
+    
+    const todas = await Tienda.findAll(
+        {
+        where:{
+            id_usuario: req.params.id
+        }})
+    .then(result => {
+        console.log(result);
         res.json(result)
     })
 })

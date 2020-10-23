@@ -47,3 +47,18 @@ CREATE TABLE tipo_tienda(
     tipo_tienda VARCHAR(50),
     descripcion VARCHAR(150)
 );
+
+CREATE TABLE productos (
+    id SERIAL PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    nombre VARCHAR (50),
+    precio FLOAT (6,2),
+    categoria VARCHAR (20),
+    url_imagen VARCHAR (255),
+    descripcion VARCHAR (150),
+
+    CONSTRAINT fk_tienda
+    FOREIGN KEY (id_tienda)
+    REFERENCES tienda(id)
+    ON DELETE SET NULL
+);

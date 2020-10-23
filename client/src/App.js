@@ -25,7 +25,6 @@ import RegistroTipo from './components/Landing-Registro/RegistroTipo'
 
 
 
-
 function App() {
 
   const [user, setUser] = useState(null);
