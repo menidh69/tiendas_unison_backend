@@ -86,7 +86,6 @@ function App() {
             <UserContext.Provider value={value}>
               <Switch>
               <Route path="/admin" component={Admin}/>
-                <Route path="/" component={Admin}/>
                 <Redirect from="/" to="/admin"/>
               </Switch>
             </UserContext.Provider>

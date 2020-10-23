@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 
-const TiendaTable = ()=>{
+const ReportesTable = ()=>{
 
     const style = {
         color: 'blue'
@@ -16,7 +16,7 @@ const TiendaTable = ()=>{
     const [data, setData] = useState({})
 
     const fetchitems = async ()=>{
-        const data = await fetch('http://localhost:5000/api/v1/tiendas');
+        const data = await fetch('http://localhost:5000/api/v1/tiendas/activas');
         const items = await data.json();
         console.log(items)
         setItems(items)
@@ -34,7 +34,7 @@ const TiendaTable = ()=>{
                       <th scope="col">Nombre</th>
                       <th scope="col">Horario</th>
                       <th scope="col">ID Encargado</th>
-                      
+                      <th scope="col">Reportes</th>                  
                   </tr>
               </thead>
               <tbody>
@@ -48,6 +48,7 @@ const TiendaTable = ()=>{
                          </td>
                          <td>{item.horario}</td>
                          <td>{item.id_usuario}</td>
+                         <td>NumReportes</td>
                     </tr>
                  ))}
               </tbody>
@@ -59,4 +60,4 @@ const TiendaTable = ()=>{
     )
 }
 
-export default TiendaTable;
+export default ReportesTable;

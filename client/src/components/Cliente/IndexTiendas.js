@@ -1,4 +1,5 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 
 const IndexTiendas = ()=>{
 
@@ -24,6 +25,7 @@ const IndexTiendas = ()=>{
     }
     return(
         <Fragment>
+            <div className="container my-4">
             <div className="row">
             {items.map(item =>(
                 <div className="col-md-3">
@@ -35,11 +37,15 @@ const IndexTiendas = ()=>{
                                     {item.horario}<br/>
                                     {(item.tarjeta)?'Si aceptan tarjeta': 'No aceptan tarjeta'}
                                 </p>
-                            <button className="btn btn-block btn-primary">Ver Menú</button>
+                                <Link to={`/tiendas/${item.id}`}>
+                                <button className="btn btn-block btn-primary my-2">Ver Tienda</button>
+                                </Link>
+                            <button className="btn btn-block btn-primary my-2">Ver Menú</button>
                         </div>
                     </div>
                 </div>
             ))}
+            </div>
             </div>
         </Fragment>
     )

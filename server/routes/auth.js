@@ -8,6 +8,7 @@ const {Op} = require('sequelize');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
 const jwt = require('jsonwebtoken');
+const FBUser = require('../models/FBUser');
 
 
 router.get('/api/v1/auth/user', auth, async (req, res)=>{
@@ -104,6 +105,8 @@ router.post("/api/v1/usuario/login", async (req, res)=>{
     })
       
   })
+
+ 
 
 router.post("/olvidarcontra",(req,res)=>{
     crypto.randomBytes(32,(err,buffer)=>{
