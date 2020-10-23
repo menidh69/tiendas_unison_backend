@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom';
 import { UserContext } from '../../UserContext'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './MiInfo.css';
-
 import {storage} from '../../firebase'
 import { render } from "react-dom" ;
 
@@ -44,12 +43,6 @@ function MiInfo(){
           }
         );
     };
-
-
-
-
-
-
 
   let history = useHistory()
   const [data, setData] = useState({
@@ -135,7 +128,7 @@ function MiInfo(){
 
       }catch(err){
           console.error(err)
-          console.log(err);
+
       }
   }
 
@@ -285,15 +278,8 @@ function MiInfo(){
                                   <progress value={progress} max="100"/>
                                   <br/>
                                   <button onClick={handleUpload}>UPLOAD</button>
-
-
-
                                 </div>
-
-
                               </div>
-
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -302,9 +288,6 @@ function MiInfo(){
                     </div>
                 </div>
             </div>
-
-
-
 
         </Fragment>
     )
