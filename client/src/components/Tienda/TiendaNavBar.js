@@ -7,6 +7,7 @@ import {ReactComponent as Settings} from './icons/configuracion.svg';
 import {ReactComponent as Panel} from './icons/panel.svg';
 import {ReactComponent as Logout} from './icons/cerrarsesion.svg';
 import {ReactComponent as Home} from './icons/home.svg';
+import {Link} from 'react-router-dom';
 
 
 const TiendaNavBar = ()=>{
@@ -26,7 +27,9 @@ function NavBar(props) {
     return (
         <nav className="navbar">
             <div className="leftNav">
-                    <NavItem href={"/"} icon={<Home/>} />
+                <Link to="/panel">
+                    <NavItem icon={<Home/>} />
+                </Link>
             </div>
             <div className="centerNav">
                     <a>
@@ -46,9 +49,11 @@ function NavItem(props) {
 
     return (
         <li className="nav-item">
-            <a href={props} className="icon-button" onClick={() => setOpen(!open)}>
+            <Link>
+            <a href="#"  className="icon-button" onClick={() => setOpen(!open)}>
                 {props.icon}
             </a>
+            </Link>
 
             {open && props.children}
         </li>

@@ -67,4 +67,6 @@ h6 {
 .menuItem {
     margin: auto;
     text-align: center;
+    margin-bottom: 2%;
+    padding: 2px;
 }

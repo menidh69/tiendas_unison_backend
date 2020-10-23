@@ -75,6 +75,19 @@ router.get("/tiendas", async (req, res)=>{
     })
 })
 
+router.get("/miTienda/:id", async (req, res)=>{
+    
+    const todas = await Tienda.findAll(
+        {
+        where:{
+            id_usuario: req.params.id
+        }})
+    .then(result => {
+        console.log(result);
+        res.json(result)
+    })
+})
+
 router.get("/tiendas/activas", async (req, res)=>{
     const todas = await Tienda.findAll(
         {

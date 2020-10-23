@@ -5,6 +5,7 @@ import MiInfo from './MiInfo';
 import MenuTienda from './MenuTienda';
 import EditarMenu from './EditarMenu';
 import AgregarProducto from './AgregarProducto';
+import EditarProducto from './EditarProducto';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -19,6 +20,7 @@ const Panel = ()=>{
                     <Route path="/panel" exact component={Opciones}></Route>
                     <Route path="/panel/MiInfo" exact component={MiInfo}></Route>
                     <Route path="/panel/Menu" exact component={MenuTienda}></Route>
+                    <Route path="/panel/Menu/EditarMenu/EditarProducto/:id" exact component={EditarProducto}></Route>
                 </Switch>
             </Router>
             
