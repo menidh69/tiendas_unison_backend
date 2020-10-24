@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import "./Contenido.css";
 import IndexTiendas from './IndexTiendas'
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const Contenido = () => {
   return (
@@ -13,7 +13,6 @@ const Contenido = () => {
             </div>
             
                 <IndexTiendas/>
-            
         </div>
     </Fragment>
   );
