@@ -17,7 +17,8 @@ router.post("/tiendas", async (req, res)=>{
         nombre: req.body.nombretienda,
         horario: req.body.horario,
         url_imagen: '',
-        tarjeta: req.body.tarjeta
+        tarjeta: req.body.tarjeta,
+        fechaSub: Date.now()
     }
     const user = {
         nombre: req.body.nombre,
