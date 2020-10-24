@@ -49,13 +49,12 @@ function NavItem(props) {
 
     return (
         <li className="nav-item">
-            <Link>
-            <a href="#"  className="icon-button" onClick={() => setOpen(!open)}>
+            <a   className="icon-button" onClick={() => setOpen(!open)}>
                 {props.icon}
             </a>
-            </Link>
-
-            {open && props.children}
+            <div style={{display: 'contents'}} onClick={() => setOpen(!open)}>
+                {open && props.children}
+            </div>
         </li>
     );
 }
@@ -82,18 +81,24 @@ function DropdownMenu(){
 
     return(
         <div className="dropdown">
-            <DropdownItem 
-            leftIcon={<Panel/>}>
-                Mi panel
-            </DropdownItem>
-            <DropdownItem
-            leftIcon={<Settings/>}>
-                Configuracion
-            </DropdownItem>
-            <DropdownItem func={()=>logout()}
-            leftIcon={<Logout/>}>
-                Cerrar Sesion
-            </DropdownItem>
+            <Link to="/panel">
+                <DropdownItem 
+                leftIcon={<Panel/>}>
+                    Mi panel
+                </DropdownItem>
+            </Link>
+            <Link>
+                <DropdownItem
+                leftIcon={<Settings/>}>
+                    Configuracion
+                </DropdownItem>
+            </Link>
+            <Link >
+                <DropdownItem func={()=>logout()}
+                leftIcon={<Logout/>}>
+                    Cerrar Sesion
+                </DropdownItem>
+            </Link>
         </div>
     );
 }

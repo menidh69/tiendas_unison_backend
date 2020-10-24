@@ -28,9 +28,11 @@ const ClienteNavBar = ()=>{
 
 function NavBar(props) {
     return (
-        <nav className="navbar">
+        <nav className="navbar fondo">
             <div className="leftNav">
+                <Link to="/home">
                     <NavItem icon={<Home/>} />
+                </Link>
             </div>
             <div className="centerNav">
                     <a>
@@ -51,11 +53,12 @@ function NavItem(props) {
 
     return (
         <li className="nav-item">
-            <a href="#" className="icon-button" onClick={() => setOpen(!open)}>
-                {props.icon}
-            </a>
-
-            {open && props.children}
+                <a className="icon-button" onClick={() => setOpen(!open)}>
+                    {props.icon}
+                </a>
+            <div style={{display: 'contents'}} onClick={() => setOpen(!open)}>
+                {open && props.children}
+            </div>
         </li>
     );
 }
@@ -82,22 +85,28 @@ function DropdownMenu(){
 
     return(
         <div className="dropdown">
-            <DropdownItem 
-            href='#'
-            leftIcon={<Panel/>}>
-                Mi perfil
-            </DropdownItem>
-            <DropdownItem
-            href='#'
-            leftIcon={<Cart/>}>
-                Carrito
-            </DropdownItem>
-            <DropdownItem
-            href='#'
-            leftIcon={<Settings/>}>
-                Configuracion
-            </DropdownItem>
-            <Link to="/">
+            <Link>
+                <DropdownItem 
+                
+                leftIcon={<Panel/>}>
+                    Mi perfil
+                </DropdownItem>
+            </Link>
+            <Link>
+                <DropdownItem
+                
+                leftIcon={<Cart/>}>
+                    Carrito
+                </DropdownItem>
+            </Link>
+            <Link>
+                <DropdownItem
+                
+                leftIcon={<Settings/>}>
+                    Configuracion
+                </DropdownItem>
+            </Link>
+            <Link>
             <DropdownItem
             leftIcon={<Logout/>}
             func={()=>logout()}>

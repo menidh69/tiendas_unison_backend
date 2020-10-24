@@ -1,5 +1,5 @@
 :root {
-    --bg: #075481;
+    --bg2: #075481;
     --bg-accent: #29698f;
     --text-color: white;
     --nav-size: 60px;
@@ -25,7 +25,7 @@ a:hover {
 
 .navbar {
     height: var(--nav-size);
-    background-color: var(--bg);
+    background-color: var(--bg2)!important;
     padding: 0 1rem;
     border-bottom: var(--border);
 }
@@ -38,6 +38,7 @@ a:hover {
 }
 
 .nav-item {
+    background-color: var(--bg2)!important;
     width: calc(var(--nav-size) * 0.8);
     display: flex;
     align-items: center;
@@ -48,7 +49,7 @@ a:hover {
     --button-size: calc(var(--nav-size) * 0.6);
     width: var(--button-size);
     height: var(--button-size);
-    background-color: #29698f;
+    background-color: #29698f!important;
     border-radius: 50%;
     padding: 5px;
     margin: 2px;
@@ -74,8 +75,8 @@ a:hover {
     top: 58px;
     width: 300px;
     transform: translateX(-45%);
-    background-color: var(--bg);
-    border: var(--border);
+    background-color: var(--bg2)!important;
+    border: var(--border)!important;
     border-radius: var(--border-radius);
     padding: 1rem;
     overflow: hidden;
@@ -85,13 +86,13 @@ a:hover {
     height: 50px;
     display: flex;
     align-items: center;
-    border-radius: var(--border-radius);
-    transition: background var(--speed);
+    border-radius: var(--border-radius)!important;
+    transition: background var(--speed)!important;
     padding: 0.5rem;
 }
 
 .menu-item:hover {
-    background-color: #29698f;
+    background-color: #29698f!important;
 }
 
 .icon-right {
@@ -104,7 +105,7 @@ a:hover {
 }
 
 h1 {
-    color: var(--text-color);
+    color: var(--text-color)!important;
 }
 
 .centerNav {

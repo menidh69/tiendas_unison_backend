@@ -19,6 +19,7 @@ function MiInfo(){
       }    
     };
 
+
     const handleUpload = (file) => {
       const uploadTask = storage.ref(`images/${file.name}`).put(file);
       uploadTask.on(

@@ -4,6 +4,7 @@ import './AgregarProducto.css';
 import { UserContext } from '../../UserContext'
 import { Component } from 'react';
 import { render } from '@testing-library/react';
+import {storage} from '../../firebase'
 
 
 class AgregarProducto extends Component {
@@ -51,6 +52,40 @@ class AgregarProducto extends Component {
 
 function Formulario () {
 
+    const [url, setUrl] = useState("");
+    const [progress, setProgress] = useState(0);
+
+    const handleChange = e => {
+      if (e.target.files[0]){
+        handleUpload(e.target.files[0]);
+      }
+    };
+
+    const handleUpload = (file) => {
+      const uploadTask = storage.ref(`images/${file.name}`).put(file);
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(progress);
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(file.name)
+            .getDownloadURL()
+            .then(url => {
+              setUrl(url)
+              console.log(url)
+            });
+          }
+        );
+    }
 
     let history = useHistory();
 
@@ -60,7 +95,7 @@ function Formulario () {
         id_tienda: '',
         precio: '',
         categoria: '',
-        imagen: '',
+        url_imagen: '',
         descripcion: ''
       });
 
@@ -89,6 +124,8 @@ function Formulario () {
 
     const onSubmitForm = async e => {
 
+        
+        data.url_imagen = url;
         
         e.preventDefault();
         if (data.nombre!=="" && data.precio !=="" && data.categoria!="") {
@@ -130,7 +167,10 @@ function Formulario () {
         <div className="form-group row">
             <label for="imagen" className="col-sm-2 col-form-label">Imagen:</label>
             <div className="col-sm-10">
-                <input type="file" className="form-control-file" id="imagen" name="imagen" value={data.imagen} onChange={updateField}></input>
+                <input type="file" id="imagen" name="file" onChange={handleChange}></input>
+                <br/>
+                    <progress value={progress} max="100"/>
+                <br/>
             </div>
         </div>
         <div className="form-group row">

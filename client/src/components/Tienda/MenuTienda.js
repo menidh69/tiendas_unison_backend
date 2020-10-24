@@ -42,7 +42,7 @@ function Arriba() {
                 </div>
                 <div className="top-container-item">
                     <h4>{items.nombre}</h4>
-                    <div className='imagen'></div>
+                    <img alt="Imagen de perfil" src={items.url_imagen||"https://via.placeholder.com/300x300"} className="imagen"></img>
                 </div>
                 <div className="top-container-item der">
                     <Link to='/panel/Menu/EditarMenu'>
@@ -89,7 +89,7 @@ function Menu() {
                 <div className="row">
                     {productos.map(producto => (
                         <div className="menuItem">
-                            <div className="productoImagen"></div>
+                            <img alt={"Imagen de producto: " + producto.nombre} src={producto.url_imagen||"https://via.placeholder.com/300x300"} className="productoImagen"></img>
                             <p className="nomargin">{producto.nombre}</p>
                             <p className="nomargin">${producto.precio}</p>
                         </div>
