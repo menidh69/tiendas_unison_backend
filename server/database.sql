@@ -34,7 +34,7 @@ CREATE TABLE tienda(
     horario VARCHAR (50),
     url_imagen VARCHAR(255),
     tarjeta boolean,
-    fechaSub Date
+    fechaSub Date,
 
     CONSTRAINT fk_tipo_tienda
     FOREIGN KEY (id_tipo_tienda)

@@ -21,6 +21,7 @@ function Items() {
     let history = useHistory()
     const [items, setItems] = useState([])
     const {user, setUser} = useContext(UserContext);
+    const [days, setDays] = useState(null);
     useEffect(()=>{
         fetchitems();
     }, []);
@@ -29,6 +30,14 @@ function Items() {
         const data = await fetch(`http://localhost:5000/api/v1/tiendafecha/${user.id}`);
         const items = await data.json();
         setItems(items[0])
+        let finaldate = new Date();
+        let today = new Date(Date.now())
+        let subdate = new Date(items[0].fechaSub)
+        finaldate.setDate(subdate.getDate() + 21)
+        let diffTime = Math.abs(finaldate - today);
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        console.log(diffDays)
+        setDays(diffDays)
     };
 
     const eliminar = async (id)=>{
@@ -53,8 +62,8 @@ function Items() {
     return(
         <div className="mainContainer">
 
-            <Banner title="SU PERIODO DE PRUEBA VENCE:" visibleTime={3000}/>
-            <Banner title= {items.fechaSub} visibleTime={3000}/>
+            <Banner title={`SU PERIODO DE PRUEBA VENCE EN: ${days} días`} visibleTime={3000}/>
+            {/* <Banner title= {date} visibleTime={3000}/> */}
 
 
 
