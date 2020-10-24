@@ -46,7 +46,7 @@ router.put("/editarProducto/:id", async (req, res)=>{
         nombre: req.body.nombre,
         precio: req.body.precio,
         categoria: req.body.categoria,
-        imagen: req.body.imagen,
+        url_imagen: req.body.url_imagen,
         descripcion: req.body.descripcion
         },{where: {id: req.params.id, id_tienda: req.body.id_tienda}})
 
@@ -64,7 +64,7 @@ router.post("/nuevoProducto", async (req, res)=>{
         id_tienda: req.body.id_tienda,
         precio: req.body.precio,
         categoria: req.body.categoria,
-        imagen: req.body.imagen,
+        url_imagen: req.body.url_imagen,
         descripcion: req.body.descripcion
     }
 
