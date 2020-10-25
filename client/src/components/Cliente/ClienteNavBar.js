@@ -51,10 +51,11 @@ function NavItem(props) {
 
     return (
         <li className="nav-item">
+            <Link>
             <a href="#" className="icon-button" onClick={() => setOpen(!open)}>
                 {props.icon}
             </a>
-
+            </Link>
             {open && props.children}
         </li>
     );
@@ -82,11 +83,12 @@ function DropdownMenu(){
 
     return(
         <div className="dropdown">
+            <Link to="/PerfilCliente">
             <DropdownItem 
-            href='#'
             leftIcon={<Panel/>}>
                 Mi perfil
             </DropdownItem>
+            </Link>
             <DropdownItem
             href='#'
             leftIcon={<Cart/>}>

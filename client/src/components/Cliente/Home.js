@@ -4,6 +4,7 @@ import Contenido from './Contenido'
 import { UserContext } from '../../UserContext'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import IndexTiendas from './IndexTiendas';
+import PerfilCliente from './PerfilCliente';
 
 const Home = ()=>{
   
@@ -15,6 +16,7 @@ const Home = ()=>{
             <Switch>
                 <Route path='/home' exact component={Contenido}/>
                 <Route path='/tiendas' exact component={IndexTiendas}/>
+                <Route path='/PerfilCliente' exact component={PerfilCliente}/>
             </Switch>
         </Router>
         
