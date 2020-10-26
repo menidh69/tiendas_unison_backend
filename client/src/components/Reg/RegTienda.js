@@ -27,17 +27,15 @@ export class RegTienda extends Component {
     this.props.prevStep();
   };
 
+  handleUpload = e => {
+    if (e.target.files[0]){
+      this.props.handleUpload(e.target.files[0])
+    }
+  };
+
 
   render() {
-      const { values, handleChange, handleUpload } = this.props;
-
-      const handleFile = e => {
-        if (e.target.files[0]){
-          this.props.handleUpload(e.target.files[0])
-        }
-      };
-
-
+      const { values, handleChange} = this.props;
 
     return (
 
@@ -90,7 +88,7 @@ export class RegTienda extends Component {
                     </div>
                     <div className="form-group text-left">
                         <label for="url_imagen">Subir Imagen Tienda</label>
-                          <input type="file" id="url_imagen" onChange={ handleFile }
+                          <input type="file" id="url_imagen" onChange={ this.handleUpload }
                 defaultValue={values.url_imagen} className="form-control"></input>
 
 

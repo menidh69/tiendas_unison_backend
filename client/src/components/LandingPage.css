@@ -1,14 +1,14 @@
 
 
 .lpleft {
-    height: 100vh;
+    /* height: 100vh; */
     /* width: 40%; */
     background: #c7e2ff;
     padding-top: 100px;
 }
 
 .lpright{
-    height: 100vh;
+    /* height: 100vh; */
     /* width: 60%;  */
     background: #66acf7;
     padding-top : 20px;
@@ -19,13 +19,13 @@
 }
 
 .contra {
-    height: 100vh;
+    /* height: 100vh; */
     padding-top: 50px; 
     background-color: #c7e2ff;
 }
 
 .restablece{
-    height: 100vh;
+    /* height: 100vh; */
     padding-top: 50px; 
     background-color: #c7e2ff;
 }
