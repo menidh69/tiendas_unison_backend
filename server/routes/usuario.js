@@ -5,8 +5,6 @@ const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
 
-
-
 router.post("/usuarios", async (req, res)=>{
     const user = {
         nombre: req.body.nombre,
@@ -98,5 +96,47 @@ router.get("/usuarios/:email", async (req, res)=>{
         console.error(err)
     }
 })
+
+
+router.get("/usuarioinfo/:id", async (req, res)=>{
+  try{
+      const user = await Usuario.findAll({where: {id: req.params.id}})
+      .then(result =>{
+          //console.log(result);
+          res.json(result);
+          //console.log(res.json(result));
+      })
+
+  }catch(err){
+      console.error(err)
+      console.log(err);
+  }
+})
+
+
+//PUT nueva info en usuario
+router.put("/usuarios/:id", async (req, res)=>{
+  const user = await Usuario.update({nombre: req.body.nombre, contra: req.body.contra,
+    tel: req.body.tel},{where: {id: req.params.id}})
+    .then(result=>{
+
+        res.json({status: 'success', Usuario:result})
+    })
+})
+
+//BORRAR Usuario
+router.delete("/usuariosdelete/:id", async (req, res)=>{
+  try{
+      const deleteUsuario = await Usuario.destroy({where: {id: req.params.id}})
+      .then(result=>{
+          res.status(204).json({
+              status: "success",
+          });
+      })
+  }catch(err){
+      console.error(err)
+  }
+})
+
 
 module.exports = router;

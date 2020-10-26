@@ -43,8 +43,54 @@
     padding-left:600px; 
 }
 
+.pop{
+    position:absolute;
+    bottom: 0;
+    padding-left: 240px;
+    padding-bottom: 60px;
+    padding-right: 240px;
+}
+
+.todo{
+    padding-top: 100px;
+    padding-right: 180px;
+    padding-left: 200px;
+    padding-bottom: 200px    ;
+}
+
 /* .ini3{
     text-align: center;
     padding-top: 200px;
 } */
 
+.infoloco{
+   padding-top: 50px;
+   padding-right: 250px;
+   padding-left: 200px;
+}
+
+.botoloco{
+    margin-left: 520px;
+    padding-right: 30px;
+    padding-left: 30px;
+  
+}
+
+.amigos{
+    padding-left: 200px;
+}
+
+.amigoss{
+    padding-left: 270px;
+}
+
+.botonn {
+    width: 25%;
+    margin-left: 245px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    background-color:#B11100  ;
+    border-radius: 5px;
+    color: #ffffff;
+    
+}
