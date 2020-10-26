@@ -25,6 +25,7 @@ export class RegTienda extends Component {
     this.props.prevStep();
   };
 
+
   render() {
       const { values, handleChange } = this.props;
     return (
