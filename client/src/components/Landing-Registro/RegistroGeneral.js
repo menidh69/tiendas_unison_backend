@@ -10,6 +10,7 @@ import LandingNav from './LandingNav';
       nombre: '',
       email: '',
       contra: '',
+      contra1:"",
       tel: '',
       universidad: ''
     });
@@ -24,9 +25,25 @@ import LandingNav from './LandingNav';
       });
     }
 
+    function validar(contra) {
+      if (contra == data.contra1) {
+        const re = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/);
+        const isOk = re.test(contra);
+        if(!isOk) {
+            return alert('Contraseña invalida: no cumple con los requisitos de seguridad!');
+        }
+      } else {
+        return alert ('Contraseñas no coinciden')
+      }
+
+    }
+
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
+      if ( validar(data.contra) != true) {
+
+      }
       if (data.nombre!=="" && data.email !=="" && data.contra!="" && data.tel!=="" && data.universidad!=="") {
         const body = data;
         const response = await fetch('http://localhost:5000/api/v1/usuarios', {
@@ -46,7 +63,7 @@ import LandingNav from './LandingNav';
         })
       }
       else{
-        
+
         setError(true)
         console.log(error)
       }
@@ -55,6 +72,8 @@ import LandingNav from './LandingNav';
       console.log(err)
     }
   }
+
+
 
     return(
         <Fragment>
@@ -94,12 +113,14 @@ import LandingNav from './LandingNav';
 
                     <div className="form-group text-left">
                       <label for="contra1">Contra</label>
+                        <p class="text-warning"><small> *Minimo 8 caracteres, una mayuscula, una minuscula, un caracter especial y un número.</small></p>
                       <input
                         className="form-control"
                         id="contra1"
                         type="password"
-                        name= "contra1"
-
+                        name="contra1"
+                        value={data.contra1}
+                        onChange={updateField}
                         ></input>
                     </div>
                     <div className="form-group text-left">
@@ -143,7 +164,7 @@ import LandingNav from './LandingNav';
                   <div className="col-md-3"></div>
 
                 </div>
-                
+
             </div>
         </Fragment>
     )
