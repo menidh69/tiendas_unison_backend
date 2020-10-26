@@ -15,10 +15,10 @@ const LandingNav = ()=>{
 
     return(
         <Fragment>
-        <nav class="navbar bg-primary py-auto my-auto center">
+        <nav className="navbar bg-primary py-auto my-auto center">
             <div className="container-fluid-nav text-center" style={navStyle}>
             <Link to="/">
-            <a class="mx-auto text-center text-light" href="#">
+            <a className="mx-auto text-center text-light">
                 <img src="/Unioncarrito.png" style={style} alt="" className="mx-2" loading="lazy"/>
                 Tiendas Universidad
             </a>

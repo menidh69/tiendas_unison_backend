@@ -62,8 +62,8 @@ const LandingPage = ()=> {
     return(
         <Fragment>
 
-        <div className = "row text-center">
-            <div className = "lpleft text-center mx-auto col-sm-5">
+        <div className = "row text-center h-100 m-0 w-100">
+            <div className = "lpleft text-center col-sm-5 h-100 mx-auto">
                  <h1>Tiendas</h1>
                  <h1>Universitarias</h1>
                  <div className="row my-4">
@@ -81,7 +81,7 @@ const LandingPage = ()=> {
                  </Link>
             </div>
 
-            <div className= "lpright col-sm-7">
+            <div className= "lpright col-sm-7 h-100">
                 <div className="container LandingPage">
                 <div className="form-group text-left">
                     <form class ="ini1" onSubmit={onSubmitForm}>
