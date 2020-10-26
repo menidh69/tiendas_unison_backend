@@ -21,7 +21,8 @@ const IndexTiendas = ()=>{
     }
     const styleImg={
         maxWidth: '100%',
-        height: '50%'
+        height: '175px',
+        objectFit: 'cover'
     }
     return(
         <Fragment>
@@ -29,9 +30,9 @@ const IndexTiendas = ()=>{
             <div className="row">
             {items.map(item =>(
                 <div className="col-md-3">
-                    <div className="card rounded shadow text-center" style={style}>
-                        <img src={item.url_imagen} style={styleImg} className="card-img-top"/>
-                        <div className="card-body">
+                    <div className="card rounded shadow text-center h-100" style={style}>
+                        <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
+                        <div className="card-body h-75">
                             <h4 className="card-title">{item.nombre}</h4>
                                 <p class="card-text">
                                     {item.horario}<br/>
