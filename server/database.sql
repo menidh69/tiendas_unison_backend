@@ -21,6 +21,11 @@ CREATE TABLE usuario(
     expireToken DATETIME DEFAULT NULL
 );
 
+CREATE TABLE fbuser(
+    user_id INT PRIMARY KEY,
+    token VARCHAR(255)
+);
+
 CREATE TABLE tienda(
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
@@ -30,7 +35,8 @@ CREATE TABLE tienda(
     url_imagen VARCHAR(255),
     tarjeta boolean,
     fechaSub Date,
-    validada boolean
+    validada boolean,
+
 
     CONSTRAINT fk_tipo_tienda
     FOREIGN KEY (id_tipo_tienda)
@@ -49,10 +55,11 @@ CREATE TABLE tipo_tienda(
     descripcion VARCHAR(150)
 );
 
+
 CREATE TABLE reporte_tienda(
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
-    id_tienda BIGINT UNSIGNED
+    id_tienda BIGINT UNSIGNED,
 
     CONSTRAINT fk_usuario
     FOREIGN KEY (id_usuario)
@@ -69,14 +76,29 @@ CREATE TABLE reporte_tienda(
 CREATE TABLE validar_tienda(
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
-    id_tienda BIGINT UNSIGNED
+    id_tienda BIGINT UNSIGNED,
 
     CONSTRAINT fk_usuario
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE SET NULL,
 
-    CONSTRAINT fk_tienda 
+    CONSTRAINT fk_tienda
+  FOREIGN KEY (id_tienda)
+    REFERENCES tienda(id)
+    ON DELETE SET NULL
+);
+
+CREATE TABLE productos (
+    id SERIAL PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    nombre VARCHAR (50),
+    precio FLOAT (6,2),
+    categoria VARCHAR (20),
+    url_imagen VARCHAR (255),
+    descripcion VARCHAR (150),
+
+    CONSTRAINT fk_tienda
     FOREIGN KEY (id_tienda)
     REFERENCES tienda(id)
     ON DELETE SET NULL

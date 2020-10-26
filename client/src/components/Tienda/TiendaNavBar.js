@@ -7,6 +7,7 @@ import {ReactComponent as Settings} from './icons/configuracion.svg';
 import {ReactComponent as Panel} from './icons/panel.svg';
 import {ReactComponent as Logout} from './icons/cerrarsesion.svg';
 import {ReactComponent as Home} from './icons/home.svg';
+import {Link} from 'react-router-dom';
 
 
 const TiendaNavBar = ()=>{
@@ -26,7 +27,9 @@ function NavBar(props) {
     return (
         <nav className="navbar">
             <div className="leftNav">
+                <Link to="/panel">
                     <NavItem icon={<Home/>} />
+                </Link>
             </div>
             <div className="centerNav">
                     <a>
@@ -46,11 +49,12 @@ function NavItem(props) {
 
     return (
         <li className="nav-item">
-            <a href="#" className="icon-button" onClick={() => setOpen(!open)}>
+            <a   className="icon-button" onClick={() => setOpen(!open)}>
                 {props.icon}
             </a>
-
-            {open && props.children}
+            <div style={{display: 'contents'}} onClick={() => setOpen(!open)}>
+                {open && props.children}
+            </div>
         </li>
     );
 }
@@ -77,18 +81,24 @@ function DropdownMenu(){
 
     return(
         <div className="dropdown">
-            <DropdownItem 
-            leftIcon={<Panel/>}>
-                Mi panel
-            </DropdownItem>
-            <DropdownItem
-            leftIcon={<Settings/>}>
-                Configuracion
-            </DropdownItem>
-            <DropdownItem func={()=>logout()}
-            leftIcon={<Logout/>}>
-                Cerrar Sesion
-            </DropdownItem>
+            <Link to="/panel">
+                <DropdownItem 
+                leftIcon={<Panel/>}>
+                    Mi panel
+                </DropdownItem>
+            </Link>
+            <Link>
+                <DropdownItem
+                leftIcon={<Settings/>}>
+                    Configuracion
+                </DropdownItem>
+            </Link>
+            <Link >
+                <DropdownItem func={()=>logout()}
+                leftIcon={<Logout/>}>
+                    Cerrar Sesion
+                </DropdownItem>
+            </Link>
         </div>
     );
 }

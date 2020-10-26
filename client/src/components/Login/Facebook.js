@@ -1,8 +1,10 @@
-import React, {useState, Fragment} from'react';
+import React, {useState, Fragment, useContext} from'react';
 import FacebookLogin from 'react-facebook-login';
+import { UserContext } from '../../UserContext'
+
 
 const Facebook = ()=>{
-    
+    const {user, setUser} = useContext(UserContext);
     const [loginData, setLoginData] = useState({
         isLoggedIn: false,
         userID: '',
@@ -17,6 +19,13 @@ const Facebook = ()=>{
 
     const responseFacebook = response =>{
         console.log(response);
+        const info = {
+            nombre: response.name,
+            email: response.email,
+            tipo_usuario: 'cliente'
+        }
+        setUser(info);
+        console.log(user);
         setLoginData({
             isLoggedIn: true,
             userID: response.userID,
@@ -29,7 +38,7 @@ const Facebook = ()=>{
         <Fragment>
             <FacebookLogin
         appId="2718234125104025"
-        autoLoad={true}
+        autoLoad={false}
         fields="name,email,picture"
         onClick={componentClicked}
         callback={responseFacebook} 

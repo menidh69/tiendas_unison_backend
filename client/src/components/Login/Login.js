@@ -113,9 +113,11 @@ const LoginForm = () => {
         <button className="btn btn-lg btn-warning my-4" type='submit'>Login</button>
       </form>
 
-      {/* <div className="text-center">
+      
+      <div className="text-center">
+
       <Facebook></Facebook>
-      </div> */}
+      </div>
       </div>
       <Registro></Registro>
 

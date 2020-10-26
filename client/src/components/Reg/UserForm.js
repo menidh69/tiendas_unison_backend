@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import RegistroGeneral from './RegGen';
 import RegTienda from './RegTienda';
 import Confirm from './Confirm';
 import Success from './Success';
 import RegGen from './RegGen';
 import {useHistory} from "react-router-dom";
+import {storage} from '../../firebase'
 
 
 export class UserForm extends Component {
@@ -18,7 +19,7 @@ export class UserForm extends Component {
     nombretienda: '',
     horario: '',
     tipo_tienda: '',
-    img_tienda: '',
+    url_imagen: '',
     tarjeta: '',
 
   };
@@ -44,6 +45,32 @@ export class UserForm extends Component {
   handleChange = input => e => {
     this.setState({ [input]: e.target.value });
   };
+
+
+  handleUpload = (file) => {
+
+
+    const uploadTask = storage.ref(`images/${file.name}`).put(file);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+
+      },
+      error => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref("images")
+          .child(file.name)
+          .getDownloadURL()
+          .then(url => {
+            this.setState({url_imagen: url})
+            console.log(url)
+          });
+        }
+      );
+  }
 
   checkempty = ()=>{
     let empty;
@@ -91,7 +118,7 @@ export class UserForm extends Component {
   }
 }
   }
-  
+
 
   handleMouseDownPassword = (event) => {
     this.event.preventDefault();
@@ -99,8 +126,8 @@ export class UserForm extends Component {
 
   render() {
       const { step } = this.state;
-      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, img_tienda, tarjeta, horario } = this.state;
-      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, img_tienda, tarjeta, horario };
+      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario } = this.state;
+      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario };
 
     switch (step) {
       case 1:
@@ -117,6 +144,7 @@ export class UserForm extends Component {
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             handleChange={this.handleChange}
+            handleUpload={this.handleUpload}
             values={values}
           />
         );

@@ -1,4 +1,5 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 
 const IndexTiendas = ()=>{
 
@@ -20,26 +21,34 @@ const IndexTiendas = ()=>{
     }
     const styleImg={
         maxWidth: '100%',
-        height: '50%'
+        height: '175px',
+        objectFit: 'cover'
     }
     return(
         <Fragment>
+            <div className="container my-4">
             <div className="row">
             {items.map(item =>(
                 <div className="col-md-3">
-                    <div className="card rounded shadow text-center" style={style}>
-                        <img src="https://www.thedome.org/wp-content/uploads/2019/06/300x300-Placeholder-Image.jpg" style={styleImg} className="card-img-top"/>
-                        <div className="card-body">
+                    <div className="card rounded shadow text-center h-100" style={style}>
+                        <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
+                        <div className="card-body h-75">
                             <h4 className="card-title">{item.nombre}</h4>
                                 <p class="card-text">
                                     {item.horario}<br/>
                                     {(item.tarjeta)?'Si aceptan tarjeta': 'No aceptan tarjeta'}
                                 </p>
-                            <button className="btn btn-block btn-primary">Ver Menú</button>
+                                <Link to={`/tiendas/${item.id}`}>
+                                <button className="btn btn-block btn-primary my-2">Ver Tienda</button>
+                                </Link>
+                                <Link to={`/tiendas/${item.id}/menu`}>
+                            <button className="btn btn-block btn-primary my-2">Ver Menú</button>
+                            </Link>
                         </div>
                     </div>
                 </div>
             ))}
+            </div>
             </div>
         </Fragment>
     )

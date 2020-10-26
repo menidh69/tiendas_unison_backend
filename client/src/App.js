@@ -8,6 +8,7 @@ import Registro from './components/Landing-Registro/Registro'
 
 import Admin from './components/Admin/Admin'
 import Panel from './components/Tienda/Panel'
+import MiInfo from './components/Tienda/MiInfo'
 
 import Home from './components/Cliente/Home';
 import UserForm from './components/Reg/UserForm'
@@ -21,7 +22,6 @@ import LandingPage from './components/Landing-Registro/LandingPage'
 import LoginFactory from './components/Factory'
 import { UserContext } from './UserContext'
 import RegistroTipo from './components/Landing-Registro/RegistroTipo'
-
 
 
 
@@ -86,7 +86,6 @@ function App() {
             <UserContext.Provider value={value}>
               <Switch>
               <Route path="/admin" component={Admin}/>
-                <Route path="/" component={Admin}/>
                 <Redirect from="/" to="/admin"/>
               </Switch>
             </UserContext.Provider>

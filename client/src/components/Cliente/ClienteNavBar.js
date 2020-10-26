@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState, useContext} from 'react';
-import './ClienteNavBar.css';
+import './ClienteNav.css';
 import {ReactComponent as Dropdown} from './icons/dropdown.svg';
 import {ReactComponent as Settings} from './icons/configuracion.svg';
 import {ReactComponent as Panel} from './icons/panel.svg';
@@ -28,9 +28,11 @@ const ClienteNavBar = ()=>{
 
 function NavBar(props) {
     return (
-        <nav className="navbar">
+        <nav className="navbar fondo">
             <div className="leftNav">
+                <Link to="/home">
                     <NavItem icon={<Home/>} />
+                </Link>
             </div>
             <div className="centerNav">
                     <a>
@@ -51,12 +53,14 @@ function NavItem(props) {
 
     return (
         <li className="nav-item">
-            <Link>
-            <a href="#" className="icon-button" onClick={() => setOpen(!open)}>
-                {props.icon}
-            </a>
-            </Link>
-            {open && props.children}
+
+                <a className="icon-button" onClick={() => setOpen(!open)}>
+                    {props.icon}
+                </a>
+            <div style={{display: 'contents'}} onClick={() => setOpen(!open)}>
+                {open && props.children}
+            </div>
+
         </li>
     );
 }
@@ -100,6 +104,7 @@ function DropdownMenu(){
                 Configuracion
             </DropdownItem>
             <Link to="/">
+
             <DropdownItem
             leftIcon={<Logout/>}
             func={()=>logout()}>

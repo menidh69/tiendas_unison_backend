@@ -5,15 +5,23 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
 const Tienda = require('../models/Tienda');
+const bcrypt = require('bcrypt');
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey('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');
 
+
+
+
+//POST TIENDA + NEW USUARIO
 router.post("/tiendas", async (req, res)=>{
     const tienda = {
         id_usuario: '',
         id_tipo_tienda: req.body.id_tipo_tienda,
         nombre: req.body.nombretienda,
         horario: req.body.horario,
-        url_imagen: '',
-        tarjeta: req.body.tarjeta
+        url_imagen: req.body.url_imagen,
+        tarjeta: req.body.tarjeta,
+        fechaSub: Date.now()
     }
     const user = {
         nombre: req.body.nombre,
@@ -50,10 +58,10 @@ router.post("/tiendas", async (req, res)=>{
                 res.status(204).json({'error: ': err})
               })
 
-            
+
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })  
+            res.json({ error: "Ya existe un usuario con esa cuenta" })
 
         }
     })
@@ -62,6 +70,8 @@ router.post("/tiendas", async (req, res)=>{
     })
 })
 
+
+//GET INDEX TIENDAS
 router.get("/tiendas", async (req, res)=>{
     const todas = await Tienda.findAll(
         //{
@@ -74,17 +84,98 @@ router.get("/tiendas", async (req, res)=>{
     })
 })
 
-router.get("/tiendas/activas", async (req, res)=>{
+
+
+router.get("/miTienda/:id", async (req, res)=>{
+
     const todas = await Tienda.findAll(
         {
         where:{
-            activo: 'True'
-        }},
+            id_usuario: req.params.id
+        }})
+    .then(result => {
+        console.log(result);
+        res.json(result)
+    })
+})
+
+//GET INDEX TIENDAS ACTIVAS
+router.get("/tiendas/activas", async (req, res)=>{
+    const todas = await Tienda.findAll(
+        // {
+        // where:{
+        //     activo: 'True'
+        // }},
         {raw:true})
     .then(result => {
         res.json(result)
     })
 })
 
-module.exports = router;
+//GET TIENDA BY ID
+router.get("/tiendas/:id", async (req, res)=>{
+    const todas = await Tienda.findAll(
+        {
+        where:{
+            id: req.params.id
+        }},
+        {raw:true})
+    .then(result => {
+        res.json({tienda: result})
+    })
+})
 
+
+router.get("/tiendainfo/:id", async (req, res)=>{
+  try{
+      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}})
+      .then(result =>{
+          //console.log(result);
+          res.json(result);
+          //console.log(res.json(result));
+      })
+
+  }catch(err){
+      console.error(err)
+      console.log(err);
+  }
+})
+
+router.get("/tiendafecha/:id", async (req, res)=>{
+  try{
+      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}})
+      .then(result =>{
+          res.json(result);
+      })
+  }catch(err){
+      console.error(err)
+  }
+})
+
+//PUT nueva info en tiendas
+router.put("/tiendas/:id", async (req, res)=>{
+    const tienda = await Tienda.update({id_tipo_tienda: req.body.id_tipo_tienda, nombre: req.body.nombre, horario: req.body.horario,
+      url_imagen: req.body.url_imagen, tarjeta:req.body.tarjeta},{where: {id_usuario: req.params.id}})
+      .then(result=>{
+
+          res.json({status: 'success', Tienda:result})
+      })
+})
+
+//BORRAR Tienda y Usuario
+router.delete("/tiendas/:id", async (req, res)=>{
+    try{
+        const deleteTienda = await Tienda.destroy({where: {id_usuario: req.params.id}})
+        const deleteUsuario = await Usuario.destroy({where: {id: req.params.id}})
+        .then(result=>{
+            res.status(204).json({
+                status: "success",
+            });
+        })
+    }catch(err){
+        console.error(err)
+    }
+})
+
+
+module.exports = router;

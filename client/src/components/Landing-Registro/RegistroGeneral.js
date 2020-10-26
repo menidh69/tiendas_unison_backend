@@ -5,7 +5,7 @@ import LandingNav from './LandingNav';
 
   const RegistroGeneral = ()=>{
 
-    let history = useHistory()
+    let history = useHistory();
     const [data, setData] = useState({
       nombre: '',
       email: '',
