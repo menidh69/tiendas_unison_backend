@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
@@ -14,6 +14,8 @@ import { InputLabel } from '@material-ui/core';
 import LandingNav from '../Landing-Registro/LandingNav';
 
 
+
+
 export class RegTienda extends Component {
   continue = e => {
     e.preventDefault();
@@ -27,9 +29,18 @@ export class RegTienda extends Component {
 
 
   render() {
-      const { values, handleChange } = this.props;
+      const { values, handleChange, handleUpload } = this.props;
+
+      const handleFile = e => {
+        if (e.target.files[0]){
+          this.props.handleUpload(e.target.files[0])
+        }
+      };
+
+
+
     return (
-      
+
       <MuiThemeProvider>
         <>
           {/* <Dialog
@@ -52,7 +63,7 @@ export class RegTienda extends Component {
                     </div>
 
                     <div className="form-group text-left" onChange={handleChange('tipo_tienda')}>
-                        <label for="Tipo_tienda">Tipo de Tienda</label>          
+                        <label for="Tipo_tienda">Tipo de Tienda</label>
                         <div class="form-check">
                           <input  className="form-check-input" id="cooperativa" type="radio" value="1"></input>
                           <label for= "cooperativa" className="form-check-label">Cooperativa</label>
@@ -65,7 +76,7 @@ export class RegTienda extends Component {
                           <input className="form-check-input" id="cafeteria" type="radio" value="3"></input>
                             <label for= "cafeteria" className="form-check-label">Cafetería</label>
                           </div>
-                       
+
                     </div>
 
                     <div className="form-group text-left">
@@ -78,10 +89,13 @@ export class RegTienda extends Component {
               defaultValue={values.universidad} type="text"></input>
                     </div>
                     <div className="form-group text-left">
-                        <label for="img_tienda">Imagen Tienda</label>
-                        <small>*URL de la imagen</small>
-                        <input id="img_tienda" onChange={handleChange('img_tienda')}
-              defaultValue={values.img_tienda} className="form-control" type="URL"></input>
+                        <label for="url_imagen">Subir Imagen Tienda</label>
+                          <input type="file" id="url_imagen" onChange={ handleFile }
+                defaultValue={values.url_imagen} className="form-control"></input>
+
+
+
+
                     </div>
 
                     <div className="form-group text-left">
@@ -144,8 +158,8 @@ export class RegTienda extends Component {
               required
               placeholder="img tienda"
               label="imagen"
-              onChange={handleChange('img_tienda')}
-              defaultValue={values.img_tienda}
+              onChange={handleChange('url_imagen')}
+              defaultValue={values.url_imagen}
               margin="normal"
               fullWidth
             />

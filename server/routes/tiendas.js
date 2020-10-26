@@ -16,7 +16,7 @@ router.post("/tiendas", async (req, res)=>{
         id_tipo_tienda: req.body.id_tipo_tienda,
         nombre: req.body.nombretienda,
         horario: req.body.horario,
-        url_imagen: '',
+        url_imagen: req.body.url_imagen,
         tarjeta: req.body.tarjeta,
         fechaSub: Date.now()
     }
@@ -84,7 +84,7 @@ router.get("/tiendas", async (req, res)=>{
 
 
 router.get("/miTienda/:id", async (req, res)=>{
-    
+
     const todas = await Tienda.findAll(
         {
         where:{
@@ -176,4 +176,3 @@ router.delete("/tiendas/:id", async (req, res)=>{
 
 
 module.exports = router;
-
