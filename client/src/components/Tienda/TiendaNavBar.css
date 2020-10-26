@@ -1,11 +1,15 @@
 :root {
-    --bg: #813434;
-    --bg-accent: #8d5454;
+    --bg2: #075481;
+    --bg-accent2: #29698f;
     --text-color: white;
     --nav-size: 60px;
-    --border: 1px solid #411010;
+    --border2: 1px solid #102441;
     --border-radius: 8px;
     --speed: 500ms;
+}
+
+.bg-color {
+    background-color: #075481;
 }
 
 ul {
@@ -25,9 +29,9 @@ a:hover {
 
 .navbar {
     height: var(--nav-size);
-    background-color: var(--bg);
+    background-color: var(--bg2);
     padding: 0 1rem;
-    border-bottom: var(--border);
+    border-bottom: var(--border2);
 }
 
 .navbar-nav {
@@ -42,13 +46,14 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: var(--bg2)!important;
 }
 
 .icon-button {
     --button-size: calc(var(--nav-size) * 0.6);
     width: var(--button-size);
     height: var(--button-size);
-    background-color: #8d5454;
+    background-color: #29698f;
     border-radius: 50%;
     padding: 5px;
     margin: 2px;
@@ -73,8 +78,8 @@ a:hover {
     top: 58px;
     width: 300px;
     transform: translateX(-45%);
-    background-color: var(--bg);
-    border: var(--border);
+    background-color: var(--bg2);
+    border: var(--border2);
     border-radius: var(--border-radius);
     padding: 1rem;
     overflow: hidden;
@@ -90,7 +95,7 @@ a:hover {
 }
 
 .menu-item:hover {
-    background-color: #8d5454;
+    background-color: #29698f;
 }
 
 .icon-right {

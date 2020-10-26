@@ -148,7 +148,7 @@ function MiInfo(){
                               <div class="card-title mb-4">
                                   <div class="d-flex justify-content-start">
                                       <div class="image-container">
-                                          <img src= {items.url_imagen ||"https://via.placeholder.com/300x300"} id="imgProfile"   width="300" height="300"/>
+                                          <img className="rounded" src={items.url_imagen ||"https://via.placeholder.com/300x300"} id="imgProfile"   width="300" height="300"/>
                                           <div class="middle">
 
                                           </div>

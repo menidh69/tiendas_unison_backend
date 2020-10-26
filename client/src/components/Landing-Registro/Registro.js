@@ -6,8 +6,8 @@ import {Link} from 'react-router-dom';
 const Registro = ()=> {
     return(
         <Fragment>
-            <div className="container bg-primary text-center rounded py-2">
-                <h4>¿Aun no tienes cuenta?</h4>
+            <div className="container bg-color text-center rounded py-2">
+                <h4 className="text-white">¿Aun no tienes cuenta?</h4>
 
 
                 <Link to="/registro">

@@ -1,5 +1,4 @@
 import React, {Fragment, useEffect, useState, useContext} from 'react';
-import './ClienteNav.css';
 import {ReactComponent as Dropdown} from './icons/dropdown.svg';
 import {ReactComponent as Settings} from './icons/configuracion.svg';
 import {ReactComponent as Panel} from './icons/panel.svg';
@@ -28,7 +27,7 @@ const ClienteNavBar = ()=>{
 
 function NavBar(props) {
     return (
-        <nav className="navbar fondo">
+        <nav className="navbar">
             <div className="leftNav">
                 <Link to="/home">
                     <NavItem icon={<Home/>} />
