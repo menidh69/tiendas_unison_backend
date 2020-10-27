@@ -90,7 +90,7 @@ import LandingNav from './LandingNav';
     return(
         <Fragment>
           <LandingNav></LandingNav>
-            <div className="container bg-primary w-75 rounded-lg my-4 text-light">
+            <div className="container bg-color w-50 rounded-lg my-4 text-light">
                 <h1 className="text-center my-10 pt-5">Registrate aqui</h1>
                 <div className="my-2">
                   {error ? <Errorflash/> : '' }

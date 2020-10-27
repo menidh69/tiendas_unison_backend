@@ -50,7 +50,7 @@ export class RegTienda extends Component {
             <div className="row my-4">
               <div className="col-md-3"></div>
               <div className="col-md-6">
-            <div className="container w-30 bg-primary rounded-lg text-light">
+            <div className="container w-30 bg-color rounded-lg text-light">
                 <h1 className="text-center my-10 pt-5">Registra tu Tienda</h1>
 
                 <form className="my-5 text-center mx-auto">
