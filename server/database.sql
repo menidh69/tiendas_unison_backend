@@ -61,12 +61,12 @@ CREATE TABLE reporte_tienda(
     id_usuario BIGINT UNSIGNED,
     id_tienda BIGINT UNSIGNED,
 
-    CONSTRAINT fk_usuario
+    CONSTRAINT fk_usuario1
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE SET NULL,
 
-    CONSTRAINT fk_tienda 
+    CONSTRAINT fk_tienda1
     FOREIGN KEY (id_tienda)
     REFERENCES tienda(id)
     ON DELETE SET NULL
@@ -78,13 +78,13 @@ CREATE TABLE validar_tienda(
     id_usuario BIGINT UNSIGNED,
     id_tienda BIGINT UNSIGNED,
 
-    CONSTRAINT fk_usuario
+    CONSTRAINT fk_usuario2
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE SET NULL,
 
-    CONSTRAINT fk_tienda
-  FOREIGN KEY (id_tienda)
+    CONSTRAINT fk_tienda2
+    FOREIGN KEY (id_tienda)
     REFERENCES tienda(id)
     ON DELETE SET NULL
 );

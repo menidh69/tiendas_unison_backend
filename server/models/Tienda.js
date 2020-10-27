@@ -27,13 +27,12 @@ module.exports = db.sequelize.define(
         tarjeta: {
             type: Sequelize.BOOLEAN
         },
-        validada: {
-            type: Sequelize.BOOLEAN
-        },
         fechaSub: {
           type: Sequelize.DATE
         },
-        
+        validada: {
+            type: Sequelize.BOOLEAN
+        },
     },
     {
         timestamps: false,

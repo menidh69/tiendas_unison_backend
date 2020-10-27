@@ -168,10 +168,10 @@ const eliminar = async (id)=>{
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             <button type="button" class="btn btn-danger" onClick={()=>eliminar(user.id)} data-dismiss="modal" >Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
                           </div>
                       </div>
                     </div>
