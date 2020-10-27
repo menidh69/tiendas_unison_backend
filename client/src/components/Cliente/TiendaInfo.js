@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from 'react';
-import {useParams, useHistory} from 'react-router-dom'
+import {useParams, useHistory, Link} from 'react-router-dom'
 
 const TiendaInfo = () => {
   const history = useHistory();
@@ -20,6 +20,9 @@ const TiendaInfo = () => {
   const mystyle = {
     height: "100%"
   }
+  const imgStyle={
+    maxWidth:"100%"
+  }
   return (
   <Fragment>
     
@@ -28,8 +31,8 @@ const TiendaInfo = () => {
         {/* <button className="my-2 ml-2 btn btn-lg btn-warning" onClick={()=>history.push('/tiendas')}>Volver</button> */}
         <h1 className='my-2 display-4 text-dark'>Tienda {data.nombre}</h1>
       </div>
-      <div className="row">
-      <div className="my-5 col-md-8 text-left">
+      <div className="row my-5">
+      <div className="my-5 col-md-6 text-left">
       
             
             
@@ -49,12 +52,13 @@ const TiendaInfo = () => {
             
           
       </div>
-      <div className="col-md-4 border">
-            <label for="img_tienda" className="w-100">Imagen Tienda</label>
-            <img alt="Tienda" className="border"></img>
+      <div className="col-md-6 border">
+            <img alt="Tienda" className="border" style={imgStyle} src={data.url_imagen}></img>
         </div>
         </div>
+        <Link to={`/tiendas/${id}/menu`}>
         <button className="mx-auto text-center btn btn-lg rounded-pill btn-primary"> Ver menú </button>
+        </Link>
     </div>
     
   </Fragment>)

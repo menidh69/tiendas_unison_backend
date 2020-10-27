@@ -1,8 +1,9 @@
 import React, {Fragment, useState, useEffect} from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 
 
 const UniversidadesTable = ()=>{
+    const history = useHistory();
     const style = {
         color: 'blue'
     }
@@ -49,7 +50,7 @@ const UniversidadesTable = ()=>{
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify(body)
             });
-            window.location = '/admin/universidades'
+            fetchitems();            
         }catch(err){
             console.error(err)
         }

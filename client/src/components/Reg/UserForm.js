@@ -1,27 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import RegistroGeneral from './RegGen';
 import RegTienda from './RegTienda';
 import Confirm from './Confirm';
 import Success from './Success';
 import RegGen from './RegGen';
 import {useHistory} from "react-router-dom";
+import {storage} from '../../firebase'
 
 
 export class UserForm extends Component {
-  state = {
-    step: 1,
-    nombre: '',
-    email: '',
-    contra: '',
-    telefono: '',
-    universidad: '',
-    nombretienda: '',
-    horario: '',
-    tipo_tienda: '',
-    img_tienda: '',
-    tarjeta: '',
-
-  };
+    state = {
+      step: 1,
+      nombre: '',
+      email: '',
+      contra: '',
+      telefono: '',
+      universidad: '',
+      nombretienda: '',
+      horario: '',
+      tipo_tienda: '',
+      url_imagen: '',
+      tarjeta: '',
+      uni_nombre: ''
+    };
 
 
   // Proceed to next step
@@ -42,8 +43,41 @@ export class UserForm extends Component {
 
   // Handle fields change
   handleChange = input => e => {
+    if(input=='universidad'){
+      this.setState({
+        universidad: e.target.value,
+        uni_nombre: e.target.options[e.target.selectedIndex].text
+      });
+      
+    }
     this.setState({ [input]: e.target.value });
   };
+
+
+  handleUpload = (file) => {
+
+
+    const uploadTask = storage.ref(`images/${file.name}`).put(file);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+
+      },
+      error => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref("images")
+          .child(file.name)
+          .getDownloadURL()
+          .then(url => {
+            this.setState({url_imagen: url})
+            console.log(url)
+          });
+        }
+      );
+  }
 
   checkempty = ()=>{
     let empty;
@@ -91,7 +125,7 @@ export class UserForm extends Component {
   }
 }
   }
-  
+
 
   handleMouseDownPassword = (event) => {
     this.event.preventDefault();
@@ -99,8 +133,8 @@ export class UserForm extends Component {
 
   render() {
       const { step } = this.state;
-      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, img_tienda, tarjeta, horario } = this.state;
-      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, img_tienda, tarjeta, horario };
+      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre } = this.state;
+      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre };
 
     switch (step) {
       case 1:
@@ -109,6 +143,7 @@ export class UserForm extends Component {
             nextStep={this.nextStep}
             handleChange={this.handleChange}
             values={values}
+            universidades={this.state.universidades}
           />
         );
       case 2:
@@ -117,6 +152,7 @@ export class UserForm extends Component {
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             handleChange={this.handleChange}
+            handleUpload={this.handleUpload}
             values={values}
           />
         );

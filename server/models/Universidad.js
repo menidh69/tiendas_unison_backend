@@ -1,7 +1,8 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
+const Usuario = require("./Usuario");
 
-module.exports = db.sequelize.define(
+const Universidad = db.sequelize.define(
     'universidad',
     {
         id: {
@@ -29,3 +30,6 @@ module.exports = db.sequelize.define(
         tableName: 'universidad'
     }
 )
+// Universidad.hasMany(Usuario);
+
+module.exports = Universidad;

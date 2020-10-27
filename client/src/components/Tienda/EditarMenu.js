@@ -49,7 +49,7 @@ function Tabla() {
 
     useEffect(() =>{
         fetchitems();
-    });
+    }, []);
 
 
 

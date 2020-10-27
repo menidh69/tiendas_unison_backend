@@ -71,6 +71,8 @@ const LandingPage = ()=> {
                         <img className="d-block mx-auto" id="carrito" src="/Unioncarrito.png"/>
                     </div>
 
+
+
                  </div>
                  <Link to="/registrouniversidad">
                 <div className = "badge">
@@ -80,6 +82,7 @@ const LandingPage = ()=> {
             </div>
 
             <div className= "lpright col-sm-7 bg-color">
+
                 <div className="container LandingPage">
                 <div className="form-group text-left">
                     <form class ="ini1" onSubmit={onSubmitForm}>

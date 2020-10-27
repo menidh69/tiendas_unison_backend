@@ -9,18 +9,19 @@ import {storage} from '../../firebase'
 import { render } from "react-dom" ;
 
 function MiInfo(){
-    const [image, setImage] = useState(null);
+    // const [image, setImage] = useState(null);
     const [url, setUrl] = useState("");
     const [progress, setProgress] = useState(0);
 
-    const handleChange = e => {
+    const handleChange = async e => {
       if (e.target.files[0]){
-        setImage(e.target.files[0]);
-      }
+        handleUpload(e.target.files[0])       
+      }    
     };
-    
-    const handleUpload = () => {
-      const uploadTask = storage.ref(`images/${image.name}`).put(image);
+
+
+    const handleUpload = (file) => {
+      const uploadTask = storage.ref(`images/${file.name}`).put(file);
       uploadTask.on(
         "state_changed",
         snapshot => {
@@ -35,7 +36,7 @@ function MiInfo(){
         () => {
           storage
             .ref("images")
-            .child(image.name)
+            .child(file.name)
             .getDownloadURL()
             .then(url => {
               setUrl(url)
@@ -277,7 +278,7 @@ function MiInfo(){
                                   <br/>
                                   <progress value={progress} max="100"/>
                                   <br/>
-                                  <button onClick={handleUpload}>UPLOAD</button>
+                                  {/* <button onClick={handleUpload}>UPLOAD</button> */}
                                 </div>
                               </div>
                         </div>

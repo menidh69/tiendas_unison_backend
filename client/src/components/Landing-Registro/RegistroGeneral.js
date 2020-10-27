@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import Errorflash from '../Errorflash';
 import LandingNav from './LandingNav';
@@ -10,9 +10,22 @@ import LandingNav from './LandingNav';
       nombre: '',
       email: '',
       contra: '',
+      contra1:"",
       tel: '',
       universidad: ''
     });
+
+    const [unis, setUnis] = useState([]);
+    useEffect(()=>{
+      fetchUniversidades()
+    }, [])
+
+    const fetchUniversidades = async ()=>{
+      const data = await fetch('http://localhost:5000/api/v1/universidades')
+      const json = await data.json();
+      console.log(json)
+      setUnis(json);
+    }
 
     const [error, setError] = useState(false)
 
@@ -24,9 +37,25 @@ import LandingNav from './LandingNav';
       });
     }
 
+    function validar(contra) {
+      if (contra == data.contra1) {
+        const re = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/);
+        const isOk = re.test(contra);
+        if(!isOk) {
+            return alert('Contraseña invalida: no cumple con los requisitos de seguridad!');
+        }
+      } else {
+        return alert ('Contraseñas no coinciden')
+      }
+
+    }
+
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
+      if ( validar(data.contra) != true) {
+
+      }
       if (data.nombre!=="" && data.email !=="" && data.contra!="" && data.tel!=="" && data.universidad!=="") {
         const body = data;
         const response = await fetch('http://localhost:5000/api/v1/usuarios', {
@@ -46,7 +75,7 @@ import LandingNav from './LandingNav';
         })
       }
       else{
-        
+
         setError(true)
         console.log(error)
       }
@@ -55,6 +84,8 @@ import LandingNav from './LandingNav';
       console.log(err)
     }
   }
+
+
 
     return(
         <Fragment>
@@ -94,12 +125,14 @@ import LandingNav from './LandingNav';
 
                     <div className="form-group text-left">
                       <label for="contra1">Contra</label>
+                        <p class="text-warning"><small> *Minimo 8 caracteres, una mayuscula, una minuscula, un caracter especial y un número.</small></p>
                       <input
                         className="form-control"
                         id="contra1"
                         type="password"
-                        name= "contra1"
-
+                        name="contra1"
+                        value={data.contra1}
+                        onChange={updateField}
                         ></input>
                     </div>
                     <div className="form-group text-left">
@@ -125,8 +158,16 @@ import LandingNav from './LandingNav';
                             onChange={updateField}
                             ></input>
                     </div>
-
                     <div className="form-group text-left">
+                      <label for="universidad">Universidad</label>
+                      <select id="universidad" name="universidad" className="form-control" onChange={updateField}>
+                      <option selected>Selecciona universidad</option>
+                       {unis.map(uni=>(
+                         <option key={uni.id} value={uni.id}>{uni.nombre}</option>
+                       ))}
+                      </select>
+                    </div>
+                    {/* <div className="form-group text-left">
                         <label for="universidad">Universidad</label>
                         <input
                           className="form-control"
@@ -135,7 +176,7 @@ import LandingNav from './LandingNav';
                           name= "universidad"
                           value={data.universidad}
                           onChange={updateField}></input>
-                    </div>
+                    </div> */}
                     <button className="btn btn-lg btn-warning my-4" type="submit">Registrar</button>
 
                 </form>
@@ -143,7 +184,7 @@ import LandingNav from './LandingNav';
                   <div className="col-md-3"></div>
 
                 </div>
-                
+
             </div>
         </Fragment>
     )
