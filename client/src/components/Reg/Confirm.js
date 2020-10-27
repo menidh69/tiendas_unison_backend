@@ -23,7 +23,7 @@ export class Confirm extends Component {
 
   render() {
       const {
-          values: { nombre, email, telefono, contra, universidad, nombretienda, tipo_tienda, img_tienda, tarjeta, horario }
+          values: { nombre, email, telefono, contra, uni_nombre, nombretienda, tipo_tienda, img_tienda, tarjeta, horario }
     } = this.props;
     return (
       <MuiThemeProvider>
@@ -58,7 +58,7 @@ export class Confirm extends Component {
               </li>
               <li class="list-group-item bg-primary">
                 <h5>Universidad</h5>
-                <p>{universidad}</p>
+                <p>{uni_nombre}</p>
               </li>
               <li class="list-group-item bg-primary">
                 <h5>Nombre de la tienda</h5>

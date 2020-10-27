@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import Errorflash from '../Errorflash';
 import LandingNav from './LandingNav';
@@ -14,6 +14,18 @@ import LandingNav from './LandingNav';
       tel: '',
       universidad: ''
     });
+
+    const [unis, setUnis] = useState([]);
+    useEffect(()=>{
+      fetchUniversidades()
+    }, [])
+
+    const fetchUniversidades = async ()=>{
+      const data = await fetch('http://localhost:5000/api/v1/universidades')
+      const json = await data.json();
+      console.log(json)
+      setUnis(json);
+    }
 
     const [error, setError] = useState(false)
 
@@ -146,8 +158,16 @@ import LandingNav from './LandingNav';
                             onChange={updateField}
                             ></input>
                     </div>
-
                     <div className="form-group text-left">
+                      <label for="universidad">Universidad</label>
+                      <select id="universidad" name="universidad" className="form-control" onChange={updateField}>
+                      <option selected>Selecciona universidad</option>
+                       {unis.map(uni=>(
+                         <option key={uni.id} value={uni.id}>{uni.nombre}</option>
+                       ))}
+                      </select>
+                    </div>
+                    {/* <div className="form-group text-left">
                         <label for="universidad">Universidad</label>
                         <input
                           className="form-control"
@@ -156,7 +176,7 @@ import LandingNav from './LandingNav';
                           name= "universidad"
                           value={data.universidad}
                           onChange={updateField}></input>
-                    </div>
+                    </div> */}
                     <button className="btn btn-lg btn-warning my-4" type="submit">Registrar</button>
 
                 </form>

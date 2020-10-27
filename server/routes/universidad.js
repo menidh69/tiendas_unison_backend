@@ -12,6 +12,16 @@ router.get("/universidades", async (req, res)=>{
         })
 })
 
+//GET ALL UNIVERSIDADES VALIDADAS
+router.get("/universidadesvalidadas", async (req, res)=>{
+    const todas = await Universidad.findAll(
+        {where:{validada: 'true'},
+        raw: true}
+        ).then(result =>{
+            res.json(result);
+        })
+});
+
 
 //POST NUEVA UNIVERSIDAD
 router.post("/universidades", async (req, res)=>{

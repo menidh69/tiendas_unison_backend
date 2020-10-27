@@ -26,7 +26,7 @@ router.post("/tiendas", async (req, res)=>{
         email: req.body.email,
         contra: req.body.contra,
         tel: req.body.tel,
-        universidad: req.body.universidad,
+        id_universidad: req.body.universidad,
         tipo_usuario: 'tienda'
     }
     Usuario.findOne({
@@ -78,6 +78,20 @@ router.get("/tiendas", async (req, res)=>{
         // }},
         {raw:true})
     .then(result => {
+        res.json(result)
+    })
+})
+
+//GET INDEX TIENDAS BY ID_UNIVERSIDAD
+router.get("/universidades/tiendas/:id_universidad", async (req, res)=>{
+    const todas = await Usuario.findAll(
+        {
+        where:{
+            id_universidad: req.params.id_universidad,
+            tipo_usuario: 'tienda'
+        }, include: Tienda, raw:true})
+    .then(result => {
+        console.log(result)
         res.json(result)
     })
 })
