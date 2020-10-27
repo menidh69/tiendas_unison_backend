@@ -9,6 +9,8 @@ const tiendasRoutes = require('./routes/tiendas')
 const usuarioRoutes = require('./routes/usuario')
 const productosRoutes = require('./routes/productos')
 const universidadRoutes = require('./routes/universidad')
+const reportesRoutes = require('./routes/reportes')
+const validacionesRoutes = require('./routes/validaciones')
 const authRoutes = require('./routes/auth')
 
 
@@ -25,6 +27,8 @@ app.use("/api/v1", productosRoutes);
 app.use("/api/v1", usuarioRoutes);
 app.use("/api/v1", tiendasRoutes);
 app.use("/api/v1", universidadRoutes);
+app.use("/api/v1", reportesRoutes);
+app.use("api/v1", validacionesRoutes);
 app.use("/", authRoutes);
 
 app.listen(5000, ()=>{
