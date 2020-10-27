@@ -23,7 +23,7 @@ export class Confirm extends Component {
 
   render() {
       const {
-          values: { nombre, email, telefono, contra, universidad, nombretienda, tipo_tienda, img_tienda, tarjeta, horario }
+          values: { nombre, email, telefono, contra, uni_nombre, nombretienda, tipo_tienda, img_tienda, tarjeta, horario }
     } = this.props;
     return (
       <MuiThemeProvider>
@@ -37,46 +37,46 @@ export class Confirm extends Component {
             <div className="row my-4">
               <div className="col-md-3"></div>
               <div className="col-md-6">
-             <div className="container bg-primary rounded py-4">
+             <div className="container bg-color rounded py-4">
                <h1 className="my-4 text-center"> Confirma tus datos</h1>
             <ul class="list-group list-group-flush bg-primary text-light">
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Nombre</h5>
                 <p>{nombre}</p>
               </li>
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Email</h5>
                 <p>{email}</p>
               </li>
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Contraseña</h5>
                 <p>{contra}</p>
               </li>
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Telefono</h5>
                 <p>{telefono}</p>
               </li>
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Universidad</h5>
-                <p>{universidad}</p>
+                <p>{uni_nombre}</p>
               </li>
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Nombre de la tienda</h5>
                 <p>{nombretienda}</p>
               </li>
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Tipo de tienda</h5>
                 <p>{tipo_tienda}</p>
               </li>
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Imagen</h5>
                 <p>{img_tienda}</p>
               </li>
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Aceptan tarjeta?</h5>
                 <p>{tarjeta}</p>
               </li>
-              <li class="list-group-item bg-primary">
+              <li class="list-group-item bg-color">
                 <h5>Horario</h5>
                 <p>{horario}</p>
               </li>

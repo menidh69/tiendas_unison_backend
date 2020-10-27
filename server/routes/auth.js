@@ -56,7 +56,8 @@ router.post("/api/v1/usuario/login", async (req, res)=>{
                             id: user.id,
                             nombre: user.nombre,
                             email: user.email,
-                            tipo_usuario: user.tipo_usuario
+                            tipo_usuario: user.tipo_usuario,
+                            id_universidad: user.id_universidad
                         }
                     })
                 }

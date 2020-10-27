@@ -50,7 +50,7 @@ export class RegTienda extends Component {
             <div className="row my-4">
               <div className="col-md-3"></div>
               <div className="col-md-6">
-            <div className="container w-30 bg-primary rounded-lg text-light">
+            <div className="container w-30 bg-color rounded-lg text-light">
                 <h1 className="text-center my-10 pt-5">Registra tu Tienda</h1>
 
                 <form className="my-5 text-center mx-auto">
@@ -81,11 +81,7 @@ export class RegTienda extends Component {
                         <label for="Horario">Horario</label>
                         <input id="Horario" className="form-control" onChange={handleChange('horario')} type="text"></input>
                     </div>
-                    <div className="form-group text-left">
-                        <label for="Universidad">Universidad</label>
-                        <input className="form-control" id="Universidad" onChange={handleChange('universidad')}
-              defaultValue={values.universidad} type="text"></input>
-                    </div>
+                    
                     <div className="form-group text-left">
                         <label for="url_imagen">Subir Imagen Tienda</label>
                           <input type="file" id="url_imagen" onChange={ this.handleUpload }

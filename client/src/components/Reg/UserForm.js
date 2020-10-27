@@ -9,20 +9,20 @@ import {storage} from '../../firebase'
 
 
 export class UserForm extends Component {
-  state = {
-    step: 1,
-    nombre: '',
-    email: '',
-    contra: '',
-    telefono: '',
-    universidad: '',
-    nombretienda: '',
-    horario: '',
-    tipo_tienda: '',
-    url_imagen: '',
-    tarjeta: '',
-
-  };
+    state = {
+      step: 1,
+      nombre: '',
+      email: '',
+      contra: '',
+      telefono: '',
+      universidad: '',
+      nombretienda: '',
+      horario: '',
+      tipo_tienda: '',
+      url_imagen: '',
+      tarjeta: '',
+      uni_nombre: ''
+    };
 
 
   // Proceed to next step
@@ -43,6 +43,13 @@ export class UserForm extends Component {
 
   // Handle fields change
   handleChange = input => e => {
+    if(input=='universidad'){
+      this.setState({
+        universidad: e.target.value,
+        uni_nombre: e.target.options[e.target.selectedIndex].text
+      });
+      
+    }
     this.setState({ [input]: e.target.value });
   };
 
@@ -126,8 +133,8 @@ export class UserForm extends Component {
 
   render() {
       const { step } = this.state;
-      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario } = this.state;
-      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario };
+      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre } = this.state;
+      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre };
 
     switch (step) {
       case 1:
@@ -136,6 +143,7 @@ export class UserForm extends Component {
             nextStep={this.nextStep}
             handleChange={this.handleChange}
             values={values}
+            universidades={this.state.universidades}
           />
         );
       case 2:

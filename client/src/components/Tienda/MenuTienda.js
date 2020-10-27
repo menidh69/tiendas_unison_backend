@@ -46,7 +46,7 @@ function Arriba() {
                 </div>
                 <div className="top-container-item der">
                     <Link to='/panel/Menu/EditarMenu'>
-                        <button  className="btn btn-danger der">Editar Menú</button>
+                        <button  className="btn btn-info der">Editar Menú</button>
                     </Link>
                 </div>
                 <div className="container m">
@@ -91,7 +91,7 @@ function Menu() {
                         <div className="menuItem">
                             <img alt={"Imagen de producto: " + producto.nombre} src={producto.url_imagen||"https://via.placeholder.com/300x300"} className="productoImagen"></img>
                             <p className="nomargin">{producto.nombre}</p>
-                            <p className="nomargin">${producto.precio}</p>
+                            <p className="nomargin">${Number.parseFloat(producto.precio).toFixed(2)}</p>
                         </div>
                     ))}
                     

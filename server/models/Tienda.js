@@ -1,7 +1,8 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
+const Usuario = require("./Usuario");
 
-module.exports = db.sequelize.define(
+const Tienda = db.sequelize.define(
     'tienda',
     {
         id: {
@@ -40,3 +41,5 @@ module.exports = db.sequelize.define(
         tableName: 'tienda'
     }
 )
+
+module.exports = Tienda;

@@ -15,15 +15,26 @@ CREATE TABLE usuario(
     email VARCHAR(50),
     contra VARCHAR(100),
     tel VARCHAR(50),
-    universidad VARCHAR(100),
+    id_universidad BIGINT UNSIGNED,
     tipo_usuario VARCHAR(50) DEFAULT 'cliente',
     resetToken VARCHAR(100) DEFAULT NULL,
-    expireToken DATETIME DEFAULT NULL
+    expireToken DATETIME DEFAULT NULL,
+
+    CONSTRAINT fk_universidad
+    FOREIGN KEY (id_universidad)
+    REFERENCES universidad(id)
+    ON DELETE SET NULL
 );
 
 CREATE TABLE fbuser(
     user_id INT PRIMARY KEY,
     token VARCHAR(255)
+);
+
+CREATE TABLE tipo_tienda(
+    id SERIAL PRIMARY KEY,
+    tipo_tienda VARCHAR(50),
+    descripcion VARCHAR(150)
 );
 
 CREATE TABLE tienda(
@@ -49,11 +60,6 @@ CREATE TABLE tienda(
     ON DELETE SET NULL
 );
 
-CREATE TABLE tipo_tienda(
-    id SERIAL PRIMARY KEY,
-    tipo_tienda VARCHAR(50),
-    descripcion VARCHAR(150)
-);
 
 
 CREATE TABLE reporte_tienda(
@@ -61,10 +67,12 @@ CREATE TABLE reporte_tienda(
     id_usuario BIGINT UNSIGNED,
     id_tienda BIGINT UNSIGNED,
 
+
     CONSTRAINT fk_usuario1
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE SET NULL,
+
 
     CONSTRAINT fk_tienda1
     FOREIGN KEY (id_tienda)
@@ -78,10 +86,12 @@ CREATE TABLE validar_tienda(
     id_usuario BIGINT UNSIGNED,
     id_tienda BIGINT UNSIGNED,
 
+
     CONSTRAINT fk_usuario2
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE SET NULL,
+
 
     CONSTRAINT fk_tienda2
     FOREIGN KEY (id_tienda)

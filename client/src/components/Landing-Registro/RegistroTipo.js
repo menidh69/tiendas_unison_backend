@@ -11,12 +11,12 @@ const RegistroTipo = ()=>{
                 <div className="row h-100 my-4 py-4">
                     <div className="col-md-6">
                         <Link to="/registro/tienda">
-                        <button className="btn btn-primary rounded h-25 w-50"><h1>Tienda</h1></button>
+                        <button className="btn bg-color rounded h-25 w-50"><h1>Tienda</h1></button>
                         </Link>
                     </div>
                     <div className="col-md-6">
                         <Link to="/registro/cliente">
-                    <button className="btn btn-primary rounded h-25 w-50"><h1>Cliente / Alumno</h1></button>
+                    <button className="btn bg-color rounded h-25 w-50"><h1>Cliente / Alumno</h1></button>
                     </Link>
                     </div>
 

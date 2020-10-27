@@ -62,33 +62,34 @@ const LandingPage = ()=> {
     return(
         <Fragment>
 
-        <div className = "row text-center h-100 m-0 w-100">
-            <div className = "lpleft text-center col-sm-5 h-100 mx-auto">
-                 <h1>Tiendas</h1>
-                 <h1>Universitarias</h1>
-                 <div className="row my-4">
-                     <div className="col-sm-2"></div>
-                     <div className="col-sm-8">
-                     <img className="d-block mx-auto" id="carrito" src="/Unioncarrito.png"/>
-                     </div>
-                     <div className="col-sm-2"></div>
+        <div className = "row text-center m-0 p-0">
+            <div className = "lpleft text-center mx-auto col-sm-5">
+                <h1>Tiendas</h1>
+                <h1>Universitarias</h1>
+                <div className="row my-4">
+                    <div className="col-sm-8 m-auto">
+                        <img className="d-block mx-auto" id="carrito" src="/Unioncarrito.png"/>
+                    </div>
+
+
 
                  </div>
                  <Link to="/registrouniversidad">
-                 <div className = "badge">
-                 <div className="alert alert-info" role="alert"> ¿No encuentras tu Universidad?<span class="alert-link">¡Regístrala aquí!</span></div>
-                 </div>
+                <div className = "badge">
+                    <div className="alert alert-info" role="alert"> ¿No encuentras tu Universidad?<span class="alert-link">¡Regístrala aquí!</span></div>
+                </div>
                  </Link>
             </div>
 
-            <div className= "lpright col-sm-7 h-100">
+            <div className= "lpright col-sm-7 bg-color">
+
                 <div className="container LandingPage">
                 <div className="form-group text-left">
                     <form class ="ini1" onSubmit={onSubmitForm}>
                         <div className="row">
                             <div className="col-md-3 mx-auto">
                                 <div className="form-group">
-                                <label for="email" className="mx-1">Email address: </label>
+                                <label for="email" className="mx-1 text-white">Email address: </label>
                                 <input
                                   className="form-control-sm"
                                   id="email"
@@ -101,7 +102,7 @@ const LandingPage = ()=> {
                             </div>
                             <div className="col-md-3 mx-auto">
                                 <div className="form-group">
-                                <label for="contra" className="mx-1">Password: </label>
+                                <label for="contra" className="mx-1 text-white">Password: </label>
                                 <input
                                   className="form-control-sm"
                                   type="password"

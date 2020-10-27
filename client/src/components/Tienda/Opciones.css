@@ -18,7 +18,7 @@
     width: 15%;
     padding: 40px 15px;
     margin: 0 8%;
-    background-color: #813434;
+    background-color: #075481;
     border-radius: 5px;
     border: 0;
     color: #ffffff;
@@ -26,7 +26,7 @@
 }
 
 .boton:hover {
-    background-color: #8d5454;
+    background-color: #29698f;
 }
 
 .image-container {

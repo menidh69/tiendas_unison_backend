@@ -75,12 +75,10 @@ const LoginForm = () => {
   return (
   <Fragment>
     <LandingNav></LandingNav>
-    <div className="row">
-        <div className="col-md-4">
-
-        </div>
-        <div className="col-md-4">
-    <div className="container bg-primary rounded-lg text-light my-2 pb-2">
+    <div className="row m-0">
+        
+        <div className="col-md-4 m-auto">
+    <div className="container bg-color rounded-lg text-light my-2 pb-2">
       <h1 className="text-center my-5 pt-5">Login</h1>
 
         <form className="my-2 text-center mx-auto" onSubmit={onSubmitForm}>
@@ -122,9 +120,7 @@ const LoginForm = () => {
       <Registro></Registro>
 
         </div>
-        <div className="col-md-4">
-
-        </div>
+        
 
 
     </div>
