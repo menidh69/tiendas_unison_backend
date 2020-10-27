@@ -81,11 +81,7 @@ export class RegTienda extends Component {
                         <label for="Horario">Horario</label>
                         <input id="Horario" className="form-control" onChange={handleChange('horario')} type="text"></input>
                     </div>
-                    <div className="form-group text-left">
-                        <label for="Universidad">Universidad</label>
-                        <input className="form-control" id="Universidad" onChange={handleChange('universidad')}
-              defaultValue={values.universidad} type="text"></input>
-                    </div>
+                    
                     <div className="form-group text-left">
                         <label for="url_imagen">Subir Imagen Tienda</label>
                           <input type="file" id="url_imagen" onChange={ this.handleUpload }

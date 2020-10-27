@@ -102,7 +102,7 @@ export class RegGen extends Component {
                       <select id="inputUni" className="form-control" onChange={handleChange('universidad')}>
                       <option selected>Selecciona universidad</option>
                        {this.state.universidades.map(uni=>(
-                         <option key={uni.id} value={uni.nombre}>{uni.nombre}</option>
+                         <option key={uni.id} value={uni.id}>{uni.nombre}</option>
                        ))}
                       </select>
                     </div>
