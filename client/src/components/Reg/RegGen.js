@@ -14,7 +14,21 @@ import LandingNav from '../Landing-Registro/LandingNav';
 
 
 export class RegGen extends Component {
- 
+ constructor(props){
+   super(props)
+   this.state={universidades:[]}
+ }
+  
+
+  async componentWillMount(){
+    const response = await fetch(`http://localhost:5000/api/v1/universidades`)
+    const json = await response.json()
+    this.setState({ universidades: json });
+    console.log(response)
+    console.log(json)
+    console.log(this.state.universidades)
+  }
+
   continue = e => {
     e.preventDefault();
   
@@ -81,11 +95,19 @@ export class RegGen extends Component {
                         <input className="form-control" id="telefono" onChange={handleChange('telefono')}
               defaultValue={values.telefono} type="tel"></input>
                     </div>
-
                     <div className="form-group text-left">
+                      <label for="inputUni">universidad</label>
+                      <select id="inputUni" className="form-control" onChange={handleChange('universidad')}>
+                      <option selected>Selecciona universidad</option>
+                       {this.state.universidades.map(uni=>(
+                         <option key={uni.id} value={uni.nombre}>{uni.nombre}</option>
+                       ))}
+                      </select>
+                    </div>
+                    {/* <div className="form-group text-left">
                         <label for="Universidad">Universidad</label>
                         <input className="form-control" onChange={handleChange('universidad')} id="Universidad" type="text"></input>
-                    </div>
+                    </div> */}
 
                     <button className="btn btn-lg btn-warning my-4" onClick={this.continue}>Siguiente</button>
 
