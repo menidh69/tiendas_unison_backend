@@ -1,7 +1,9 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
+const Tienda = require("./Tienda");
+const Universidad = require("./Universidad");
 
-module.exports = db.sequelize.define(
+const Usuario = db.sequelize.define(
     'usuario',
     {
         id: {
@@ -21,8 +23,8 @@ module.exports = db.sequelize.define(
         tel: {
             type: Sequelize.STRING
         },
-        universidad: {
-            type: Sequelize.STRING
+        id_universidad:{
+            type: Sequelize.INTEGER
         },
         tipo_usuario: {
             type: Sequelize.STRING
@@ -42,3 +44,6 @@ module.exports = db.sequelize.define(
         tableName: 'usuario'
     }
 )
+
+Usuario.hasOne(Tienda, {foreignKey: 'id_usuario'});
+module.exports = Usuario;
