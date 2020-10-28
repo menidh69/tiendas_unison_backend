@@ -21,7 +21,7 @@ import LandingNav from './LandingNav';
     }, [])
 
     const fetchUniversidades = async ()=>{
-      const data = await fetch('http://localhost:5000/api/v1/universidades')
+      const data = await fetch('http://localhost:5000/api/v1/universidadesvalidadas')
       const json = await data.json();
       console.log(json)
       setUnis(json);

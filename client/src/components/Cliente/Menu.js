@@ -1,8 +1,10 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {Modal, Button} from 'react-bootstrap';
+import { UserContext } from '../../UserContext';
 
 const Menu = ()=>{
+    const {user , setUser} = useContext(UserContext);
 
     useEffect(()=>{
         fetchitems();
@@ -21,6 +23,8 @@ const Menu = ()=>{
         setShow(true);
     }
 
+    
+
     const fetchitems = async ()=>{
         const data = await fetch(`http://localhost:5000/api/v1/productosTienda/${id}`);
         const items = await data.json();
@@ -30,7 +34,22 @@ const Menu = ()=>{
         const itemtienda = await datatienda.json();
         setTienda(itemtienda.tienda[0]);
         console.log(itemtienda.tienda[0]);
+        if(!(itemtienda.tienda[0].validada)){
+            handleShow2();
+        }
     };
+    const validar = async(id_usuario,id_tienda)=>{
+        const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/${id}`,{
+          method: "POST"
+        });
+        const json = await response.json()
+        console.log(json)
+        handleClose2();
+      }
+      const [show2, setShow2] = useState(false);
+
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
 
     const style = {
         width: '12rem'
@@ -74,6 +93,20 @@ const Menu = ()=>{
             ))}
             </div>
             <div>
+            <Modal show={show2} onHide={handleClose2} animation={true}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Verificación de Tienda</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <p>¡Con tu información ayudas a las tiendas y a que los usuarios tengan compras más seguras! <br/>
+                Al enviar este informe estas afirmando que la tienda si existe.  </p>   
+                  </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="primary"  className="mx-auto" onClick={validar}>
+                    Verificar
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             {(show)?
             <Modal show={show} onHide={handleClose} className="text-center">
                 <Modal.Header closeButton>

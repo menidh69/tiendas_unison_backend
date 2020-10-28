@@ -47,6 +47,7 @@ CREATE TABLE tienda(
     tarjeta boolean,
     fechaSub Date,
     validada boolean,
+    activo boolean,
 
 
     CONSTRAINT fk_tipo_tienda

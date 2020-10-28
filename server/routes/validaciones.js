@@ -11,16 +11,52 @@ router.post("/validar_tienda/:id_usuario/:id_tienda", async (req,res) =>{
         id_tienda:  req.params.id_tienda
     } 
 
-
-
- Validar_tienda.create(validar)
- .then(Validar_tienda => {
-    console.log(validar)
-    res.json({status: 'Informe creado con exito' })
- }) 
-    
+Validar_tienda.findOne({where:{id_usuario: req.params.id_usuario, id_tienda: req.params.id_tienda}})
+.then(found=>{
+    if(!found || found==''){
+        Validar_tienda.create(validar)
+            .then(validacion => {
+                console.log(validar)
+                Validar_tienda.count(
+                    {
+                        where:{id_tienda: req.params.id_tienda}
+                    })
+                    .then(result=>{
+                        console.log(result.count)
+                        console.log(result.rows)
+                        console.log(result)
+                        if(result>5){
+                            Tienda.findOne({where:{id: req.params.id_tienda}})
+                            .then(tienda=>{
+                                tienda.validada = 'true';
+                                tienda.save()
+                                return res.json({status: 'Tienda verificada', verificada: 'true' })
+                            })
+                        }
+                    })
+                res.json({status: 'Informe creado con exito', verificada: 'false' })
+            })
+        }else{
+            res.json({status:'Repetido'})
+    }
 })
 
+ 
+ }) 
+ 
+
+router.get("/validar_tienda/:id_usuario/tiendas/:id_tienda", (req, res)=>{
+    Validar_tienda.findOne({where:{id_usuario: req.params.id_usuario, id_tienda: req.params.id_tienda}})
+    .then(validacion=>{
+        if(!validacion || validacion==''){
+            console.log('false')
+            return res.json({status: 'false'});
+
+        }
+        console.log('true')
+        res.json({status: 'true'})
+    })
+})
 
 
 module.exports = router;

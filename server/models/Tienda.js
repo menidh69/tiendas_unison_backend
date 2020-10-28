@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
+const Reporte_tienda = require("./Reporte_tienda");
 const Usuario = require("./Usuario");
 
 const Tienda = db.sequelize.define(
@@ -34,6 +35,9 @@ const Tienda = db.sequelize.define(
         validada: {
             type: Sequelize.BOOLEAN
         },
+        activo:{
+            type: Sequelize.BOOLEAN
+        }
     },
     {
         timestamps: false,
@@ -41,5 +45,7 @@ const Tienda = db.sequelize.define(
         tableName: 'tienda'
     }
 )
+
+Tienda.hasMany(Reporte_tienda, {foreignKey: 'id_tienda'});
 
 module.exports = Tienda;

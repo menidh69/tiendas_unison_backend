@@ -19,7 +19,7 @@ const TiendaTable = ()=>{
 
     const fetchitems = async ()=>{
         if(universidad){
-            const data = await fetch(`http://localhost:5000/api/v1/universidades/tiendas/${universidad}`);
+            const data = await fetch(`http://localhost:5000/api/v1/universidades/tiendas/${universidad}/all`);
             const json = await data.json();
             console.log(json)
             setItems(json)
@@ -54,7 +54,7 @@ const TiendaTable = ()=>{
                         <tr key={item.id}>
                             <td>{item.id}</td>
                             <td>
-                            <Link style={style} to={`/admin/tiendas/${item.id}`}>
+                            <Link style={style} to={`/admin/tiendas/${item.id_usuario}`}>
                             {item.nombre}
                             </Link>
                             </td>
@@ -70,7 +70,7 @@ const TiendaTable = ()=>{
                         <tr key={item['tienda.id']}>
                             <td>{item['tienda.id']}</td>
                             <td>
-                            <Link style={style} to={`/admin/tiendas/${item['tienda.id']}`}>
+                            <Link style={style} to={`/admin/tiendas/${item.id}`}>
                             {item['tienda.nombre']}
                             </Link>
                             </td>

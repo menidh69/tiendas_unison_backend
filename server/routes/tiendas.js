@@ -19,7 +19,9 @@ router.post("/tiendas", async (req, res)=>{
         horario: req.body.horario,
         url_imagen: req.body.url_imagen,
         tarjeta: req.body.tarjeta,
-        fechaSub: Date.now()
+        fechaSub: Date.now(),
+        validada: 'false',
+        activo: 'true'
     }
     const user = {
         nombre: req.body.nombre,
@@ -84,6 +86,19 @@ router.get("/tiendas", async (req, res)=>{
 
 //GET INDEX TIENDAS BY ID_UNIVERSIDAD
 router.get("/universidades/tiendas/:id_universidad", async (req, res)=>{
+    const todas = await Usuario.findAll(
+        {
+        where:{
+            id_universidad: req.params.id_universidad,
+            tipo_usuario: 'tienda'
+        }, include: Tienda, raw:true})
+    .then(result => {
+        console.log(result)
+        res.json(result)
+    })
+})
+
+router.get("/universidades/tiendas/:id_universidad/all", async (req, res)=>{
     const todas = await Usuario.findAll(
         {
         where:{

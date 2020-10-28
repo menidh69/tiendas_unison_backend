@@ -7,26 +7,29 @@ const ReportesTable = ()=>{
         color: 'blue'
     }
 
-
-    useEffect(()=>{
-        fetchitems();
-    }, []);
-
     const [items, setItems] = useState([])
     const [data, setData] = useState({})
 
+    useEffect(()=>{
+        fetchitems()
+    }, []);
+
+
     const fetchitems = async ()=>{
-        const data = await fetch('http://localhost:5000/api/v1/tiendas/activas');
-        const items = await data.json();
-        console.log(items)
-        setItems(items)
+        const data = await fetch('http://localhost:5000/api/v1/reporte_tienda');
+        const json = await data.json();
+        console.log(json)
+        setItems(json.result)
     };
+    
+    
+    
 
     return(
         <Fragment>
         <div className="col-9 border-left">
             <div className="container m-4">
-                <h1 className='my-4 display-4'>Tiendas</h1>
+                <h1 className='my-4 display-4 text-dark'>Reportes de Tiendas</h1>
           <table className="table table-striped">
               <thead className="thead-dark">
                   <tr>
@@ -42,13 +45,13 @@ const ReportesTable = ()=>{
                      <tr key={item.id}>
                          <td>{item.id}</td>
                          <td>
-                         <Link style={style} to={`/admin/tiendas/${item.id}`}>
+                         <Link style={style} to={`/admin/tiendas/${item.id_usuario}`}>
                          {item.nombre}
                          </Link>
                          </td>
                          <td>{item.horario}</td>
                          <td>{item.id_usuario}</td>
-                         <td>NumReportes</td>
+                         <td>{item.reporte_tiendas.length}</td>
                     </tr>
                  ))}
               </tbody>
