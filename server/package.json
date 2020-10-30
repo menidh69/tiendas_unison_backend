@@ -21,8 +21,8 @@
     "nodemailer": "^6.4.12",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "pg": "^8.3.3",
+    "request": "^2.88.2",
     "sequelize": "^6.3.5"
   },
   "proxy": "http://localhost:5000"
-
 }

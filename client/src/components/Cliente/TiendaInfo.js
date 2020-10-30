@@ -26,19 +26,25 @@ const TiendaInfo = () => {
     // fetchValidar();
   }, [])
 
-  // const fetchValidar = async ()=>{
-  //   const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
-  //   const json = await response.json();
-  //   console.log(json.status);
-  //   setValidacion(json.status)
-  // }
+  const fetchValidar = async ()=>{
+    const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
+    const json = await response.json();
+    console.log("tienda validacion personal:"+json.status);
+    if(json.status=='false'){
+      handleShow();
+    }
+    // }else{
+    // setValidacion(json.status)
+    // }
+  }
+
   const fetchdata = async ()=>{
     const prom = await fetch(`http://localhost:5000/api/v1/tiendas/${id}`);
     const record = await prom.json();
     setData(record.tienda[0]);
-    console.log(record.tienda[0].validada)
-    if(!(record.tienda[0].validada)){
-      handleShow();
+    console.log("tienda validacion general:"+record.tienda[0].validada)
+    if(record.tienda[0].validada===false){
+      fetchValidar();
   }
     console.log(record.tienda[0])
 }

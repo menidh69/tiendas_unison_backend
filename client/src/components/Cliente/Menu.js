@@ -23,7 +23,17 @@ const Menu = ()=>{
         setShow(true);
     }
 
-    
+    const fetchValidar = async ()=>{
+        const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
+        const json = await response.json();
+        console.log("tienda validacion personal:"+json.status);
+        if(json.status=='false'){
+          handleShow2();
+        }
+        // }else{
+        // setValidacion(json.status)
+        // }
+      }
 
     const fetchitems = async ()=>{
         const data = await fetch(`http://localhost:5000/api/v1/productosTienda/${id}`);
@@ -34,8 +44,8 @@ const Menu = ()=>{
         const itemtienda = await datatienda.json();
         setTienda(itemtienda.tienda[0]);
         console.log(itemtienda.tienda[0]);
-        if(!(itemtienda.tienda[0].validada)){
-            handleShow2();
+        if(itemtienda.tienda[0].validada===false){
+            fetchValidar();
         }
     };
     const validar = async(id_usuario,id_tienda)=>{

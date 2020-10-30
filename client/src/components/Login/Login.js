@@ -57,10 +57,7 @@ const LoginForm = () => {
                   console.log(result.error)
                   history.push("/home")
               }else{
-                console.log(result)
-                  console.log(result.user);
-                  console.log(result)
-                  console.log(resp)
+                
                   localStorage.setItem("token.tuw", result.user.token)
                   setUser(result.user);
                   history.push("/")
