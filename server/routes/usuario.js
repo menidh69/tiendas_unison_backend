@@ -11,7 +11,7 @@ router.post("/usuarios", async (req, res)=>{
         email: req.body.email,
         contra: req.body.contra,
         tel: req.body.tel,
-        id_universidad: req.body.universidad
+        id_universidad: req.body.universidad || req.body.id_universidad
     }
     console.log(user)
     Usuario.findOne({

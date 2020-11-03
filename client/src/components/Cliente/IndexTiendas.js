@@ -1,18 +1,20 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useContext, useEffect, useReducer, useState} from 'react';
 import {Link} from 'react-router-dom';
 import { UserContext } from '../../UserContext';
 import SelectUni from './SelectUni';
+import {Button, Modal} from 'react-bootstrap';
 
 const IndexTiendas = ()=>{
     const {user, setUser} = useContext(UserContext)
-    
+
     useEffect(()=>{
         fetchitems();
-        console.log(user.universidad)
-    }, [user]);
+        console.log(user)
+    }, []);
 
     const [items, setItems] = useState([])
     const [data, setData] = useState({})
+
 
     const fetchitems = async ()=>{
         const data = await fetch(`http://localhost:5000/api/v1/universidades/tiendas/${user.id_universidad}`);
@@ -20,6 +22,7 @@ const IndexTiendas = ()=>{
         console.log(items)
         setItems(items)
     };
+   
     const style = {
         width: '12rem'
     }
@@ -28,13 +31,11 @@ const IndexTiendas = ()=>{
         height: '175px',
         objectFit: 'cover'
     }
-    let newUni = '';
-    
 
     return(
         <Fragment>
             <div className="container my-4">
-                {newUni}
+                
             <div className="row">
             {items.map(item =>(
                 <div className="col-md-3">
@@ -57,6 +58,8 @@ const IndexTiendas = ()=>{
                 </div>
             ))}
             </div>
+
+        
             </div>
         </Fragment>
     )
