@@ -15,9 +15,26 @@ function MiInfo(){
 
     const handleChange = async e => {
       if (e.target.files[0]){
-        handleUpload(e.target.files[0])       
-      }    
+        handleUpload(e.target.files[0])
+      }
     };
+
+    const TipoTienda = () => {
+      switch (items.id_tipo_tienda) {
+        case 1:
+          return 'Cooperativa';
+          break;
+        case 2:
+          return 'Puesto';
+          break;
+        case 3:
+          return 'Cafeteria';
+          break;
+        default:
+          return 'esta mal';
+
+      }
+    }
 
 
     const handleUpload = (file) => {
@@ -98,8 +115,10 @@ function MiInfo(){
       if (data.id_tipo_tienda!=="") {
         if(data.id_tipo_tienda=="cooperativa" || data.id_tipo_tienda=="Cooperativa"){
             data.id_tipo_tienda = 1
-        }else if (data.id_tipo_tienda=="tienda" || data.id_tipo_tienda=="Tienda") {
+        }else if (data.id_tipo_tienda=="puesto" || data.id_tipo_tienda=="Puesto") {
               data.id_tipo_tienda = 2
+        }else if (data.id_tipo_tienda=="cafeteria" || data.id_tipo_tienda=="Cafeteria") {
+              data.id_tipo_tienda = 3
         }
       }else if (data.id_tipo_tienda == "") {
         data.id_tipo_tienda = items.id_tipo_tienda
@@ -201,7 +220,7 @@ function MiInfo(){
                                                             <td>{items.tarjeta ? 'Si':'No'}</td>
                                                       </tr>
                                                       <tr><th>Tipo de tienda</th>
-                                                            <td>{items.id_tipo_tienda ? 'Cooperativa':'Tienda'}</td>
+                                                            <td>{TipoTienda()}</td>
                                                       </tr>
                                                   </tr>
 
@@ -261,7 +280,7 @@ function MiInfo(){
                                     ></input>
                               </div>
                               <label for="id_tipo_tienda">Tipo de tienda</label>
-                              <p><small>Cooperativa/Tienda</small></p>
+                              <p><small>Cooperativa/Puesto/Cafeteria</small></p>
                               <div>
                                 <input
                                     id="id_tipo_tienda"

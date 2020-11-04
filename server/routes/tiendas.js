@@ -14,7 +14,7 @@ const Tienda = require('../models/Tienda');
 router.post("/tiendas", async (req, res)=>{
     const tienda = {
         id_usuario: '',
-        id_tipo_tienda: req.body.id_tipo_tienda,
+        id_tipo_tienda: req.body.tipo_tienda,
         nombre: req.body.nombretienda,
         horario: req.body.horario,
         url_imagen: req.body.url_imagen,
