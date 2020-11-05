@@ -158,11 +158,20 @@ function MiInfo(){
     return(
         <Fragment>
 
+
           <div class="container">
+
                   <div class="row">
                       <div class="col-12">
                           <div class="card">
-
+                            <div className="container-item izq">
+                                <Link to="/panel">
+                                <a className="atras izq" href="">
+                                    <h6 className="izq">← Atras</h6>
+                                </a>
+                                </Link>
+                                <h6 className="izq">| Mi información</h6>
+                            </div>
                             <div class="card-body">
 
                               <div class="card-title mb-4">
