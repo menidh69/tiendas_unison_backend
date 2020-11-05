@@ -190,16 +190,14 @@ function MiInfo(){
 
 
                                       </div>
-                                      <div class="ml-auto">
-                                          <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
-                                    </div>
+
                                   </div>
 
                               </div>
 
                               <div class="row">
                                 <hr/>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" href="#Editar">Editar</button>
+                                <button type="button" class="btn btn-info" data-toggle="modal" href="#Editar">Editar</button>
 
                                 <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
@@ -312,7 +310,7 @@ function MiInfo(){
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={()=>Guardar(user.id)}>Guardar</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal" onClick={()=>Guardar(user.id)}>Guardar</button>
                         </div>
                     </div>
                 </div>
