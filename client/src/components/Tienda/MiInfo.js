@@ -143,8 +143,7 @@ function MiInfo(){
                 body: JSON.stringify(body)
 
             });
-            window.location = '/panel/MiInfo'
-            history.push("/panel/MiInfo")
+            fetchitems();
 
 
       }catch(err){

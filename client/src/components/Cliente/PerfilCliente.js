@@ -15,6 +15,8 @@ const [data, setData] = useState({
   tel: ''
 });
 
+
+
 const [items, setItems] = useState({})
 const {user, setUser} = useContext(UserContext);
 useEffect(()=>{
@@ -83,6 +85,61 @@ const eliminar = async (id)=>{
   }
 }
 
+function validar() {
+  const regex_numtarjeta = new RegExp(/(\d{4} *\d{4} *\d{4} *\d{4})/);
+  const regex_expdate =  new RegExp(/(\d{2})\/?(\d{2})/);
+  const regex_cvv = new RegExp(/\d{3}/);
+  const regex_cpp = new RegExp(/\d{5}/);
+
+  const paso = true;
+  let messages= []
+  if(!regex_numtarjeta.test(data.num_tarjeta)) {
+    alert('Introduce un numero de tarjeta valido de 16 digitos ');
+      paso = false;
+  }
+
+  if(!regex_expdate.test(data.exp_date)){
+    alert('Introduce bien el mes/año ');
+    paso = false;
+
+  }
+  if (!regex_cvv.test(data.cvv)) {
+    messages.push('Introduce el código de 3 digitos ');
+    paso = false;
+
+  }
+  if (!regex_cpp.test(data.cpp)) {
+    alert('Introduce un codigo postal valido de 5 digitos ');
+    paso = false;
+  }
+  if (paso == false) {
+    return false
+  }
+}
+
+const GuardarInfoBank = async (id)=>{
+    
+
+
+    const body = data;
+      try{
+            const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
+            {
+                method: "PUT",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(body)
+
+            });
+            window.location = '/panel/Tarjeta'
+            history.push("/panel/Tarjeta")
+      }catch(err){
+          console.error(err)
+
+      }
+}
+
+
+
 
 
   return(
@@ -148,7 +205,8 @@ const eliminar = async (id)=>{
                                             <td>{items.nombre_titular}</td>
                                           </tr>
                                           <tr>
-                                            <th>Número Tarjeta</th>
+                                            <th>Número Tarjeta<br/>
+                                            <small>eg 5555 5555 5555 5555</small></th>
                                             <td>{items.num_tarjeta}</td>
                                           </tr>
                                           <tr>
@@ -269,28 +327,26 @@ const eliminar = async (id)=>{
                         <div>
                           <input
                           class="form-control"
-                          required autocomplete="off"
                           id="nombre_titular"
                           type="text"
-                          name="nombre"
+                          name="nombre_titular"
                           value={data.nombre_titular}
                           onChange={updateField}
                           ></input>
                         </div>
-                        <label for="horario">Número de tarjeta</label>
-                        <p><small>Ingresa un número de tarjeta de 12 a 16 digitos </small></p>
+                        <label for="num_tarjeta">Número de tarjeta</label>
+                        <p><small>Ingresa un número de tarjeta de 16 digitos </small></p>
                          <div>
                           <input
                               class="form-control"
-                              required autocomplete="off"
                               id="num_tarjeta"
                               type="tel"
-                              name="horario"
+                              name="num_tarjeta"
                               value={data.num_tarjeta}
                               onChange={updateField}
                               ></input>
                         </div>
-                        <label for="exp_date">Fecha de exporacíon</label>
+                        <label for="exp_date">Fecha Expiracion</label>
                         <div>
                           <input
                               class="form-control"
@@ -298,20 +354,18 @@ const eliminar = async (id)=>{
                               type="tel"
                               name="exp_date"
                               placeholder="MM / YY"
-                              required autocomplete="cc-exp"
                               value={data.exp_date}
                               onChange={updateField}
                               ></input>
                         </div>
                         <label for="cvv">Cvv</label>
-                        <p><small>Código de 3 digitos de la parte trasera de tu tarjeta</small></p>
+                        <p><small> Código de 3 digitos de la parte trasera de tu tarjeta</small></p>
                         <div>
                           <input
                               class="form-control"
                               id="cvv"
                               type="tel"
                               name="cvv"
-                              required autocomplete="off"
                               value={data.cvv}
                               onChange={updateField}
                               ></input>
@@ -320,7 +374,6 @@ const eliminar = async (id)=>{
                         <div>
                           <input
                               class="form-control"
-                              required autocomplete="off"
                               id="cpp"
                               type="text"
                               name="cpp"
@@ -332,7 +385,7 @@ const eliminar = async (id)=>{
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                      <button type="button" class="btn btn-success" data-dismiss="modal">Guardar</button>
+                      <button type="button" class="btn btn-success" data-dismiss="modal"onClick={()=>GuardarInfoBank(user.id)}>Guardar</button>
                   </div>
               </div>
           </div>

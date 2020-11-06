@@ -120,8 +120,8 @@ CREATE TABLE info_bancaria(
     id_usuario BIGINT UNSIGNED,
 
     nombre_titular VARCHAR (100),
-    num_tarjeta BIGINT,
-    exp_date BIGINT,
+    num_tarjeta VARCHAR(50),
+    exp_date VARCHAR (20),
     cvv BIGINT,
     cpp BIGINT,
 

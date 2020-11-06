@@ -25,7 +25,7 @@ router.post("/usuarios", async (req, res)=>{
               user.contra = hash
               Usuario.create(user)
               .then(usuario=> {
-                res.json({status: usuario.email + ' registrado con exito'})  
+                res.json({status: usuario.email + ' registrado con exito'})
                 const msg ={
                     to: user.email,
                     from: "tiendasuniv@hotmail.com",
@@ -40,7 +40,7 @@ router.post("/usuarios", async (req, res)=>{
               })
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })  
+            res.json({ error: "Ya existe un usuario con esa cuenta" })
         }
     })
     .catch(err =>{

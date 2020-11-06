@@ -21,12 +21,12 @@ function InfoBancaria() {
       fetchitems();
   }, []);
 
-  const fetchitems = async ()=>{
+  const fetchitems = async (id)=>{
 
-      const data = await fetch(`http://localhost:5000/api/v1/infobank/${user.id}`);
-      const items = await data.json();
-      console.log(items[0]);
-      setItems(items[0]);
+      const data = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`);
+      const  it= await data.json();
+      setItems(it[0]);
+      setData(it[0]);
   };
 
   const updateField = e => {
@@ -43,7 +43,57 @@ function InfoBancaria() {
     cvv: '',
     cpp: ''});
 
-  const Guardar = async (id)=>{}
+    function validar() {
+      const regex_numtarjeta = new RegExp(/(\d{4} *\d{4} *\d{4} *\d{4})/);
+      const regex_expdate =  new RegExp(/(\d{2})\/?(\d{2})/);
+      const regex_cvv = new RegExp(/\d{3}/);
+      const regex_cpp = new RegExp(/\d{5}/);
+
+      const paso = true;
+
+      if(!regex_numtarjeta.test(data.num_tarjeta)) {
+          alert('Introduce un numero de tarjeta valido de 16 digitos ');
+          paso = false;
+      }
+
+      if(!regex_expdate.test(data.exp_date)){
+        alert('Introduce bien el mes/año ');
+        paso = false;
+
+      }
+      if (!regex_cvv.test(data.cvv)) {
+        alert('Introduce el código de 3 digitos ');
+        paso = false;
+
+      }
+      if (!regex_cpp.test(data.cpp)) {
+        alert('Introduce un codigo postal valido de 5 digitos ');
+        paso = false;
+      }
+      if (paso == false) {
+        return false
+      }
+    }
+
+    const Guardar = async (id)=>{
+
+        if ( validar() != true) {
+        }
+        const body = data;
+          try{
+                const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
+                {
+                    method: "PUT",
+                    headers: {"Content-Type":"application/json"},
+                    body: JSON.stringify(body)
+
+                });
+                fetchitems();
+          }catch(err){
+              console.error(err)
+
+          }
+    }
 
 
   return (
@@ -81,7 +131,8 @@ function InfoBancaria() {
                           <td>{items.nombre_titular}</td>
                         </tr>
                         <tr>
-                          <th>Número Tarjeta</th>
+                          <th>Número Tarjeta<br/>
+                            <small>eg 5555 5555 5555 5555</small></th>
                           <td>{items.num_tarjeta}</td>
                         </tr>
                         <tr>
@@ -123,19 +174,19 @@ function InfoBancaria() {
                           class="form-control"
                           id="nombre_titular"
                           type="text"
-                          name="nombre"
+                          name="nombre_titular"
                           value={data.nombre_titular}
                           onChange={updateField}
                           ></input>
                         </div>
-                        <label for="horario">Número de tarjeta</label>
-                        <p><small>Ingresa un número de tarjeta de 12 a 16 digitos </small></p>
+                        <label for="num_tarjeta">Número de tarjeta</label>
+                        <p><small>Ingresa un número de tarjeta de 16 digitos </small></p>
                          <div>
                           <input
                               class="form-control"
                               id="num_tarjeta"
                               type="tel"
-                              name="horario"
+                              name="num_tarjeta"
                               value={data.num_tarjeta}
                               onChange={updateField}
                               ></input>
@@ -152,7 +203,7 @@ function InfoBancaria() {
                               onChange={updateField}
                               ></input>
                         </div>
-                        <label for="cvv">Cvv </label>
+                        <label for="cvv">Cvv</label>
                         <p><small> Código de 3 digitos de la parte trasera de tu tarjeta</small></p>
                         <div>
                           <input

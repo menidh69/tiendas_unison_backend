@@ -17,10 +17,10 @@ const Info_bancaria = db.sequelize.define(
             type: Sequelize.STRING
         },
         num_tarjeta:{
-            type: Sequelize.INTEGER
+            type: Sequelize.STRING
         },
         exp_date:{
-            type: Sequelize.INTEGER
+            type: Sequelize.STRING
         },
         cvv:{
             type: Sequelize.INTEGER
