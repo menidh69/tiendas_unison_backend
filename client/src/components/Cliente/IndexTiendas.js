@@ -35,7 +35,8 @@ const IndexTiendas = ()=>{
     return(
         <Fragment>
             <div className="container my-4">
-                
+                <h2 className="text-center"> Listado de Tiendas
+                </h2>
             <div className="row">
             {items.map(item =>(
                 <div className="col-md-3">

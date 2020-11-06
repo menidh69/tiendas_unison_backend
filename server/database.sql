@@ -114,3 +114,15 @@ CREATE TABLE productos (
     REFERENCES tienda(id)
     ON DELETE SET NULL
 );
+
+CREATE TABLE ubicacion (
+    id SERIAL PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    lat DECIMAL,
+    lng DECIMAL,
+
+    CONSTRAINT fk_tienda_ubi
+    FOREIGN KEY (id_tienda)
+    REFERENCES tienda(id)
+    ON DELETE CASCADE
+);

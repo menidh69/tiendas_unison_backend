@@ -5,12 +5,13 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
 const Tienda = require('../models/Tienda');
+const Ubicacion = require('../models/Ubicacion');
 
 
 
 
 
-//POST TIENDA + NEW USUARIO
+//POST TIENDA + NEW USUARIO + NUEVA UBICACION
 router.post("/tiendas", async (req, res)=>{
     const tienda = {
         id_usuario: '',
@@ -31,6 +32,11 @@ router.post("/tiendas", async (req, res)=>{
         id_universidad: req.body.universidad,
         tipo_usuario: 'tienda'
     }
+    const ubicacion = {
+        id_tienda: '',
+        lat: req.body.lat,
+        lng: req.body.lng
+    }
     Usuario.findOne({
         where:{
             email: req.body.email
@@ -45,9 +51,21 @@ router.post("/tiendas", async (req, res)=>{
                 tienda.id_usuario = usuario.id
                 await Tienda.create(tienda)
                 .then(async tiendacreada=>{
-                    res.json({
-                        status: tiendacreada.nombre + ': Tienda y usuario creada con exito'
+                    ubicacion.id_tienda = tiendacreada.id
+                    await Ubicacion.create(ubicacion)
+                    .then(async ubi=>{
+                        res.json({
+                            status: tiendacreada.nombre + ': Tienda y usuario creada con exito'
+                        })
+                    }).catch(err=>{
+                        console.log(err)
+                        console.log("ocurrio error en ubi")
+                        res.json({
+                            status: 'Ocurrio un error al crear la tienda, vuelve a intentarlo',
+                            error: err}
+                            )
                     })
+                
                 })
                 .catch(err=>{
                     res.json({
@@ -97,6 +115,7 @@ router.get("/universidades/tiendas/:id_universidad", async (req, res)=>{
         res.json(result)
     })
 })
+
 
 router.get("/universidades/tiendas/:id_universidad/all", async (req, res)=>{
     const todas = await Usuario.findAll(
@@ -152,7 +171,7 @@ router.get("/tiendas/:id", async (req, res)=>{
     })
 })
 
-
+//GET INFO TIENDA BY USER ID
 router.get("/tiendainfo/:id", async (req, res)=>{
   try{
       const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}})
@@ -204,5 +223,21 @@ router.delete("/tiendas/:id", async (req, res)=>{
     }
 })
 
+
+//GET INDEX ubicacion de TIENDAS
+router.get("/tiendas/ubicacion", async(req, res)=>{
+    
+})
+
+
+//GET ubicacion en TIENDA BY USER ID
+router.get("/tiendas/ubicacion/:id", async(req, res)=>{
+    
+})
+
+//PUT ubicacion en TIENDA BY USER ID
+router.put("/tiendas/ubicacion/:id", async(req, res)=>{
+
+})
 
 module.exports = router;
