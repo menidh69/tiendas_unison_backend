@@ -48,7 +48,7 @@ function Items() {
             });
             //setItems(items.filter(item => item.id !== id));
             localStorage.removeItem('token.tuw')
-            alert('Hasta la vista beibi')
+            alert('Hasta la proxima')
             setUser(null);
             history.push("/")
         }catch(err){

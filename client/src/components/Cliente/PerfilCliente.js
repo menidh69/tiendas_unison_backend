@@ -7,7 +7,7 @@ import ClienteNavBar from './ClienteNavBar';
 
 
 function PerfilCliente(){
-  
+
 
 let history = useHistory()
 const [data, setData] = useState({
@@ -87,45 +87,34 @@ const eliminar = async (id)=>{
 
   return(
     <Fragment>
-        
+
     <div className="container">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-
                       <div class="card-body">
-
                         <div class="card-title mb-4">
                             <div className="">
-                                
                                 <div class="text-center ml-3">
                                     <h2 className="" >Mi Información</h2>
-                                    
                                     <hr/>
-
-
-
                                 </div>
                                 {/* <div class="ml-auto">
                                     <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
                               </div> */}
                             </div>
-
                         </div>
-
                         <div class="row">
                           <hr/>
-                          
-
                           <div class="col-12">
                               <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                                 <li class = "nav-item">
                                   <a class="nav-link active" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Perfil</a>
                                 </li>
-                                
-
+                                <li class = "nav-item">
+                                  <a class="nav-link" id="InfoBank-tab" data-toggle="tab" href="#InfoBank" role="tab" aria-controls="InfoBank" aria-selected="false">Información Bancaria</a>
+                                </li>
                               </ul>
-
                               <div class="tab-content ml-1" id="myTabContent">
                                   <div class="tab-pane fade show active" id="MyInfo" role="tabpanel" aria-labelledby="MyInfo-tab">
                                     <table className="table table-striped">
@@ -142,21 +131,54 @@ const eliminar = async (id)=>{
                                                 <tr><th>Telefono</th>
                                                       <td>{items.tel}</td>
                                                 </tr>
-                                                
+
                                             </tr>
 
                                       </tbody>
                                     </table>
-                                  </div>       
+                                    <button className="btn btn-lg btn-danger rounded-pill mx-2" data-toggle="modal" href="#Modal">Eliminar cuenta</button>
+                                    <button type="button" className="btn btn-lg btn-primary rounded-pill mx-2" data-toggle="modal" href="#Editar">Editar</button>
+                                  </div>
+                                  <div class="tab-pane fade" id="InfoBank" role="tabpanel" aria-labelledby="InfoBank-tab">
+                                    <table className="table table-striped">
+                                      <tbody>
+                                        <tr>
+                                          <tr>
+                                            <th>Titular de la tarjeta</th>
+                                            <td>{items.nombre_titular}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Número Tarjeta</th>
+                                            <td>{items.num_tarjeta}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Fecha de expiración <br/> <small>MM/YY</small></th>
+                                            <td>{items.exp_date}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>CVV <br/>
+                                            <small>Código de 3 digitos de la parte trasera de tu tarjeta</small> </th>
+                                            <td>{items.cvv}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Código Postal</th>
+                                            <td>{items.cpp}</td>
+                                          </tr>
+                                        </tr>
+                                      </tbody>
+
+                                    </table>
+                                    <button className="btn btn-lg btn-danger rounded-pill mx-2" data-toggle="modal" href="#Modal">Eliminar cuenta</button>
+                                    <button type="button" className="btn btn-lg btn-primary rounded-pill mx-2" data-toggle="modal" href="#EditarInfoBank">Editar</button>
+                                  </div>
                               </div>
-                              <button className="btn btn-lg btn-danger rounded-pill mx-2" data-toggle="modal" href="#Modal">Eliminar cuenta</button>
-                              <button type="button" className="btn btn-lg btn-primary rounded-pill mx-2" data-toggle="modal" href="#Editar">Editar</button>
+
 
                               <div id="Modal" class="modal">
                          <div class="modal-dialog">
                          <div class="modal-content">
                          <div class="modal-header">
-                          
+
                             <h4 class="modal-title">¿Estás seguro?</h4>
                         </div>
                         <div class="modal-body">
@@ -181,7 +203,7 @@ const eliminar = async (id)=>{
           <div class="modal-dialog">
               <div class="modal-content">
                   <div class="modal-header">
-                      
+
                       <h4 class="modal-title">Editar Mi Información</h4>
                   </div>
                   <div class="modal-body">
@@ -221,9 +243,9 @@ const eliminar = async (id)=>{
                           ></input>
                         </div>
                         </div>
-                        
-                          
-                        
+
+
+
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -232,9 +254,92 @@ const eliminar = async (id)=>{
               </div>
           </div>
       </div>
-     
+
+      <div id="EditarInfoBank" class="modal fade">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h4 class="modal-title">Editar Información Bancaria</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                  </div>
+                  <div class="modal-body">
+
+                        <label for="nombre">Titular de la tarjeta</label>
+                        <div>
+                          <input
+                          class="form-control"
+                          required autocomplete="off"
+                          id="nombre_titular"
+                          type="text"
+                          name="nombre"
+                          value={data.nombre_titular}
+                          onChange={updateField}
+                          ></input>
+                        </div>
+                        <label for="horario">Número de tarjeta</label>
+                        <p><small>Ingresa un número de tarjeta de 12 a 16 digitos </small></p>
+                         <div>
+                          <input
+                              class="form-control"
+                              required autocomplete="off"
+                              id="num_tarjeta"
+                              type="tel"
+                              name="horario"
+                              value={data.num_tarjeta}
+                              onChange={updateField}
+                              ></input>
+                        </div>
+                        <label for="exp_date">Fecha de exporacíon</label>
+                        <div>
+                          <input
+                              class="form-control"
+                              id="exp_date"
+                              type="tel"
+                              name="exp_date"
+                              placeholder="MM / YY"
+                              required autocomplete="cc-exp"
+                              value={data.exp_date}
+                              onChange={updateField}
+                              ></input>
+                        </div>
+                        <label for="cvv">Cvv</label>
+                        <p><small>Código de 3 digitos de la parte trasera de tu tarjeta</small></p>
+                        <div>
+                          <input
+                              class="form-control"
+                              id="cvv"
+                              type="tel"
+                              name="cvv"
+                              required autocomplete="off"
+                              value={data.cvv}
+                              onChange={updateField}
+                              ></input>
+                        </div>
+                        <label for="cpp">Código Postal</label>
+                        <div>
+                          <input
+                              class="form-control"
+                              required autocomplete="off"
+                              id="cpp"
+                              type="text"
+                              name="cpp"
+                              value={data.cpp}
+                              onChange={updateField}
+                              ></input>
+                        </div>
+
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                      <button type="button" class="btn btn-success" data-dismiss="modal">Guardar</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
   </Fragment>
-)}  
+)}
 
 
 export default PerfilCliente;

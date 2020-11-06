@@ -114,3 +114,19 @@ CREATE TABLE productos (
     REFERENCES tienda(id)
     ON DELETE SET NULL
 );
+
+CREATE TABLE info_bancaria(
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+
+    nombre_titular VARCHAR (100),
+    num_tarjeta BIGINT,
+    exp_date BIGINT,
+    cvv BIGINT,
+    cpp BIGINT,
+
+    CONSTRAINT fk_usuario3
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id)
+    ON DELETE CASCADE
+);

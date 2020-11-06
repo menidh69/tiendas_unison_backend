@@ -3,6 +3,7 @@ import {useHistory} from "react-router-dom";
 import { UserContext } from '../../UserContext'
 import TiendaNavBar from './TiendaNavBar';
 import {Link} from 'react-router-dom';
+import './MenuTienda.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 const Tarjeta = () => {
@@ -13,25 +14,20 @@ const Tarjeta = () => {
 }
 
 function InfoBancaria() {
-  const [url, setUrl] = useState("");
-  const [progress, setProgress] = useState(0);
-
-
   let history = useHistory()
-  const [data, setData] = useState({
-    nombre_titular: '',
-    num_tarjeta: '',
-    exp_date: '',
-    cvv: '',
-    cp: ''});
-
   const [items, setItems] = useState([])
   const {user, setUser} = useContext(UserContext);
-  useEffect(() => {
-    fetchitems();
+  useEffect(()=>{
+      fetchitems();
   }, []);
 
-  const fetchitems = async () => {};
+  const fetchitems = async ()=>{
+
+      const data = await fetch(`http://localhost:5000/api/v1/infobank/${user.id}`);
+      const items = await data.json();
+      console.log(items[0]);
+      setItems(items[0]);
+  };
 
   const updateField = e => {
     setData({
@@ -39,12 +35,23 @@ function InfoBancaria() {
       [e.target.name]: e.target.value
     });
   }
+
+  const [data, setData] = useState({
+    nombre_titular:'',
+    num_tarjeta: '',
+    exp_date: '',
+    cvv: '',
+    cpp: ''});
+
+  const Guardar = async (id)=>{}
+
+
   return (
     <div class="container">
       <div class="row">
         <div class="col-12">
           <div class="card">
-            <div className="container-item izq">
+            <div className="top container-item izq">
               <Link to="/panel">
                 <a className="atras izq" href="">
                   <h6 className="izq">← Atras</h6>
@@ -70,7 +77,7 @@ function InfoBancaria() {
                     <tbody>
                       <tr>
                         <tr>
-                          <th>Nombre del titular de la tarjeta</th>
+                          <th>Titular de la tarjeta</th>
                           <td>{items.nombre_titular}</td>
                         </tr>
                         <tr>
@@ -78,12 +85,13 @@ function InfoBancaria() {
                           <td>{items.num_tarjeta}</td>
                         </tr>
                         <tr>
-                          <th>Fecha de expiración <small>MM/YY></small></th>
+                          <th>Fecha de expiración <br/>
+                            <small>MM/YY</small></th>
                           <td>{items.exp_date}</td>
                         </tr>
                         <tr>
-                          <th>CVV
-                          <small>Código de 3 digitos de la parte trasera de tu tarjeta</small> </th>
+                          <th>CVV <br/>
+                          <small>Código de 3 digitos de la parte trasera de tu tarjeta</small></th>
                           <td>{items.cvv}</td>
                         </tr>
                         <tr>
@@ -109,11 +117,10 @@ function InfoBancaria() {
                   </div>
                   <div class="modal-body">
 
-                        <label for="nombre">Nombre del titular de la tarjeta</label>
+                        <label for="nombre">Titular de la tarjeta</label>
                         <div>
                           <input
                           class="form-control"
-                          required autocomplete="off"
                           id="nombre_titular"
                           type="text"
                           name="nombre"
@@ -126,7 +133,6 @@ function InfoBancaria() {
                          <div>
                           <input
                               class="form-control"
-                              required autocomplete="off"
                               id="num_tarjeta"
                               type="tel"
                               name="horario"
@@ -134,7 +140,7 @@ function InfoBancaria() {
                               onChange={updateField}
                               ></input>
                         </div>
-                        <label for="exp_date">Expiration Date</label>
+                        <label for="exp_date">Fecha Expiracion</label>
                         <div>
                           <input
                               class="form-control"
@@ -142,20 +148,18 @@ function InfoBancaria() {
                               type="tel"
                               name="exp_date"
                               placeholder="MM / YY"
-                              required autocomplete="cc-exp"
                               value={data.exp_date}
                               onChange={updateField}
                               ></input>
                         </div>
-                        <label for="cvv">Cvv</label>
-                        <p><small>Código de 3 digitos de la parte trasera de tu tarjeta</small></p>
+                        <label for="cvv">Cvv </label>
+                        <p><small> Código de 3 digitos de la parte trasera de tu tarjeta</small></p>
                         <div>
                           <input
                               class="form-control"
                               id="cvv"
                               type="tel"
                               name="cvv"
-                              required autocomplete="off"
                               value={data.cvv}
                               onChange={updateField}
                               ></input>
@@ -164,7 +168,6 @@ function InfoBancaria() {
                         <div>
                           <input
                               class="form-control"
-                              required autocomplete="off"
                               id="cpp"
                               type="text"
                               name="cpp"
@@ -176,7 +179,7 @@ function InfoBancaria() {
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                      <button type="button" class="btn btn-success" data-dismiss="modal">Guardar</button>
+                      <button type="button" class="btn btn-success" data-dismiss="modal"onClick={()=>Guardar(user.id)}>Guardar</button>
                   </div>
               </div>
           </div>
