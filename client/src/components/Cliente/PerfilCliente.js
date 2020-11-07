@@ -12,7 +12,12 @@ function PerfilCliente(){
 let history = useHistory()
 const [data, setData] = useState({
   nombre: '',
-  tel: ''
+  tel: '',
+  nombre_titular:'',
+  num_tarjeta:'',
+  exp_date:'',
+  cvv:'',
+  cpp:''
 });
 
 
@@ -25,11 +30,12 @@ useEffect(()=>{
 
 const fetchitems = async ()=>{
 
-    const data = await fetch(`http://localhost:5000/api/v1/usuarioinfo/${user.id}`);
+    const data = await fetch(`http://localhost:5000/api/v1/usuarioinfoperfil/${user.id}`);
     const json = await data.json();
     console.log(json[0])
     setItems(json[0]);
     setData(json[0]);
+
 };
 
 const updateField = e => {
@@ -85,62 +91,21 @@ const eliminar = async (id)=>{
   }
 }
 
-function validar() {
-  const regex_numtarjeta = new RegExp(/(\d{4} *\d{4} *\d{4} *\d{4})/);
-  const regex_expdate =  new RegExp(/(\d{2})\/?(\d{2})/);
-  const regex_cvv = new RegExp(/\d{3}/);
-  const regex_cpp = new RegExp(/\d{5}/);
-
-  const paso = true;
-  let messages= []
-  if(!regex_numtarjeta.test(data.num_tarjeta)) {
-    alert('Introduce un numero de tarjeta valido de 16 digitos ');
-      paso = false;
-  }
-
-  if(!regex_expdate.test(data.exp_date)){
-    alert('Introduce bien el mes/año ');
-    paso = false;
-
-  }
-  if (!regex_cvv.test(data.cvv)) {
-    messages.push('Introduce el código de 3 digitos ');
-    paso = false;
-
-  }
-  if (!regex_cpp.test(data.cpp)) {
-    alert('Introduce un codigo postal valido de 5 digitos ');
-    paso = false;
-  }
-  if (paso == false) {
-    return false
-  }
-}
 
 const GuardarInfoBank = async (id)=>{
-    
-
-
-    const body = data;
-      try{
-            const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
-            {
-                method: "PUT",
-                headers: {"Content-Type":"application/json"},
-                body: JSON.stringify(body)
-
-            });
-            window.location = '/panel/Tarjeta'
-            history.push("/panel/Tarjeta")
-      }catch(err){
-          console.error(err)
-
-      }
+      const body = data;
+        try{
+              const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
+              {
+                  method: "PUT",
+                  headers: {"Content-Type":"application/json"},
+                  body: JSON.stringify(body)
+              });
+              fetchitems();
+        }catch(err){
+            console.error(err)
+        }
 }
-
-
-
-
 
   return(
     <Fragment>
@@ -172,9 +137,9 @@ const GuardarInfoBank = async (id)=>{
                                   <a class="nav-link" id="InfoBank-tab" data-toggle="tab" href="#InfoBank" role="tab" aria-controls="InfoBank" aria-selected="false">Información Bancaria</a>
                                 </li>
                               </ul>
-                              <div class="tab-content ml-1" id="myTabContent">
+                              <div class="tab-content ml-l" id="myTabContent">
                                   <div class="tab-pane fade show active" id="MyInfo" role="tabpanel" aria-labelledby="MyInfo-tab">
-                                    <table className="table table-striped">
+                                    <table className="table table-striped ">
 
                                         <tbody>
 
@@ -202,25 +167,25 @@ const GuardarInfoBank = async (id)=>{
                                         <tr>
                                           <tr>
                                             <th>Titular de la tarjeta</th>
-                                            <td>{items.nombre_titular}</td>
+                                            <td>{items['info_bancarium.nombre_titular']}</td>
                                           </tr>
                                           <tr>
                                             <th>Número Tarjeta<br/>
                                             <small>eg 5555 5555 5555 5555</small></th>
-                                            <td>{items.num_tarjeta}</td>
+                                            <td>{items['info_bancarium.num_tarjeta']}</td>
                                           </tr>
                                           <tr>
                                             <th>Fecha de expiración <br/> <small>MM/YY</small></th>
-                                            <td>{items.exp_date}</td>
+                                            <td>{items['info_bancarium.exp_date']}</td>
                                           </tr>
                                           <tr>
                                             <th>CVV <br/>
                                             <small>Código de 3 digitos de la parte trasera de tu tarjeta</small> </th>
-                                            <td>{items.cvv}</td>
+                                            <td>{items['info_bancarium.cvv']}</td>
                                           </tr>
                                           <tr>
                                             <th>Código Postal</th>
-                                            <td>{items.cpp}</td>
+                                            <td>{items['info_bancarium.cpp']}</td>
                                           </tr>
                                         </tr>
                                       </tbody>
