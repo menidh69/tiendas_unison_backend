@@ -84,7 +84,7 @@ const Menu = ()=>{
                 <h1 className="text-dark my-4 display-4">Menú</h1>
             <div className="row">
             {items.map(item =>(
-                <div className="col-md-3 my-2">        
+                <div key={item.id} className="col-md-3 my-2">        
                     <div className="card rounded shadow text-center h-100" style={style}>
                         <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
                         <div className="card-body h-75">

@@ -109,7 +109,16 @@ router.get("/universidades/tiendas/:id_universidad", async (req, res)=>{
         where:{
             id_universidad: req.params.id_universidad,
             tipo_usuario: 'tienda'
-        }, include: Tienda, raw:true})
+        }, include: [
+            {
+                model: Tienda, 
+                include: [
+                    {
+                        model: Ubicacion
+                    }
+                ]
+            }
+        ], raw:true})
     .then(result => {
         console.log(result)
         res.json(result)

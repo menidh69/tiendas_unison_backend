@@ -1,14 +1,32 @@
-import React, { Fragment, useReducer, useContext} from "react";
+import React, { Fragment, useReducer, useContext, useState, useEffect} from "react";
 import "./Contenido.css";
 import IndexTiendas from './IndexTiendas'
 import { UserContext } from '../../UserContext';
-import Mapa from './Mapa'
+import MapaCliente from './MapaCliente';
+import MapaTiendas from './MapaTiendas';
 
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const Contenido = () => {
   const {user, setUser} = useContext(UserContext)
+const [items, setItems] = useState({})
+
+
+useEffect(()=>{
+  let isMounted = true;
+    fetchitems()
+    .then(json=>{
+      if(isMounted) setItems(json)
+    })
+    return ()=>isMounted=false;
+}, []);
+
+const fetchitems = async ()=>{
+    const data = await fetch(`http://localhost:5000/api/v1/universidades/tiendas/${user.id_universidad}`);
+    const json = await data.json();
+    return json;
+};
   
   return (
     <Fragment>
@@ -18,14 +36,14 @@ const Contenido = () => {
 
             </div>
             <h4>Bienvenido {user.nombre}</h4>
-                <Mapa googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCcUw9PQsvW0euSqylR6x4rCBXLpFn6VCo`}
-                loadingElement={<div style={{height: "100%"}}/>} containerElement={<div style={{height: "450px"}}/>} 
-                mapElement={<div style={{height: "100%"}}/>}></Mapa>
-                <Link to="/tiendas">
-                <button className="btn btn-lg btn-primary rounded-pill my-4">Ver listado de todas las tiendas</button>
-                </Link>
-                <hr/>
+                <MapaTiendas></MapaTiendas>
+                
+                {/* <button  className="btn btn-lg btn-primary rounded-pill my-4">Ver listado de todas las tiendas</button> */}
+              
+                <hr className="my-4"/>
+                <div>
                 <IndexTiendas className="my-4"/>
+                </div>
         </div>
     </Fragment>
   );

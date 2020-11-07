@@ -76,7 +76,7 @@ const LandingPage = ()=> {
                  </div>
                  <Link to="/registrouniversidad">
                 <div className = "badge">
-                    <div className="alert alert-info" role="alert"> ¿No encuentras tu Universidad?<span class="alert-link">¡Regístrala aquí!</span></div>
+                    <div className="alert alert-info" role="alert"> ¿No encuentras tu Universidad?<span className="alert-link">¡Regístrala aquí!</span></div>
                 </div>
                  </Link>
             </div>
@@ -85,11 +85,11 @@ const LandingPage = ()=> {
 
                 <div className="container LandingPage">
                 <div className="form-group text-left">
-                    <form class ="ini1" onSubmit={onSubmitForm}>
+                    <form className ="ini1" onSubmit={onSubmitForm}>
                         <div className="row">
                             <div className="col-md-3 mx-auto">
                                 <div className="form-group">
-                                <label for="email" className="mx-1 text-white">Email address: </label>
+                                <label htmlFor="email" className="mx-1 text-white">Email address: </label>
                                 <input
                                   className="form-control-sm"
                                   id="email"
@@ -102,7 +102,7 @@ const LandingPage = ()=> {
                             </div>
                             <div className="col-md-3 mx-auto">
                                 <div className="form-group">
-                                <label for="contra" className="mx-1 text-white">Password: </label>
+                                <label htmlFor="contra" className="mx-1 text-white">Password: </label>
                                 <input
                                   className="form-control-sm"
                                   type="password"
@@ -112,7 +112,9 @@ const LandingPage = ()=> {
                                   value={data.contra}
                                   onChange={updateField}
                                   ></input>
-                                <small id="olvidada" class="form-text .bg-black"><a href="olvidarcontra">¿Olvidaste tu contraseña?</a></small>
+                                  <Link to="/olvidarcontra">
+                                <small id="olvidada" className="form-text .bg-black">¿Olvidaste tu contraseña?</small>
+                                </Link>
                                 </div>
                             </div>
                             <div className="col-md-3 mx-auto">
@@ -126,7 +128,7 @@ const LandingPage = ()=> {
                         <h1>Olvídate del efectivo,</h1>
                         <h1>compralo en línea.</h1>
                         <Link to="/login">
-                        <button className="btn btn-outline-warning btn-lg mx-4"><a href="Login">Iniciar sesión</a></button>
+                        <button className="btn btn-outline-warning btn-lg mx-4">Iniciar sesión</button>
                         </Link>
                         <Link to="/registro">
                         <button className="btn btn-lg btn-warning mx-4">Registrate</button>

@@ -48,6 +48,8 @@ const setLocation = (e)=>{
         lat: latitud,
         lng: longitud
     }
+    console.log(latitud)
+    console.log(longitud)
     setMarkerPosition(latLng)
     setMarkerShown(true)
     props.handleLocation(coordinates)

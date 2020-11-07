@@ -53,9 +53,9 @@ function NavItem(props) {
     return (
         <li className="nav-item">
 
-                <a className="icon-button" onClick={() => setOpen(!open)}>
+                <button className="icon-button" onClick={() => setOpen(!open)}>
                     {props.icon}
-                </a>
+                </button>
             <div style={{display: 'contents'}} onClick={() => setOpen(!open)}>
                 {open && props.children}
             </div>

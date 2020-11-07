@@ -118,8 +118,8 @@ CREATE TABLE productos (
 CREATE TABLE ubicacion (
     id SERIAL PRIMARY KEY,
     id_tienda BIGINT UNSIGNED,
-    lat DECIMAL,
-    lng DECIMAL,
+    lat DECIMAL(18,15),
+    lng DECIMAL(18,15),
 
     CONSTRAINT fk_tienda_ubi
     FOREIGN KEY (id_tienda)
