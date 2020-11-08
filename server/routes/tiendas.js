@@ -183,7 +183,12 @@ router.get("/tiendas/:id", async (req, res)=>{
 //GET INFO TIENDA BY USER ID
 router.get("/tiendainfo/:id", async (req, res)=>{
   try{
-      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}})
+      const tienda = await Tienda.findAll(
+          {
+              where: {id_usuario: req.params.id},
+              include: Ubicacion, raw: true
+            }
+          )
       .then(result =>{
           //console.log(result);
           res.json(result);
@@ -245,8 +250,18 @@ router.get("/tiendas/ubicacion/:id", async(req, res)=>{
 })
 
 //PUT ubicacion en TIENDA BY USER ID
-router.put("/tiendas/ubicacion/:id", async(req, res)=>{
-
+router.put("/tiendas/ubicacion/:id_tienda", async(req, res)=>{
+    const ubicacion = Ubicacion.update({lat: req.body.lat, lng: req.body.lng},{where:{id_tienda: req.params.id_tienda}})
+    .then(result=>{
+        if(result.error){
+            return res.json({status: "Tienda o ubicacion de tienda no existe"})
+        }else{
+            return res.json({status: "Ubicacion actualizada con exito", result: result})
+        }
+    })
+    .catch(err=>{
+        return res.json({status: err})
+    })
 })
 
 module.exports = router;

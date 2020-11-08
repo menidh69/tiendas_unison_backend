@@ -10,27 +10,28 @@ function Map(props){
     const {user, setUser} = useContext(UserContext)
     const [items, setItems] = useState([])
     const [selectedTienda, setSelectedTienda] = useState(null)
-    // const [myPosition, setMyPosition] = useState(null);
+    const [myPosition, setMyPosition] = useState(null);
 
-    // function getLocation(){
-    //     if(navigator.geolocation){
-    //         const latlng = navigator.geolocation.getCurrentPosition(getCoordinates);
-    //     }else{
-    //         alert("Geolocation not supported by browser")
-    //     }
-    // }
+    function getLocation(){
+        if(navigator.geolocation){
+            const latlng = navigator.geolocation.getCurrentPosition(getCoordinates);
+        }else{
+            alert("Geolocation not supported by browser")
+        }
+    }
 
-    // function getCoordinates(position){
-    //     setMyPosition({
-    //         latitude: position.coords.latitude,
-    //         longitude: position.coords.longitude
-    //     })
-    //     console.log(position.coords.latitude)
-    //     console.log(position.coords.longitude)
-    // }
+    function getCoordinates(position){
+        setMyPosition({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        })
+        console.log(position.coords.latitude)
+        console.log(position.coords.longitude)
+    }
 
     useEffect(()=>{
         let isMounted = true;
+        getLocation();
         fetchitems()
         .then(json=>{
             if(isMounted) setItems(json)
@@ -80,7 +81,7 @@ function Map(props){
        
         />
         ))}
-        {/* {myPosition ? (
+        {myPosition ? (
         <Marker key="myPosition"
         position={{
             lat: myPosition.latitude,
@@ -88,7 +89,7 @@ function Map(props){
         }}
         
         />
-        ):null} */}
+        ):null}
         
          {selectedTienda ? (
             <InfoWindow position={{
