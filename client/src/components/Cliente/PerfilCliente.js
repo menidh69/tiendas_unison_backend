@@ -92,19 +92,21 @@ const eliminar = async (id)=>{
 }
 
 
+
+
 const GuardarInfoBank = async (id)=>{
-      const body = data;
-        try{
-              const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
-              {
-                  method: "PUT",
-                  headers: {"Content-Type":"application/json"},
-                  body: JSON.stringify(body)
-              });
-              fetchitems();
-        }catch(err){
-            console.error(err)
-        }
+        const body = data;
+          try{
+                const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
+                {
+                    method: "PUT",
+                    headers: {"Content-Type":"application/json"},
+                    body: JSON.stringify(body)
+                });
+                fetchitems();
+          }catch(err){
+              console.error(err)
+          }
 }
 
   return(
@@ -300,7 +302,7 @@ const GuardarInfoBank = async (id)=>{
                           ></input>
                         </div>
                         <label for="num_tarjeta">Número de tarjeta</label>
-                        <p><small>Ingresa un número de tarjeta de 16 digitos </small></p>
+                        <p><small>Ingresa un número de tarjeta de 16 digitos eg. 5555 5555 5555 5555</small></p>
                          <div>
                           <input
                               class="form-control"
@@ -312,6 +314,7 @@ const GuardarInfoBank = async (id)=>{
                               ></input>
                         </div>
                         <label for="exp_date">Fecha Expiracion</label>
+                        <p><small>eg. 04/28</small></p>
                         <div>
                           <input
                               class="form-control"

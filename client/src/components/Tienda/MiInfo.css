@@ -19,6 +19,8 @@
 .nav-item {
     background-color: #813434;
     justify-content: center;
+    width: auto;
+
 }
 
 .image-container {
