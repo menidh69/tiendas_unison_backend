@@ -10,10 +10,10 @@ import Menu from './Menu';
 import SelectUni from './SelectUni';
 
 const Home = (props)=>{
-  
+
     const {user, setUser} = useContext(UserContext);
     const value = useMemo(() => ({ user, setUser}), [user, setUser]);
-    
+
     return(
         <Router>
             <UserContext.Provider value={value}>
@@ -27,7 +27,7 @@ const Home = (props)=>{
             </Switch>
             </UserContext.Provider>
         </Router>
-        
+
     )
 }
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
+const Info_bancaria = require('../models/Info_bancaria');
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
@@ -25,7 +26,7 @@ router.post("/usuarios", async (req, res)=>{
               user.contra = hash
               Usuario.create(user)
               .then(usuario=> {
-                res.json({status: usuario.email + ' registrado con exito'})  
+                res.json({status: usuario.email + ' registrado con exito'})
                 const msg ={
                     to: user.email,
                     from: "tiendasuniv@hotmail.com",
@@ -40,7 +41,7 @@ router.post("/usuarios", async (req, res)=>{
               })
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })  
+            res.json({ error: "Ya existe un usuario con esa cuenta" })
         }
     })
     .catch(err =>{
@@ -112,6 +113,21 @@ router.get("/usuarioinfo/:id", async (req, res)=>{
       console.log(err);
   }
 })
+
+//info usuario e info bancaria
+router.get("/usuarioinfoperfil/:id", async (req, res)=>{
+  try{
+      const user = await Usuario.findAll({where: {id: req.params.id}, include: Info_bancaria, raw:true})
+      .then(result =>{
+          res.json(result);
+      })
+
+  }catch(err){
+      console.error(err)
+      console.log(err);
+  }
+})
+
 
 
 //PUT nueva info en usuario
