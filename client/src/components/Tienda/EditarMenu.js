@@ -49,7 +49,7 @@ function Tabla() {
 
     useEffect(() =>{
         fetchitems();
-    }, []);
+    });
 
 
 
@@ -193,20 +193,29 @@ function ModalEditar(props){
             descripcion: props.item.descripcion
         });
         setProgress(0)
+        setUrl("")
         console.log(props.item.url_imagen)
     }
 
     const editarClick = async(idProducto,idTienda) => {
 
-        if (data.url_imagen=="") {
-            if (url == "") {
-              data.url_imagen = props.item.url_imagen
-            }
+        // if (data.url_imagen=="") {
+        //     if (url == "") {
+        //       data.url_imagen = props.item.url_imagen
+        //     }
     
+        // } else {
+        //     data.url_imagen = url;
+        // }
+
+        if (url=="") {
+            data.url_imagen= props.item.url_imagen
         } else {
             data.url_imagen = url;
+
         }
         setProgress(0)
+        setUrl("")
 
         if (data.nombre!=="" && data.precio !=="" && data.categoria!="") {
             const body = data;
@@ -257,7 +266,7 @@ function ModalEditar(props){
                                     <br/>
                                 </div>
                                 <div className="col-sm-10 text-center">
-                                    <img alt={"Imagen del producto: " + props.item.nombre} src={data.url_imagen||"https://via.placeholder.com/300x300"} className="imagenP"></img>
+                                    <img alt={"Imagen del producto: " + props.item.nombre} src={url||data.url_imagen||"https://via.placeholder.com/300x300"} className="imagenP"></img>
                                 </div>
                             </div>
                             <div className="form-group row">

@@ -8,6 +8,7 @@ import PerfilCliente from './PerfilCliente';
 import TiendaInfo from './TiendaInfo';
 import Menu from './Menu';
 import SelectUni from './SelectUni';
+import Carrito from './Carrito';
 
 const Home = (props)=>{
   
@@ -24,6 +25,7 @@ const Home = (props)=>{
                 <Route path='/PerfilCliente' exact component={PerfilCliente}/>
                 <Route path='/tiendas/:id' exact component={TiendaInfo}/>
                 <Route path='/tiendas/:id/menu' exact component={Menu}/>
+                <Route path='/carrito' exact component={Carrito}/>
             </Switch>
             </UserContext.Provider>
         </Router>

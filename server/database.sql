@@ -114,3 +114,30 @@ CREATE TABLE productos (
     REFERENCES tienda(id)
     ON DELETE SET NULL
 );
+
+CREATE TABLE carrito (
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+    
+    CONSTRAINT fk_usuario3
+    FOREIGN KEY (id_usuario)
+    REFERENCES  usuario(id)
+    ON DELETE SET NULL
+);
+
+CREATE TABLE carrito_item (
+    id SERIAL PRIMARY KEY,
+    id_producto BIGINT UNSIGNED,
+    id_carrito BIGINT UNSIGNED,
+    cantidad INT,
+
+    CONSTRAINT fk_producto
+    FOREIGN KEY (id_producto)
+    REFERENCES productos(id)
+    ON DELETE SET NULL,
+
+    CONSTRAINT fk_carrito
+    FOREIGN KEY (id_carrito)
+    REFERENCES carrito(id)
+    ON DELETE SET NULL
+);

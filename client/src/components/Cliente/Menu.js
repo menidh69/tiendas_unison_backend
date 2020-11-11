@@ -56,7 +56,9 @@ const Menu = ()=>{
         console.log(json)
         handleClose2();
       }
-      const [show2, setShow2] = useState(false);
+    const [show2, setShow2] = useState(false);
+
+
 
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
@@ -96,7 +98,8 @@ const Menu = ()=>{
                                    ${item.precio}
                             </div>
                         </div>
-                        <button className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button>   
+                        <button className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button> 
+                        <AgregarCarrito item={item}/> 
 
                     </div>   
                 </div>
@@ -151,5 +154,64 @@ const Menu = ()=>{
         </Fragment>
     )
 }
+
+function AgregarCarrito(props) {
+    return(
+        <Fragment>
+            <a href={"#agregar" + props.item.id} role="button" className="btn btn-block btn-info w-75 my-2 mx-auto" data-toggle="modal">
+                Agregar al carrito
+            </a>
+            <Agregar item={props.item} cantidad="1" ></Agregar>
+            
+        </Fragment>
+
+    );
+}
+
+function Agregar(props){
+
+    
+    const {user , setUser} = useContext(UserContext);
+    const [data, setData] = useState({
+        cantidad: props.cantidad
+      });
+
+    const updateField = e => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        });
+    }
+    const agregarCarrito = async(id_producto, cantidad) => {
+        const data = await fetch (`http://localhost:5000/api/v1/carrito/${user.id}`);
+        const iCarrito = await data.json();
+        const data2 = await fetch (`http://localhost:5000/api/v1/agregarCarrito/${id_producto}/${iCarrito[0].id}/${cantidad}`, {
+            method: "POST"
+        });
+    }
+
+
+    return(
+        <div id={"agregar" + props.item.id} class="modal fade">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h4 className="modal-title">Cantidad a agregar</h4>
+                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div className="modal-body">
+                        <p>¿Cuantos {props.item.nombre} deseas agregar?</p>
+                        <input type="number" name="cantidad" value={data.cantidad} min="1" max="10" onChange={updateField} />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"  onClick={()=>agregarCarrito(props.item.id, data.cantidad)}>Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 
 export default Menu;

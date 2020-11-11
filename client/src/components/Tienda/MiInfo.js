@@ -192,7 +192,7 @@ function MiInfo(){
                                 <hr/>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" href="#Editar">Editar</button>
 
-                                <div class="col-12">
+                                  <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                                       <li class = "nav-item">
                                         <a class="nav-link active" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Perfil</a>
@@ -232,7 +232,7 @@ function MiInfo(){
                                           Mapa para otro Sprint
                                         </div>
                                     </div>
-                                </div>
+                                  </div>
                             </div>
                           </div>
                       </div>

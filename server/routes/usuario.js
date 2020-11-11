@@ -4,6 +4,10 @@ const Usuario = require('../models/Usuario');
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
+const Carrito = require('../models/Carrito');
+const Carrito_item = require('../models/CarritoItem');
+const Productos = require('../models/Productos');
+const { sequelize } = require('../db/db');
 
 router.post("/usuarios", async (req, res)=>{
     const user = {
@@ -113,6 +117,74 @@ router.get("/usuarioinfo/:id", async (req, res)=>{
   }
 })
 
+//CARRITO
+
+// Productos.hasMany(Carrito_item, {as: 'producto', foreignKey: 'id_producto'});
+// Carrito_item.belongsTo(Productos, {foreignKey: 'id'});
+
+
+router.get("/carrito/:id", async (req, res) => {
+  try {
+    const carrito = await Carrito.findAll({where: {id_usuario: req.params.id}})
+    
+
+    .then(result => {
+      res.json(result);
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+// Carrito_item.hasOne(Productos, {as: 'id_producto', foreignKey:'id'})
+
+router.get("/carritoItem/:id", async (req,res) => {
+  try {
+    // const carritoItem = await Carrito_item.findAll({
+    // include: [
+    //   {model: Productos}
+    // ],
+    // where: {id_carrito: req.params.id}})
+    const carritoItem = await sequelize.query("SELECT carrito_item.id, carrito_item.id_producto, carrito_item.cantidad, productos.nombre, productos.precio FROM carrito_item INNER JOIN productos ON carrito_item.id_producto = productos.id WHERE id_carrito = " + req.params.id)
+    // console.log(carritoItem)
+    .then(result => {
+      res.json(result);
+    })
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+router.delete("/eliminarCarritoItem/:id", async (req, res)=>{
+    
+  Carrito_item.destroy({where:{
+      id: req.params.id
+  }})
+  .then(result => {
+      res.json(result)
+  })
+})
+
+//router.get("/carritoItems")
+
+router.post("/agregarCarrito/:id_producto/:idCarrito/:cantidad", async (req,res) => {
+  try {
+    const carritoItem = {
+      id_producto: req.params.id_producto,
+      id_carrito: req.params.idCarrito,
+      cantidad: req.params.cantidad
+    }
+
+    Carrito_item.create(carritoItem)
+    .then(result => {
+      res.json({status: "agregado con exito"})
+    })
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+//AQUI TERMINA LO DEL CARRITO
 
 //PUT nueva info en usuario
 router.put("/usuarios/:id", async (req, res)=>{

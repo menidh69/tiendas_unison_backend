@@ -62,7 +62,7 @@ const LandingPage = ()=> {
     return(
         <Fragment>
 
-        <div className = "row text-center m-0 p-0">
+        <div className = "row text-center m-0 p-0 h-100">
             <div className = "lpleft text-center mx-auto col-sm-5">
                 <h1>Tiendas</h1>
                 <h1>Universitarias</h1>
