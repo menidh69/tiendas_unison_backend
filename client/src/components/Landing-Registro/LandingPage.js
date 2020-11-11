@@ -26,7 +26,7 @@ const LandingPage = ()=> {
   }
 
   const onSubmitForm = async e =>{
-      
+
     e.preventDefault();
     try{
         const body = data;
@@ -50,7 +50,7 @@ const LandingPage = ()=> {
                 localStorage.setItem("token.tuw", result.user.token)
                 setUser(result.user);
                 history.push("/")
-                
+
             }
         })
     }catch(err){

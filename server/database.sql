@@ -141,3 +141,20 @@ CREATE TABLE carrito_item (
     REFERENCES carrito(id)
     ON DELETE SET NULL
 );
+
+CREATE TABLE info_bancaria(
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+
+    nombre_titular VARCHAR (100),
+    num_tarjeta VARCHAR(50),
+    exp_date VARCHAR (20),
+    cvv BIGINT,
+    cpp BIGINT,
+
+    CONSTRAINT fk_usuario3
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id)
+    ON DELETE CASCADE
+);
+

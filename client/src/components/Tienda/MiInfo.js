@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState,  useContext} from 'react';
+import React, {Fragment, useEffect, useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import TiendaNavBar from './TiendaNavBar';
 import {Link} from 'react-router-dom';
@@ -84,6 +84,7 @@ function MiInfo(){
       const items = await data.json();
 
       setItems(items[0]);
+      setData(items[0]);
   };
 
   const updateField = e => {
@@ -142,8 +143,7 @@ function MiInfo(){
                 body: JSON.stringify(body)
 
             });
-            window.location = '/panel/MiInfo'
-            history.push("/panel/MiInfo")
+            fetchitems();
 
 
       }catch(err){
@@ -158,11 +158,20 @@ function MiInfo(){
     return(
         <Fragment>
 
+
           <div class="container">
+
                   <div class="row">
                       <div class="col-12">
                           <div class="card">
-
+                            <div className="top container-item izq">
+                                <Link to="/panel">
+                                <a className="atras izq" href="">
+                                    <h6 className="izq">← Atras</h6>
+                                </a>
+                                </Link>
+                                <h6 className="izq">| Mi información</h6>
+                            </div>
                             <div class="card-body">
 
                               <div class="card-title mb-4">
@@ -181,16 +190,14 @@ function MiInfo(){
 
 
                                       </div>
-                                      <div class="ml-auto">
-                                          <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
-                                    </div>
+
                                   </div>
 
                               </div>
 
                               <div class="row">
                                 <hr/>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" href="#Editar">Editar</button>
+                                <button type="button" class="btn btn-info" data-toggle="modal" href="#Editar">Editar</button>
 
                                   <div class="col-12">
                                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
@@ -200,15 +207,11 @@ function MiInfo(){
                                       <li class = "nav-item">
                                         <a class="nav-link" id="MapaInfo-tab" data-toggle="tab" href="#MapaInfo" role="tab" aria-controls="MapaInfo" aria-selected="false">Mapa</a>
                                       </li>
-
                                     </ul>
-
                                     <div class="tab-content ml-1" id="myTabContent">
                                         <div class="tab-pane fade show active" id="MyInfo" role="tabpanel" aria-labelledby="MyInfo-tab">
                                           <table className="table table-striped">
-
                                               <tbody>
-
                                                 <tr>
                                                       <tr><th>Nombre tienda</th>
                                                             <td>{items.nombre}</td>
@@ -223,11 +226,9 @@ function MiInfo(){
                                                             <td>{TipoTienda()}</td>
                                                       </tr>
                                                   </tr>
-
                                             </tbody>
                                           </table>
                                         </div>
-
                                         <div class="tab-pane fade" id="MapaInfo" role="tabpanel" aria-labelledby="MapaInfo-tab">
                                           Mapa para otro Sprint
                                         </div>
@@ -247,63 +248,74 @@ function MiInfo(){
                             <h4 class="modal-title">Editar Mi Información</h4>
                         </div>
                         <div class="modal-body">
-
+                              <div className="form-group">
                               <label for="nombre">Nombre de Tienda</label>
-                              <div>
-                                <input
-                                id="nombre"
-                                type="text"
-                                name="nombre"
-                                value={data.nombre}
-                                onChange={updateField}
-                                ></input>
-                              </div>
-                              <label for="horario">Horario</label>
-                              <div>
-                                <input
-                                    id="horario"
-                                    type="text"
-                                    name="horario"
-                                    value={data.horario}
-                                    onChange={updateField}
-                                    ></input>
-                              </div>
-                              <label for="tarjeta">Acepta tarjeta?</label>
-                              <p><small>Si/No</small></p>
-                              <div>
-                                <input
-                                    id="tarjeta"
-                                    type="text"
-                                    name="tarjeta"
-                                    value={data.tarjeta}
-                                    onChange={updateField}
-                                    ></input>
-                              </div>
-                              <label for="id_tipo_tienda">Tipo de tienda</label>
-                              <p><small>Cooperativa/Puesto/Cafeteria</small></p>
-                              <div>
-                                <input
-                                    id="id_tipo_tienda"
-                                    type="text"
-                                    name="id_tipo_tienda"
-                                    value={data.id_tipo_tienda}
-                                    onChange={updateField}
-                                    ></input>
-                              </div>
-                              <div>
-                                <label>Subir Imagen</label>
                                 <div>
-                                  <input type="file" id="profilePicture" name="file" onChange={handleChange} />
-                                  <br/>
-                                  <progress value={progress} max="100"/>
-                                  <br/>
-                                  {/* <button onClick={handleUpload}>UPLOAD</button> */}
+                                  <input
+                                  id="nombre"
+                                  type="text"
+                                  name="nombre"
+                                  className="form-control"
+                                  value={data.nombre}
+                                  onChange={updateField}
+                                  ></input>
                                 </div>
+                              </div>
+                              <div className="form-group">
+                                <label for="horario">Horario</label>
+                                  <div>
+                                    <input
+                                        id="horario"
+                                        type="text"
+                                        name="horario"
+                                        className="form-control"
+                                        value={data.horario}
+                                        onChange={updateField}
+                                        ></input>
+                                  </div>
+                                </div>
+                              <div className="form-group">
+                                <label for="tarjeta">Acepta tarjeta?</label>
+                                <p><small>Si/No</small></p>
+                                  <div>
+                                    <input
+                                        id="tarjeta"
+                                        type="text"
+                                        name="tarjeta"
+                                        className="form-control"
+
+                                        onChange={updateField}
+                                        ></input>
+                                  </div>
+                                </div>
+                              <div className="form-group">
+                                <label for="id_tipo_tienda">Tipo de tienda</label>
+                                <p><small>Cooperativa/Puesto/Cafeteria</small></p>
+                                <div>
+                                  <input
+                                      id="id_tipo_tienda"
+                                      type="text"
+                                      name="id_tipo_tienda"
+                                      className="form-control"
+
+                                      onChange={updateField}
+                                      ></input>
+                                  </div>
+                                </div>
+                                <div className="form-group">
+                                <label>Subir Imagen</label>
+                                  <div>
+                                    <input type="file" id="profilePicture" name="file" onChange={handleChange} />
+                                    <br/>
+                                    <progress value={progress} max="100"/>
+                                    <br/>
+                                    {/* <button onClick={handleUpload}>UPLOAD</button> */}
+                                  </div>
                               </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={()=>Guardar(user.id)}>Guardar</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal" onClick={()=>Guardar(user.id)}>Guardar</button>
                         </div>
                     </div>
                 </div>
