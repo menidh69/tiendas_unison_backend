@@ -118,7 +118,7 @@ CREATE TABLE productos (
 CREATE TABLE carrito (
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
-    
+
     CONSTRAINT fk_usuario3
     FOREIGN KEY (id_usuario)
     REFERENCES  usuario(id)
@@ -152,9 +152,8 @@ CREATE TABLE info_bancaria(
     cvv BIGINT,
     cpp BIGINT,
 
-    CONSTRAINT fk_usuario3
+    CONSTRAINT fk_usuario4
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE CASCADE
 );
-
