@@ -67,14 +67,17 @@ function Tabla () {
         ));
         return(
             <Fragment>
+                
+                <h4>Tienda {items.tienda_nombre}</h4>
                 <table class="table">
                     <thead>
                         <tr>
                         <th scope="col">Producto</th>
                         <th scope="col">Precio</th>
                         <th scope="col">Cantidad</th>
+                        <th scope="col">Tienda</th>
                         <th scope="col">Total</th>
-                        <th scope="col"></th>
+                        <th scope="col">•</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,6 +86,7 @@ function Tabla () {
                             <td scope="row">{item.nombre}</td>
                             <td>${Number.parseFloat(item.precio).toFixed(2)}</td>
                             <td>{item.cantidad}</td>
+                            <td>{item.tienda_nombre}</td>
                             <td>${Number.parseFloat(item.precio*item.cantidad).toFixed(2)}</td>
                             <td><Eliminar item={item}/></td>
                         </tr>  
