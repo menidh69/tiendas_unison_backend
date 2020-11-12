@@ -30,6 +30,10 @@ router.post("/usuarios", async (req, res)=>{
               user.contra = hash
               Usuario.create(user)
               .then(usuario=> {
+                const cart = {
+                  id_usuario: usuario.id
+                }
+                Carrito.create(cart)
                 res.json({status: usuario.email + ' registrado con exito'})
                 const msg ={
                     to: user.email,
@@ -138,6 +142,22 @@ router.get("/carrito/:id", async (req, res) => {
   }
 })
 
+router.post("/carritoCrear/:id", async (req, res) => {
+  try {
+    const c = {
+      id_usuario: req.params.id
+    }
+    const crear = await Carrito.create(c)
+    
+
+    .then(result => {
+      res.json(result);
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 // Carrito_item.hasOne(Productos, {as: 'id_producto', foreignKey:'id'})
 
 router.get("/carritoItem/:id", async (req,res) => {
@@ -147,7 +167,7 @@ router.get("/carritoItem/:id", async (req,res) => {
     //   {model: Productos}
     // ],
     // where: {id_carrito: req.params.id}})
-    const carritoItem = await sequelize.query("SELECT carrito_item.id, carrito_item.id_producto, carrito_item.cantidad, productos.nombre, productos.precio FROM carrito_item INNER JOIN productos ON carrito_item.id_producto = productos.id WHERE id_carrito = " + req.params.id)
+    const carritoItem = await sequelize.query("SELECT carrito_item.id, carrito_item.id_producto, carrito_item.cantidad, productos.nombre, productos.precio, productos.id_tienda, tienda.nombre as tienda_nombre FROM carrito_item INNER JOIN productos ON carrito_item.id_producto = productos.id INNER JOIN tienda ON productos.id_tienda = tienda.id WHERE id_carrito = " + req.params.id)
     // console.log(carritoItem)
     .then(result => {
       res.json(result);
