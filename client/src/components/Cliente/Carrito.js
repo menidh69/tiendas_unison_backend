@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import { UserContext } from '../../UserContext'
 import { Component } from 'react';
 import { render } from '@testing-library/react';
+import StripeCheckout from 'react-stripe-checkout'
 
 
 class Carrito extends Component {
@@ -32,7 +33,7 @@ class Carrito extends Component {
             </Fragment>
         );
 
-    }   
+    }
 }
 
 function Tabla () {
@@ -67,7 +68,7 @@ function Tabla () {
         ));
         return(
             <Fragment>
-                
+
                 <h4>Tienda {items.tienda_nombre}</h4>
                 <table class="table">
                     <thead>
@@ -89,12 +90,21 @@ function Tabla () {
                             <td>{item.tienda_nombre}</td>
                             <td>${Number.parseFloat(item.precio*item.cantidad).toFixed(2)}</td>
                             <td><Eliminar item={item}/></td>
-                        </tr>  
+                        </tr>
                         ))}
                     </tbody>
                 </table>
                 <hr/>
                         <div><h5>Total a pagar: ${Number.parseFloat(total).toFixed(2)}</h5></div>
+                        <div class = "container">
+                          <div>
+                            <StripeCheckout
+                              stripeKey="pk_test_51HmMEiAPtTk1CtqMah55yLPk0yqel4OMqZpV5Cq2ekcY8jBWzrwcObp3E513fGCiOqiW9cz1ts4BNaOBICOUIPWk00PIx7to3Y"
+                              token={handleToken}
+
+                              />
+                          </div>
+                        </div>
             </Fragment>
         );
     } else {
@@ -105,16 +115,19 @@ function Tabla () {
         )
     }
 }
+function handleToken(token, addresses) {
+  console.log(token, addresses);
 
+}
 function Eliminar (props){
-        
+
     return(
         <Fragment>
             <a href={"#eliminar" + props.item.id} role="button" className="btn btn-danger" data-toggle="modal">
                 Quitar
             </a>
             <Modal item={props.item}></Modal>
-            
+
         </Fragment>
 
     );
@@ -124,7 +137,7 @@ function Eliminar (props){
 
 function Modal(props){
 
-    
+
 
 
     const eliminarClick = async(idProducto,idTienda) => {
