@@ -4,8 +4,9 @@ import { UserContext } from '../../UserContext'
 import { Component } from 'react';
 import { render } from '@testing-library/react';
 import StripeCheckout from 'react-stripe-checkout'
+import { toast } from 'react-toastify'
 
-
+toast.configure();
 class Carrito extends Component {
 
     constructor (props) {
@@ -51,9 +52,9 @@ function Tabla () {
         const items = await data.json();
         const data2 = await fetch (`http://localhost:5000/api/v1/carritoItem/${items[0].id}`);
         const items2 = await data2.json();
-        console.log(items2[0])
+        //console.log(items2[0])
         if (items2 == null) {
-            console.log("hola");
+            //console.log("hola");
         } else {
             setItems(items2[0]);
 
@@ -97,13 +98,14 @@ function Tabla () {
                 <hr/>
                         <div><h5>Total a pagar: ${Number.parseFloat(total).toFixed(2)}</h5></div>
                         <div class = "container">
-                          <div>
-                            <StripeCheckout
-                              stripeKey="pk_test_51HmMEiAPtTk1CtqMah55yLPk0yqel4OMqZpV5Cq2ekcY8jBWzrwcObp3E513fGCiOqiW9cz1ts4BNaOBICOUIPWk00PIx7to3Y"
-                              token={handleToken}
+                          <StripeCheckout
+                            stripeKey="pk_test_51HmMEiAPtTk1CtqMah55yLPk0yqel4OMqZpV5Cq2ekcY8jBWzrwcObp3E513fGCiOqiW9cz1ts4BNaOBICOUIPWk00PIx7to3Y"
+                            token={handleToken}
+                            amount = {Number.parseFloat(total).toFixed(2) * 100}
+                            name = 'Compra'
+                            />
 
-                              />
-                          </div>
+
                         </div>
             </Fragment>
         );
@@ -115,10 +117,24 @@ function Tabla () {
         )
     }
 }
-function handleToken(token, addresses) {
-  console.log(token, addresses);
+async function handleToken(token)  {
+  //console.log(token,  addresses);
+  const response = await fetch(`http://localhost:5000/api/v1/checkout`,
+  {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      
+  });
+
+  const {status} = response.data
+  if (status === 'success') {
+    toast('Success! Checa tu email para', {type: 'success'});
+  } else {
+    toast('Algo salio mal', {type: 'error'});
+  }
 
 }
+
 function Eliminar (props){
 
     return(

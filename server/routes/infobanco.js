@@ -16,9 +16,23 @@ router.get("/infobanco/:id", async (req, res)=>{
   }
 })
 
+//NUEVA INFO
+router.post("/infobanco/:id", async (req, res)=>{
+    const infobanco = {
+        id_usuario: req.params.id,
+        nombre_titular: req.body.nombre_titular,
+        num_tarjeta: req.body.num_tarjeta,
+        exp_date: req.body.exp_date,
+        cvv: req.body.cvv,
+        cpp: req.body.cpp
+    }
+    Info_bancaria.create(infobanco)
+})
+
+//UPDATE
 router.put("/infobanco/:id", async (req, res)=>{
-    const tienda = await Info_bancaria.update({nombre_titular: req.body.nombre_titular, num_tarjeta: req.body.num_tarjeta,
-      exp_date: req.body.exp_date, cvv:req.body.cvv, cpp:req.body.cpp},{where: {id_usuario: req.params.id}})
+    const info = await Info_bancaria.update({nombre_titular: req.body.nombre_titular, num_tarjeta: req.body.num_tarjeta,
+      exp_date: req.body.exp_date, cvv:req.body.cvv, cpp:req.body.cpp},{where: {id: req.params.id}})
       .then(result=>{
 
           res.json({status: 'success'})
