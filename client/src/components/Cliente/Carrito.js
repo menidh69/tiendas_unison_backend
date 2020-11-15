@@ -5,6 +5,9 @@ import { Component } from 'react';
 import { render } from '@testing-library/react';
 import StripeCheckout from 'react-stripe-checkout'
 import { toast } from 'react-toastify'
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey('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');
+
 
 toast.configure();
 class Carrito extends Component {
@@ -44,7 +47,7 @@ function Tabla () {
 
     useEffect(() =>{
         fetchitems();
-    });
+    },[]);
 
 
     const fetchitems = async () => {
@@ -61,6 +64,23 @@ function Tabla () {
         }
     }
     var total = 0;
+
+    const orden = async (id)=>  {
+     console.log("entro");
+     //console.log(item);
+     const body = items;
+     try{
+
+           const response = fetch(`http://localhost:5000/api/v1/NuevaOrden/${user.id}`,
+           {
+               method: "POST",
+               headers: {"Content-Type":"application/json"},
+               body: JSON.stringify(body)
+           });
+     }catch(err){
+         console.error(err)
+     }
+   }
 
 
     if (items.length > 0) {
@@ -104,8 +124,9 @@ function Tabla () {
                             amount = {Number.parseFloat(total).toFixed(2) * 100}
                             name = 'Compra'
                             />
-
-
+                        </div>
+                        <div>
+                          <button type="button" class="btn btn-success" data-dismiss="modal"onClick={()=>orden(items)}>Pagar</button>
                         </div>
             </Fragment>
         );
@@ -119,21 +140,27 @@ function Tabla () {
 }
 async function handleToken(token)  {
   //console.log(token,  addresses);
-  const response = await fetch(`http://localhost:5000/api/v1/checkout`,
-  {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      
-  });
-
-  const {status} = response.data
-  if (status === 'success') {
-    toast('Success! Checa tu email para', {type: 'success'});
-  } else {
-    toast('Algo salio mal', {type: 'error'});
-  }
 
 }
+ function ordenk(item)  {
+  //const {user, setUser} = useContext(UserContext);
+
+  console.log("entro");
+  console.log(item);
+  const body = item;
+  try{
+
+        const response = fetch(`http://localhost:5000/api/v1/orden`,
+        {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(body)
+        });
+  }catch(err){
+      console.error(err)
+  }
+}
+
 
 function Eliminar (props){
 

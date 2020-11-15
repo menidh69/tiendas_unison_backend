@@ -157,3 +157,31 @@ CREATE TABLE info_bancaria(
     REFERENCES usuario(id)
     ON DELETE CASCADE
 );
+
+CREATE TABLE orden (
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+    fecha Date,
+
+    CONSTRAINT fk_usuario5
+    FOREIGN KEY (id_usuario)
+    REFERENCES  usuario(id)
+    ON DELETE SET NULL
+);
+
+CREATE TABLE orden_item (
+    id SERIAL PRIMARY KEY,
+    id_orden BIGINT UNSIGNED,
+    id_producto BIGINT UNSIGNED,
+    cantidad INT,
+
+    CONSTRAINT fk_producto1
+    FOREIGN KEY (id_producto)
+    REFERENCES productos(id)
+    ON DELETE SET NULL,
+
+    CONSTRAINT fk_orden
+    FOREIGN KEY (id_orden)
+    REFERENCES orden(id)
+    ON DELETE SET NULL
+);

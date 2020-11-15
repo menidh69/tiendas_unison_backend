@@ -118,18 +118,18 @@ const GuardarInfoBank = async (id)=>{
   if (validarcpp(data.cpp) != true ) {
   }
   if (data.num_tarjeta !=="" && data.exp_date != "" && data.nombre_titular != "" && data.cvv != "" && data.cpp != "") {
-        try{
-              const body = data;
-              const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
-              {
-                  method: "POST",
-                  headers: {"Content-Type":"application/json"},
-                  body: JSON.stringify(body)
-              });
-              fetchitems();
-        }catch(err){
-            console.error(err)
-        }
+    try{
+          const body = data;
+          const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
+          {
+              method: "POST",
+              headers: {"Content-Type":"application/json"},
+              body: JSON.stringify(body)
+          });
+          fetchitems();
+    }catch(err){
+        console.error(err)
+    }
   }
 }
 
@@ -315,7 +315,7 @@ const GuardarInfoBank = async (id)=>{
                               id="cvv"
                               type="text"
                               name="cvv"
-                              value={data.exp_date}
+                              value={data.cvv}
                               onChange={updateField}
                               ></input>
                         </div>
@@ -434,7 +434,7 @@ function Info() {
       return(
         <>
         <a href={"#editar" + props.infobanks.id} role="button" className="btn btn-primary btn-sm" data-toggle="modal">
-        Editar{props.infobanks.id}
+        Editar
         </a>
         <ModalEDITAR infobanks={props.infobanks}/>
         </>
@@ -485,7 +485,7 @@ function Info() {
           }
         }
 
-        const GuardarInfoBank = async (id)=>{
+        const Guardar = async (id)=>{
           console.log("PROPS INFOBANKS ID", props.infobanks.id);
           if (data.num_tarjeta != "") {
             if (validarnum(data.num_tarjeta) != true) {
@@ -504,7 +504,7 @@ function Info() {
             }
           }
                 try{
-                      console.log("SE DEBE HACER ESL SUPUESTO CAMBIO", data);
+
                       const body = data;
                       const response = await fetch(`http://localhost:5000/api/v1/infobanco/${props.infobanks.id}`,
                       {
@@ -588,7 +588,7 @@ function Info() {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal"onClick={()=>GuardarInfoBank()} >Editar</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal"onClick={()=>Guardar()} >Editar</button>
                     </div>
                 </div>
             </div>

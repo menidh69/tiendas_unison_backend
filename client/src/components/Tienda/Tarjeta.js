@@ -80,19 +80,20 @@ function InfoBancaria() {
       if (validarcpp(data.cpp) != true ) {
       }
       if (data.num_tarjeta !=="" && data.exp_date != "" && data.nombre_titular != "" && data.cvv != "" && data.cpp != "") {
-            try{
-                  const body = data;
-                  const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
-                  {
-                      method: "POST",
-                      headers: {"Content-Type":"application/json"},
-                      body: JSON.stringify(body)
-                  });
-                  fetchitems();
-            }catch(err){
-                console.error(err)
-            }
-      }
+      } 
+        try{
+              const body = data;
+              const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
+              {
+                  method: "POST",
+                  headers: {"Content-Type":"application/json"},
+                  body: JSON.stringify(body)
+              });
+              fetchitems();
+        }catch(err){
+            console.error(err)
+        }
+
     }
   return (
     <>
@@ -295,7 +296,7 @@ function Info() {
       return(
         <>
         <a href={"#editar" + props.infobanks.id} role="button" className="btn btn-primary btn-sm" data-toggle="modal">
-        Editar{props.infobanks.id}
+        Editar
         </a>
         <ModalEDITAR infobanks={props.infobanks}/>
         </>
@@ -367,7 +368,7 @@ function Info() {
           }
 
                 try{
-                      console.log("SE DEBE HACER ESL SUPUESTO CAMBIO", data);
+
                       const body = data;
                       const response = await fetch(`http://localhost:5000/api/v1/infobanco/${props.infobanks.id}`,
                       {

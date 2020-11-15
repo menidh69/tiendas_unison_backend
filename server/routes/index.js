@@ -7,6 +7,7 @@ const authRoutes = require('./auth')
 const reportes = require('./reportes');
 const validaciones = require('./validaciones')
 const infobanco = require('./infobanco');
+const ordenes = require('./ordenes');
 const stripe = require('./stripe');
 const path = require('path');
 
@@ -18,6 +19,7 @@ router.use("/api/v1", universidadRoutes);
 router.use("/api/v1", reportes);
 router.use("/api/v1", validaciones);
 router.use("/api/v1", infobanco);
+router.use("/api/v1", ordenes)
 router.use("/api/v1", stripe);
 router.use("/", authRoutes);
 router.use(function(req, res) {
