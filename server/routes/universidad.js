@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Universidad = require('../models/Universidad');
+const UbicacionUni = require('../models/UbicacionUni')
 
 
 //GET ALL UNIVERSIDADES
@@ -26,24 +27,45 @@ router.get("/universidadesvalidadas", async (req, res)=>{
 //POST NUEVA UNIVERSIDAD
 router.post("/universidades", async (req, res)=>{
     const uni = {
-        nombre: req.body.nombre,
-        ciudad: req.body.ciudad,
-        estado: req.body.estado,
+        nombre: req.body.data.nombre,
+        ciudad: req.body.data.ciudad,
+        estado: req.body.data.estado,
         validada: "false"
     }
+    const ubi = {
+        id_universidad: '',
+        lat: req.body.ubi.lat,
+        lng: req.body.ubi.lng
+    }
+    console.log(uni)
+    console.log(ubi)
     Universidad.findOne({
         where:{
-            nombre: req.body.nombre
+            nombre: req.body.data.nombre
         }
     })
     .then(universidad =>{
         if(!universidad){
             Universidad.create(uni)
             .then(universidad=>{
-                res.json({status: universidad.nombre + ' registrado con exito'})
+                ubi.id_universidad = universidad.id
+                UbicacionUni.create(ubi)
+                .then(ubicacion=>{
+                    res.json({status: ' registrado con exito'})
+                })
+                .catch(err=>{
+                    console.log(err)
+
+                    return res.json({status: "failed",
+                error: err})
+                })
             })
             .catch(err=>{
-                res.send('error: ' + err)
+                console.log(err)
+
+                return res.json({status: "failed",
+                error: err})
+
             })
         }else{
             res.json({ error: "Universidad ya se registró" })
@@ -88,6 +110,14 @@ router.delete("/universidades/:id", async (req, res)=>{
     }catch(err){
         console.error(err)
     }
+})
+
+router.get("/universidades/ubi/:id", (req, res)=>{
+    UbicacionUni.findOne({where:{id_universidad: req.params.id}, raw:true})
+    .then(result=>{
+        res.json(result)
+    })
+    
 })
 
 module.exports = router;

@@ -115,6 +115,30 @@ CREATE TABLE productos (
     ON DELETE SET NULL
 );
 
+CREATE TABLE ubicacion (
+    id SERIAL PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    lat DECIMAL(18,15),
+    lng DECIMAL(18,15),
+
+    CONSTRAINT fk_tienda_ubi
+    FOREIGN KEY (id_tienda)
+    REFERENCES tienda(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE ubicacionUni (
+    id SERIAL PRIMARY KEY,
+    id_universidad BIGINT UNSIGNED,
+    lat DECIMAL(18,15),
+    lng DECIMAL(18,15),
+
+    CONSTRAINT fk_universidad_ubi
+    FOREIGN KEY (id_universidad)
+    REFERENCES universidad(id)
+    ON DELETE CASCADE
+);
+
 CREATE TABLE carrito (
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
@@ -157,4 +181,5 @@ CREATE TABLE info_bancaria(
     REFERENCES usuario(id)
     ON DELETE CASCADE
 );
+
 

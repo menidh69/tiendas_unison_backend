@@ -6,12 +6,17 @@ import { UserContext } from '../../UserContext'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './MiInfo.css';
 import {storage} from '../../firebase'
-import { render } from "react-dom" ;
+import MiUbicacion from './MiUbicacion';
+
 
 function MiInfo(){
     // const [image, setImage] = useState(null);
     const [url, setUrl] = useState("");
     const [progress, setProgress] = useState(0);
+    const [markerPosition, setMarkerPosition] = useState({
+    
+    })
+    
 
     const handleChange = async e => {
       if (e.target.files[0]){
@@ -36,6 +41,40 @@ function MiInfo(){
       }
     }
 
+    
+
+  const GuardarUbi = async()=>{
+      try{
+          const response = await fetch(`http://localhost:5000/api/v1/tiendas/ubicacion/${items['id']}`,
+          {
+              method: "PUT",
+              headers: {"Content-Type":"application/json"},
+              body: JSON.stringify(markerPosition)
+
+          });
+          const result = await response.json();
+          if(result.status){
+              console.log(result)       
+              setItems({...items, 'ubicacion.lat': markerPosition.lat, 'ubicacion.lng': markerPosition.lng})    
+          }
+    }catch(err){
+        console.error(err)
+
+    }
+  }
+
+  const setLocation = (e)=>{
+      const latLng = e.latLng;
+      let latitud = latLng.lat()
+      let longitud = latLng.lng()
+      let coordinates = {
+          lat: latitud,
+          lng: longitud
+      }
+      console.log(coordinates)
+      setMarkerPosition(coordinates)
+      // props.handleLocation(coordinates)
+  }
 
     const handleUpload = (file) => {
       const uploadTask = storage.ref(`images/${file.name}`).put(file);
@@ -75,16 +114,25 @@ function MiInfo(){
   const [items, setItems] = useState([])
   const {user, setUser} = useContext(UserContext);
   useEffect(()=>{
-      fetchitems();
+      let isMounted = true;
+      if(isMounted){
+        fetchitems()
+        .then(json=>{
+          setItems(json);
+          setMarkerPosition({ lat: json['ubicacion.lat'], lng: json['ubicacion.lng']})
+          setData(json)
+        })    
+      } 
+      return ()=>{isMounted=false}
+      
   }, []);
 
   const fetchitems = async ()=>{
 
       const data = await fetch(`http://localhost:5000/api/v1/tiendainfo/${user.id}`);
-      const items = await data.json();
+      const json = await data.json();
+     return json[0];
 
-      setItems(items[0]);
-      setData(items[0]);
   };
 
   const updateField = e => {
@@ -93,6 +141,8 @@ function MiInfo(){
       [e.target.name]: e.target.value
     });
   }
+
+
 
 
   const Guardar = async (id)=>{
@@ -162,8 +212,9 @@ function MiInfo(){
           <div class="container">
 
                   <div class="row">
-                      <div class="col-12">
+                      <div class="col-md-6">
                           <div class="card">
+
                             <div className="top container-item izq">
                                 <Link to="/panel">
                                 <a className="atras izq" href="">
@@ -172,45 +223,47 @@ function MiInfo(){
                                 </Link>
                                 <h6 className="izq">| Mi información</h6>
                             </div>
+
                             <div class="card-body">
-
+                              
                               <div class="card-title mb-4">
-                                  <div class="d-flex justify-content-start">
-                                      <div class="image-container">
-                                          <img className="rounded" src={items.url_imagen ||"https://via.placeholder.com/300x300"} id="imgProfile"   width="300" height="300"/>
-                                          <div class="middle">
-
-                                          </div>
-                                      </div>
-                                      <div class="userData ml-3">
-                                          <h2 class="d-block" >Mi Información</h2>
+                                  <div class="justify-content-start">
+                                  <h2 class="d-block" >Mi Información</h2>
                                           <hr/>
-
-                                            <h2 class="d-block">{items.nombre}</h2>
-
-
+                                      <h2 class="d-block">{items.nombre}</h2>
+                                      <div class="image-container">
+                                          <img className="rounded" src={items.url_imagen ||"https://via.placeholder.com/300x300"} id="imgProfile"   width="100%" height="100%"/>
                                       </div>
+
+                                      
+                                      <div class="ml-auto">
+                                          <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
+                                    </div>
 
                                   </div>
-
+                                </div>
+                              </div>
+                              </div>
                               </div>
 
-                              <div class="row">
-                                <hr/>
-                                <button type="button" class="btn btn-info" data-toggle="modal" href="#Editar">Editar</button>
 
-                                  <div class="col-12">
+                              <div class="col-6">      
+
                                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-                                      <li class = "nav-item">
-                                        <a class="nav-link active" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Perfil</a>
+                                      <li class = "nav-item mx-4 px-2">
+                                        <a class="nav-link active bg-light mx-4 text-dark" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Perfil</a>
                                       </li>
-                                      <li class = "nav-item">
-                                        <a class="nav-link" id="MapaInfo-tab" data-toggle="tab" href="#MapaInfo" role="tab" aria-controls="MapaInfo" aria-selected="false">Mapa</a>
+                                      <li class = "nav-item mx-4 px-2">
+                                        <a class="nav-link mx-4 bg-light text-dark" id="MapaInfo-tab" data-toggle="tab" href="#MapaInfo" role="tab" aria-controls="MapaInfo" aria-selected="false">Mapa</a>
                                       </li>
                                     </ul>
-                                    <div class="tab-content ml-1" id="myTabContent">
+
+
+                                    <div class="tab-content mx-2" id="myTabContent">
                                         <div class="tab-pane fade show active" id="MyInfo" role="tabpanel" aria-labelledby="MyInfo-tab">
-                                          <table className="table table-striped">
+                                          <div className="container text-center">
+                                          <table className="table table-striped text-left">
+
                                               <tbody>
                                                 <tr>
                                                       <tr><th>Nombre tienda</th>
@@ -228,17 +281,20 @@ function MiInfo(){
                                                   </tr>
                                             </tbody>
                                           </table>
+                                          
+                                          <button type="button" className="btn btn-primary mx-auto" data-toggle="modal" href="#Editar">Editar Mi Informacion</button>
+                                          </div>
                                         </div>
-                                        <div class="tab-pane fade" id="MapaInfo" role="tabpanel" aria-labelledby="MapaInfo-tab">
-                                          Mapa para otro Sprint
+
+
+                                        <div class="tab-pane fade text-center" id="MapaInfo" role="tabpanel" aria-labelledby="MapaInfo-tab">
+                                          <MiUbicacion info={items} Guardar={GuardarUbi} setLocation={setLocation} markerPosition={markerPosition}/>
                                         </div>
-                                    </div>
-                                  </div>
-                            </div>
+                                    </div>                             
+
                           </div>
                       </div>
-                  </div>
-              </div>
+             
             </div>
             <div id="Editar" class="modal fade">
                 <div class="modal-dialog">
@@ -248,49 +304,60 @@ function MiInfo(){
                             <h4 class="modal-title">Editar Mi Información</h4>
                         </div>
                         <div class="modal-body">
-                              <div className="form-group">
-                              <label for="nombre">Nombre de Tienda</label>
-                                <div>
-                                  <input
-                                  id="nombre"
-                                  type="text"
-                                  name="nombre"
-                                  className="form-control"
-                                  value={data.nombre}
-                                  onChange={updateField}
-                                  ></input>
-                                </div>
-                              </div>
-                              <div className="form-group">
-                                <label for="horario">Horario</label>
-                                  <div>
-                                    <input
-                                        id="horario"
-                                        type="text"
-                                        name="horario"
-                                        className="form-control"
-                                        value={data.horario}
-                                        onChange={updateField}
-                                        ></input>
-                                  </div>
-                                </div>
-                              <div className="form-group">
-                                <label for="tarjeta">Acepta tarjeta?</label>
-                                <p><small>Si/No</small></p>
-                                  <div>
-                                    <input
-                                        id="tarjeta"
-                                        type="text"
-                                        name="tarjeta"
-                                        className="form-control"
 
-                                        onChange={updateField}
-                                        ></input>
-                                  </div>
-                                </div>
-                              <div className="form-group">
-                                <label for="id_tipo_tienda">Tipo de tienda</label>
-                                <p><small>Cooperativa/Puesto/Cafeteria</small></p>
+                            <form>
+                            <div className="form-group my-2">
+                              <label for="nombre">Nombre de Tienda</label>
+                                <input
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                className="form-control"
+                                value={data.nombre}
+                                onChange={updateField}
+                                ></input>
+                              </div>
+
+                              <div className="form-group my-2">
+                              <label for="horario">Horario</label>
+                                <input
+                                    id="horario"
+                                    type="text"
+                                    name="horario"
+                                    className="form-control"
+                                    value={data.horario}
+                                    onChange={updateField}
+                                    ></input>
+                              </div>
+                              
+                              <div className="form-group my-2">
+                              <label for="tarjeta">Acepta tarjeta?</label>
+                              {/* <p><small>Si/No</small></p> */}
+                                <input
+                                    id="tarjeta"
+                                    type="text"
+                                    name="tarjeta"
+                                    className="form-control"
+                                    value={data.tarjeta}
+                                    onChange={updateField}
+                                    ></input>
+                              </div>
+                              
+                              <div className="form-group my-2">
+                              <label for="id_tipo_tienda">Tipo de tienda</label>
+                              {/* <p><small>Cooperativa/Puesto/Cafeteria</small></p> */}
+                                <input
+                                    id="id_tipo_tienda"
+                                    type="text"
+                                    name="id_tipo_tienda"
+                                    className="form-control"
+                                    value={data.id_tipo_tienda}
+                                    onChange={updateField}
+                                    ></input>
+                              </div>
+                              <div className="form-group my-2">
+                                <label htmlFor="profilePicture">Subir Imagen</label>
+
                                 <div>
                                   <input
                                       id="id_tipo_tienda"
@@ -312,7 +379,9 @@ function MiInfo(){
                                     {/* <button onClick={handleUpload}>UPLOAD</button> */}
                                   </div>
                               </div>
+                              </form>
                         </div>
+                        
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             <button type="button" class="btn btn-success" data-dismiss="modal" onClick={()=>Guardar(user.id)}>Guardar</button>
@@ -320,7 +389,9 @@ function MiInfo(){
                     </div>
                 </div>
             </div>
-
+            
+                        
+               
         </Fragment>
     )
 }

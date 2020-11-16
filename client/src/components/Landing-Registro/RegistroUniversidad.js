@@ -2,15 +2,33 @@ import React, {Fragment, useState} from 'react'
 import {useHistory} from "react-router-dom";
 import Errorflash from '../Errorflash';
 import LandingNav from './LandingNav';
+import MapaUni from './MapaUni';
+import usePlacesAutocomplete, {getGeocode, getLatLng} from 'use-places-autocomplete'
+import {ComboboxInput, Combobox, ComboboxPopover, ComboboxList, ComboboxOption} from '@reach/combobox'
+
 
 const RegistroUniversidad = ()=>{
 
+    const [markerPosition, setMarkerPosition] = useState();
+    
     let history = useHistory()
     const [data, setData] = useState({
         nombre: '',
         ciudad: '',
         estado: ''
     });
+
+    const setLocation = (e)=>{
+        const latLng = e.latLng;
+        let latitud = latLng.lat()
+        let longitud = latLng.lng()
+        let coordinates = {
+            lat: latitud,
+            lng: longitud
+        }
+        console.log(coordinates)
+        setMarkerPosition(coordinates)
+    }
 
     const [alert, setAlert] = useState([])
     const [error, setError] = useState(false)
@@ -26,7 +44,10 @@ const RegistroUniversidad = ()=>{
         e.preventDefault();
         try{
             if (data.nombre!=="" && data.ciudad !=="" && data.estado!=="") {
-              const body = data;
+              const body = {
+                  data: data,
+                  ubi: markerPosition
+              }
               const response = await fetch('http://localhost:5000/api/v1/universidades',
               {
                   method: "POST",
@@ -35,6 +56,8 @@ const RegistroUniversidad = ()=>{
               })
               .then(async resp =>{
                   const result = await resp.json()
+                  console.log(result)
+                  console.log(resp)
                   if(result.error){
                       console.log(result.error)
                       history.push("/")
@@ -42,12 +65,15 @@ const RegistroUniversidad = ()=>{
                       history.push("/")
                   }
               })
+              .catch(err=>{
+                  console.log(err)
+              })
             }else{
                 setError(true)
         console.log(error)
             }
         }catch(err){
-
+            console.log(err)
         }
     }
 
@@ -60,8 +86,9 @@ const RegistroUniversidad = ()=>{
                 <div className="my-2">
                   {error ? <Errorflash/> : '' }
                 </div>
+                
                 <form className="my-5 text-center mx-auto w-75" onSubmit={onSubmitForm}>
-                    <div className="form-group text-left">
+                    {/* <div className="form-group text-left">
                         <label for="Name_Universidad">Universidad</label>
                         <input
                         className="form-control"
@@ -71,8 +98,8 @@ const RegistroUniversidad = ()=>{
                         value={data.nombre}
                         onChange={updateField}
                         ></input>
-                    </div>
-                    <div className="form-group text-left">
+                    </div> */}
+                    {/* <div className="form-group text-left">
                         <label for="tel">Ciudad</label>
                         <input
                         className="form-control"
@@ -93,7 +120,9 @@ const RegistroUniversidad = ()=>{
                         value={data.estado}
                         onChange={updateField}
                         ></input>
-                    </div>
+                    </div> */}
+                    
+                    <MapaUni setData={setData} onMapClick={setLocation} setMarkerPosition={setMarkerPosition} markerPosition={markerPosition} markerShown='true'></MapaUni>
                     <button className="btn btn-lg btn-warning my-4" type="submit">Registrar</button>
                 </form>
             </div>
