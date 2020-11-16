@@ -11,6 +11,7 @@ function Map(props){
     const [items, setItems] = useState([])
     const [selectedTienda, setSelectedTienda] = useState(null)
     const [myPosition, setMyPosition] = useState(null);
+    const [center, setCenter] = useState()
 
     function getLocation(){
         if(navigator.geolocation){
@@ -35,7 +36,11 @@ function Map(props){
         fetchitems()
         .then(json=>{
             if(isMounted) setItems(json)
-        })
+        });
+        fetchuniversidad()
+        .then(json=>{
+            if(isMounted) setCenter(json)
+        });
         return ()=>isMounted=false;
     }, []);
 
@@ -43,7 +48,19 @@ function Map(props){
         const data = await fetch(`http://localhost:5000/api/v1/universidades/tiendas/${user.id_universidad}`);
         const json = await data.json();
         console.log(json)
+
         return json;
+        
+    };
+    const fetchuniversidad = async ()=>{
+        const data = await fetch(`http://localhost:5000/api/v1/universidades/ubi/${user.id_universidad}`);
+        const json = await data.json();
+        const ubicacion = {
+            lat: parseFloat(json.lat),
+            lng: parseFloat(json.lng)
+        }
+        console.log(ubicacion)
+        return ubicacion;
         
     };
 
@@ -58,7 +75,7 @@ function Map(props){
     return(
         <GoogleMap
         defaultZoom={16.5} 
-        defaultCenter={{lat: 29.082548182329212, lng: -110.96178531646729}}
+        center={center}
         options={options}
         >
              

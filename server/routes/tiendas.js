@@ -173,7 +173,11 @@ router.get("/tiendas/:id", async (req, res)=>{
         {
         where:{
             id: req.params.id
-        }},
+        }, include: [
+            {
+                model: Ubicacion
+            }
+        ]},
         {raw:true})
     .then(result => {
         res.json({tienda: result})

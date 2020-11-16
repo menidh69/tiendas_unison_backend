@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
 const Usuario = require("./Usuario");
+const UbicacionUni = require("./UbicacionUni")
 
 const Universidad = db.sequelize.define(
     'universidad',
@@ -30,6 +31,6 @@ const Universidad = db.sequelize.define(
         tableName: 'universidad'
     }
 )
-// Universidad.hasMany(Usuario);
+Universidad.hasOne(UbicacionUni, {foreignKey: "id_universidad"});
 
 module.exports = Universidad;

@@ -126,3 +126,15 @@ CREATE TABLE ubicacion (
     REFERENCES tienda(id)
     ON DELETE CASCADE
 );
+
+CREATE TABLE ubicacionUni (
+    id SERIAL PRIMARY KEY,
+    id_universidad BIGINT UNSIGNED,
+    lat DECIMAL(18,15),
+    lng DECIMAL(18,15),
+
+    CONSTRAINT fk_universidad_ubi
+    FOREIGN KEY (id_universidad)
+    REFERENCES universidad(id)
+    ON DELETE CASCADE
+);
