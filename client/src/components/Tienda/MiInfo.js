@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState,  useContext} from 'react';
+import React, {Fragment, useEffect, useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import TiendaNavBar from './TiendaNavBar';
 import {Link} from 'react-router-dom';
@@ -132,6 +132,7 @@ function MiInfo(){
       const data = await fetch(`http://localhost:5000/api/v1/tiendainfo/${user.id}`);
       const json = await data.json();
      return json[0];
+
   };
 
   const updateField = e => {
@@ -192,8 +193,7 @@ function MiInfo(){
                 body: JSON.stringify(body)
 
             });
-            window.location = '/panel/MiInfo'
-            history.push("/panel/MiInfo")
+            fetchitems();
 
 
       }catch(err){
@@ -208,10 +208,22 @@ function MiInfo(){
     return(
         <Fragment>
 
+
           <div class="container">
+
                   <div class="row">
                       <div class="col-md-6">
                           <div class="card">
+
+                            <div className="top container-item izq">
+                                <Link to="/panel">
+                                <a className="atras izq" href="">
+                                    <h6 className="izq">← Atras</h6>
+                                </a>
+                                </Link>
+                                <h6 className="izq">| Mi información</h6>
+                            </div>
+
                             <div class="card-body">
                               
                               <div class="card-title mb-4">
@@ -222,17 +234,21 @@ function MiInfo(){
                                       <div class="image-container">
                                           <img className="rounded" src={items.url_imagen ||"https://via.placeholder.com/300x300"} id="imgProfile"   width="100%" height="100%"/>
                                       </div>
+
                                       
                                       <div class="ml-auto">
                                           <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
                                     </div>
+
                                   </div>
                                 </div>
                               </div>
                               </div>
                               </div>
 
+
                               <div class="col-6">      
+
                                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                                       <li class = "nav-item mx-4 px-2">
                                         <a class="nav-link active bg-light mx-4 text-dark" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Perfil</a>
@@ -240,13 +256,14 @@ function MiInfo(){
                                       <li class = "nav-item mx-4 px-2">
                                         <a class="nav-link mx-4 bg-light text-dark" id="MapaInfo-tab" data-toggle="tab" href="#MapaInfo" role="tab" aria-controls="MapaInfo" aria-selected="false">Mapa</a>
                                       </li>
-
                                     </ul>
+
 
                                     <div class="tab-content mx-2" id="myTabContent">
                                         <div class="tab-pane fade show active" id="MyInfo" role="tabpanel" aria-labelledby="MyInfo-tab">
                                           <div className="container text-center">
                                           <table className="table table-striped text-left">
+
                                               <tbody>
                                                 <tr>
                                                       <tr><th>Nombre tienda</th>
@@ -262,7 +279,6 @@ function MiInfo(){
                                                             <td>{TipoTienda()}</td>
                                                       </tr>
                                                   </tr>
-
                                             </tbody>
                                           </table>
                                           
@@ -270,10 +286,12 @@ function MiInfo(){
                                           </div>
                                         </div>
 
+
                                         <div class="tab-pane fade text-center" id="MapaInfo" role="tabpanel" aria-labelledby="MapaInfo-tab">
                                           <MiUbicacion info={items} Guardar={GuardarUbi} setLocation={setLocation} markerPosition={markerPosition}/>
                                         </div>
                                     </div>                             
+
                           </div>
                       </div>
              
@@ -286,6 +304,7 @@ function MiInfo(){
                             <h4 class="modal-title">Editar Mi Información</h4>
                         </div>
                         <div class="modal-body">
+
                             <form>
                             <div className="form-group my-2">
                               <label for="nombre">Nombre de Tienda</label>
@@ -338,20 +357,34 @@ function MiInfo(){
                               </div>
                               <div className="form-group my-2">
                                 <label htmlFor="profilePicture">Subir Imagen</label>
+
                                 <div>
-                                  <input type="file" id="profilePicture" name="file" onChange={handleChange} />
-                                  <br/>
-                                  <progress value={progress} max="100"/>
-                                  <br/>
-                                  {/* <button onClick={handleUpload}>UPLOAD</button> */}
+                                  <input
+                                      id="id_tipo_tienda"
+                                      type="text"
+                                      name="id_tipo_tienda"
+                                      className="form-control"
+
+                                      onChange={updateField}
+                                      ></input>
+                                  </div>
                                 </div>
+                                <div className="form-group">
+                                <label>Subir Imagen</label>
+                                  <div>
+                                    <input type="file" id="profilePicture" name="file" onChange={handleChange} />
+                                    <br/>
+                                    <progress value={progress} max="100"/>
+                                    <br/>
+                                    {/* <button onClick={handleUpload}>UPLOAD</button> */}
+                                  </div>
                               </div>
                               </form>
                         </div>
                         
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={()=>Guardar(user.id)}>Guardar</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal" onClick={()=>Guardar(user.id)}>Guardar</button>
                         </div>
                     </div>
                 </div>

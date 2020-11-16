@@ -1,42 +1,40 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
-const Carrito_item = require("../models/CarritoItem");
+const Usuario = require("./Usuario");
 
-const Productos = db.sequelize.define(
-    'productos',
+const Info_bancaria = db.sequelize.define(
+    'info_bancaria',
     {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        id_tienda:{
+        id_usuario:{
             type: Sequelize.INTEGER
         },
-        nombre:{
+        nombre_titular:{
             type: Sequelize.STRING
         },
-        precio: {
-            type: Sequelize.FLOAT
-        },
-        categoria: {
+        num_tarjeta:{
             type: Sequelize.STRING
         },
-        url_imagen:{
+        exp_date:{
             type: Sequelize.STRING
         },
-        descripcion: {
-            type: Sequelize.STRING
+        cvv:{
+            type: Sequelize.INTEGER
         },
-        
+        cpp:{
+            type: Sequelize.INTEGER
+        }
+
     },
     {
         timestamps: false,
         freezeTableName: true,
-        tableName: 'productos'
+        tableName: 'info_bancaria'
     }
 )
 
-// Productos.hasMany(Carrito_item, {as:'producto', foreignKey: 'id_producto',});
-
-module.exports = Productos;
+module.exports = Info_bancaria;

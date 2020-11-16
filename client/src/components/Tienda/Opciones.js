@@ -35,7 +35,7 @@ function Items() {
         let subdate = new Date(items[0].fechaSub)
         finaldate.setDate(subdate.getDate() + 21)
         let diffTime = Math.abs(finaldate - today);
-        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         console.log(diffDays)
         setDays(diffDays)
     };
@@ -48,14 +48,14 @@ function Items() {
             });
             //setItems(items.filter(item => item.id !== id));
             localStorage.removeItem('token.tuw')
-            alert('Hasta la vista beibi')
+            alert('Hasta la proxima')
             setUser(null);
             history.push("/")
         }catch(err){
             console.error(err)
         }
     }
-    
+
 
 
 
@@ -83,7 +83,10 @@ function Items() {
                 </Link>
 
                 <button className="boton">Ventas</button>
+
+                <Link to='panel/Tarjeta'>
                 <button className="boton">Tarjeta</button>
+                </Link>
             </div>
             <hr />
             <div className="itemsContainer">

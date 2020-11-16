@@ -138,3 +138,48 @@ CREATE TABLE ubicacionUni (
     REFERENCES universidad(id)
     ON DELETE CASCADE
 );
+
+CREATE TABLE carrito (
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+    
+    CONSTRAINT fk_usuario3
+    FOREIGN KEY (id_usuario)
+    REFERENCES  usuario(id)
+    ON DELETE SET NULL
+);
+
+CREATE TABLE carrito_item (
+    id SERIAL PRIMARY KEY,
+    id_producto BIGINT UNSIGNED,
+    id_carrito BIGINT UNSIGNED,
+    cantidad INT,
+
+    CONSTRAINT fk_producto
+    FOREIGN KEY (id_producto)
+    REFERENCES productos(id)
+    ON DELETE SET NULL,
+
+    CONSTRAINT fk_carrito
+    FOREIGN KEY (id_carrito)
+    REFERENCES carrito(id)
+    ON DELETE SET NULL
+);
+
+CREATE TABLE info_bancaria(
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+
+    nombre_titular VARCHAR (100),
+    num_tarjeta VARCHAR(50),
+    exp_date VARCHAR (20),
+    cvv BIGINT,
+    cpp BIGINT,
+
+    CONSTRAINT fk_usuario3
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id)
+    ON DELETE CASCADE
+);
+
+
