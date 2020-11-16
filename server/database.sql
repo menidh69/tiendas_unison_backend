@@ -176,7 +176,7 @@ CREATE TABLE info_bancaria(
     cvv BIGINT,
     cpp BIGINT,
 
-    CONSTRAINT fk_usuario3
+    CONSTRAINT fk_usuario4
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE CASCADE
