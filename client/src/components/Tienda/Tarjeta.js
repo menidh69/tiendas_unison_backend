@@ -118,14 +118,14 @@ function InfoBancaria() {
                   </div>
                 </div>
               </div>
-              {items ? 
+              
               <div class="row">
                 <hr/>
                 <button type="button" class="btn btn-info" data-toggle="modal" href="#Agregar">Agregar Nueva Información Bancaria</button>
                 </div>
                 <Info/>
               </div>
-              : ''}
+              
             </div>
           </div>
         </div>
@@ -205,7 +205,7 @@ function InfoBancaria() {
               </div>
           </div>
       </div>
-      : ''}
+      
   </div>
 </>
 )}

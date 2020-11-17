@@ -135,6 +135,10 @@ function MiInfo(){
 
   };
 
+  const anchorStyle = {
+    backgroundColor: "#29698f"
+  }
+
   const updateField = e => {
     setData({
       ...data,
@@ -251,10 +255,10 @@ function MiInfo(){
 
                                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                                       <li class = "nav-item mx-4 px-2">
-                                        <a class="nav-link active bg-light mx-4 text-dark" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Perfil</a>
+                                        <a class="nav-link active mx-4" id="MyInfo-tab" data-toggle="tab" href="#MyInfo" role="tab" aria-controls="MyInfo" aria-selected="true">Perfil</a>
                                       </li>
                                       <li class = "nav-item mx-4 px-2">
-                                        <a class="nav-link mx-4 bg-light text-dark" id="MapaInfo-tab" data-toggle="tab" href="#MapaInfo" role="tab" aria-controls="MapaInfo" aria-selected="false">Mapa</a>
+                                        <a class="nav-link mx-4" id="MapaInfo-tab" data-toggle="tab" href="#MapaInfo" role="tab" aria-controls="MapaInfo" aria-selected="false">Mapa</a>
                                       </li>
                                     </ul>
 

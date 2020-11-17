@@ -49,6 +49,10 @@ function Tabla () {
         fetchitems();
     },[]);
 
+    const handleDelete = (id)=>{
+        setItems(items.filter(item => item.id !== id));
+    }
+
 
     const fetchitems = async () => {
         const data = await fetch (`http://localhost:5000/api/v1/carrito/${user.id}`);
@@ -110,7 +114,7 @@ function Tabla () {
                             <td>{item.cantidad}</td>
                             <td>{item.tienda_nombre}</td>
                             <td>${Number.parseFloat(item.precio*item.cantidad).toFixed(2)}</td>
-                            <td><Eliminar item={item}/></td>
+                            <td><Eliminar handleDelete={handleDelete} item={item}/></td>
                         </tr>
                         ))}
                     </tbody>
@@ -169,7 +173,7 @@ function Eliminar (props){
             <a href={"#eliminar" + props.item.id} role="button" className="btn btn-danger" data-toggle="modal">
                 Quitar
             </a>
-            <Modal item={props.item}></Modal>
+            <Modal handleDelete={props.handleDelete} item={props.item}></Modal>
 
         </Fragment>
 
@@ -187,6 +191,7 @@ function Modal(props){
         const response = await fetch(`http://localhost:5000/api/v1/eliminarCarritoItem/${props.item.id}`, {
             method: "DELETE"
         });
+        props.handleDelete(props.item.id);
     }
 
     return(
