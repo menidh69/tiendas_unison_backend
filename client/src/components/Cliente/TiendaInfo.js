@@ -126,6 +126,10 @@ const validar = async(id_usuario,id_tienda)=>{
                         </div>
                         <div class="modal-body">
                              <p>En caso de que la tienda no exista, ayúdanos con tu reporte para evitar fraudes, al enviarlo estás afirmando que la tienda no existe </p>
+                             <div class="md-form">
+                             <input type="text" id="inputMDEx" class="form-control"/>
+                            <label for="inputMDEx">Razón de reporte</label>
+                            </div>
                              <div class="custom-control custom-checkbox mr-sm-2">
                         <input type="checkbox" required class="custom-control-input" id="customControlAutosizing"/>
                         <label class="custom-control-label" for="customControlAutosizing">Ok, entiendo.</label>
