@@ -119,6 +119,7 @@ function InfoBancaria() {
                   </div>
                 </div>
               </div>
+              {items ? 
               <div class="row">
                 <hr/>
                 <button type="button" class="btn btn-info" data-toggle="modal" href="#Editar">Editar</button>
@@ -154,10 +155,12 @@ function InfoBancaria() {
                   </table>
                 </div>
               </div>
+              : ''}
             </div>
           </div>
         </div>
       </div>
+      {items ?
       <div id="Editar" class="modal fade">
           <div class="modal-dialog">
               <div class="modal-content">
@@ -235,6 +238,7 @@ function InfoBancaria() {
               </div>
           </div>
       </div>
+      : ''}
   </div>
 
 
