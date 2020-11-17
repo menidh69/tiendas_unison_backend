@@ -15,7 +15,7 @@ class EditarMenu extends Component {
     render(){
 
         return(
-    
+
             <Fragment>
                 <div className="mainContainer">
                     <div className="top-container">
@@ -27,7 +27,7 @@ class EditarMenu extends Component {
                             </Link>
                             <h6 className="izq">| Menú</h6>
                         </div>
-                        
+
                         <div className="top-container-item der">
                             <Link to='/panel/Menu/EditarMenu/AgregarProducto'>
                                 <button  className="btn btn-success der">Agregar producto</button>
@@ -112,14 +112,14 @@ function Editar(props) {
 }
 
 function Eliminar (props){
-        
+
     return(
         <Fragment>
             <a href={"#eliminar" + props.item.id} role="button" className="btn btn-danger" data-toggle="modal">
                 Eliminar
             </a>
             <Modal item={props.item}></Modal>
-            
+
         </Fragment>
 
     );
@@ -172,7 +172,7 @@ function ModalEditar(props){
         descripcion: props.item.descripcion
     });
 
-    
+
     const updateField = e => {
         setData({
             ...data,
@@ -180,7 +180,7 @@ function ModalEditar(props){
         });
     }
 
-    
+
     let history = useHistory();
 
     const seCancela = () =>{
@@ -203,7 +203,7 @@ function ModalEditar(props){
         //     if (url == "") {
         //       data.url_imagen = props.item.url_imagen
         //     }
-    
+
         // } else {
         //     data.url_imagen = url;
         // }
@@ -238,7 +238,7 @@ function ModalEditar(props){
                     </div>
                     <div class="modal-body">
                         <form className="">
-                
+
                             <div className="form-group row">
                                 <label for="nombre" className="col-sm-2 col-form-label">Nombre:</label>
                                 <div className="col-sm-10">
@@ -289,7 +289,7 @@ function ModalEditar(props){
 
 function Modal(props){
 
-    
+
     let history = useHistory();
 
 

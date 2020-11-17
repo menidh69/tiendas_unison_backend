@@ -3,8 +3,13 @@ import {Link} from 'react-router-dom';
 import { UserContext } from '../../UserContext'
 import { Component } from 'react';
 import { render } from '@testing-library/react';
+import StripeCheckout from 'react-stripe-checkout'
+import { toast } from 'react-toastify'
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey('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');
 
 
+toast.configure();
 class Carrito extends Component {
 
     constructor (props) {
@@ -32,7 +37,7 @@ class Carrito extends Component {
             </Fragment>
         );
 
-    }   
+    }
 }
 
 function Tabla () {
@@ -42,7 +47,7 @@ function Tabla () {
 
     useEffect(() =>{
         fetchitems();
-    });
+    },[]);
 
 
     const fetchitems = async () => {
@@ -52,13 +57,30 @@ function Tabla () {
         const items2 = await data2.json();
         console.log(items2[0])
         if (items2 == null) {
-            console.log("hola");
+            //console.log("hola");
         } else {
             setItems(items2[0]);
 
         }
     }
     var total = 0;
+
+    const orden = async (id)=>  {
+     console.log("entro");
+     //console.log(item);
+     const body = items;
+     try{
+
+           const response = fetch(`http://localhost:5000/api/v1/NuevaOrden/${user.id}`,
+           {
+               method: "POST",
+               headers: {"Content-Type":"application/json"},
+               body: JSON.stringify(body)
+           });
+     }catch(err){
+         console.error(err)
+     }
+   }
 
 
     if (items.length > 0) {
@@ -67,7 +89,7 @@ function Tabla () {
         ));
         return(
             <Fragment>
-                
+
                 <h4>Tienda {items.tienda_nombre}</h4>
                 <table class="table">
                     <thead>
@@ -89,12 +111,23 @@ function Tabla () {
                             <td>{item.tienda_nombre}</td>
                             <td>${Number.parseFloat(item.precio*item.cantidad).toFixed(2)}</td>
                             <td><Eliminar item={item}/></td>
-                        </tr>  
+                        </tr>
                         ))}
                     </tbody>
                 </table>
                 <hr/>
                         <div><h5>Total a pagar: ${Number.parseFloat(total).toFixed(2)}</h5></div>
+                        <div class = "container">
+                          <StripeCheckout
+                            stripeKey="pk_test_51HoJ01K9hN8J4SbUqEiL2Amsb8RleP8IsJYQndlu4PcDJ1vVRC7dCX2wOKvO1WSGQ0NCvxejBlDxiFVjb6mippAO00wL2DOUxs"
+                            token={handleToken}
+                            amount = {Number.parseFloat(total).toFixed(2) * 100}
+                            name = 'Compra'
+                            />
+                        </div>
+                        <div>
+                          <button type="button" class="btn btn-success" data-dismiss="modal"onClick={()=>orden(items)}>Pagar</button>
+                        </div>
             </Fragment>
         );
     } else {
@@ -105,16 +138,39 @@ function Tabla () {
         )
     }
 }
+async function handleToken(token)  {
+  //console.log(token,  addresses);
+
+}
+ function ordenk(item)  {
+  //const {user, setUser} = useContext(UserContext);
+
+  console.log("entro");
+  console.log(item);
+  const body = item;
+  try{
+
+        const response = fetch(`http://localhost:5000/api/v1/orden`,
+        {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(body)
+        });
+  }catch(err){
+      console.error(err)
+  }
+}
+
 
 function Eliminar (props){
-        
+
     return(
         <Fragment>
             <a href={"#eliminar" + props.item.id} role="button" className="btn btn-danger" data-toggle="modal">
                 Quitar
             </a>
             <Modal item={props.item}></Modal>
-            
+
         </Fragment>
 
     );
@@ -124,7 +180,7 @@ function Eliminar (props){
 
 function Modal(props){
 
-    
+
 
 
     const eliminarClick = async(idProducto,idTienda) => {
