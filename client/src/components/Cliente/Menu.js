@@ -95,11 +95,6 @@ const Menu = ()=>{
         objectFit: 'cover'
     }
 
-  const handleClose2 = () => setShow2(false);
-  const handleShow2 = () => setShow2(true);
-
-   
-
     const editSearchTerm = (e) => {
         setSearchTerm(e.target.value);
     }
@@ -117,10 +112,32 @@ const Menu = ()=>{
                 <h1 className="text-dark my-4">{tienda.nombre}</h1>
                 <hr></hr>
                 <h1 className="text-dark my-4 display-4">Menú</h1>
-                <input type="text" value={searchTerm} onChange={editSearchTerm}></input>
+                <label for="search">Buscar: </label>
+                <input type="text" id="search" className="mx-2 rounded-pill border border-dark px-2" placeholder="Ej. Brownie de mota" value={searchTerm} onChange={editSearchTerm}></input>
             <div className="row">
 
                 <Producto name={dynamicSearch()}/>
+                {/* {items.map(item =>(
+
+                <div key={item.id} className="col-md-3 my-2">        
+
+                    <div className="card rounded shadow text-center h-100" style={style}>
+                        <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
+                        <div className="card-body h-75">
+                            <div className="container h-50">
+                            <h6 className="card-title">{item.nombre}</h6>
+                            </div>
+
+                            <div className="card-text">
+                                ${item.precio}
+                            </div>
+                        </div>
+                        <button className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button>
+                        <AgregarCarrito item={item}/>
+
+                    </div>
+                </div>
+                ))} */}
 
             </div>
             <div class="col-sm-3">

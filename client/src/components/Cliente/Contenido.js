@@ -17,10 +17,6 @@ import Menu from "./Menu";
       
       
 
-  const Contenido = () => {
-
-    const {user, setUser} = useContext(UserContext)
-
 
 const Contenido = () => {
   const {user, setUser} = useContext(UserContext)
