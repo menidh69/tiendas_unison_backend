@@ -7,7 +7,6 @@ import { UserContext } from '../../UserContext';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const Contenido = () => {
-  const {user, setUser} = useContext(UserContext)
   
   return (
     <Fragment>
