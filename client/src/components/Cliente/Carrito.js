@@ -118,12 +118,12 @@ function Tabla () {
                 <hr/>
                         <div><h5>Total a pagar: ${Number.parseFloat(total).toFixed(2)}</h5></div>
                         <div class = "container">
-                          {/* <StripeCheckout
+                          <StripeCheckout
                             stripeKey="pk_test_51HoJ01K9hN8J4SbUqEiL2Amsb8RleP8IsJYQndlu4PcDJ1vVRC7dCX2wOKvO1WSGQ0NCvxejBlDxiFVjb6mippAO00wL2DOUxs"
                             token={handleToken}
                             amount = {Number.parseFloat(total).toFixed(2) * 100}
                             name = 'Compra'
-                            /> */}
+                            />
                         </div>
                         <div>
                           <button type="button" class="btn btn-success" data-dismiss="modal"onClick={()=>orden(items)}>Pagar</button>
