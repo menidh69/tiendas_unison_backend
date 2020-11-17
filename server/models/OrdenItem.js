@@ -4,7 +4,7 @@ const Productos = require("../models/Productos");
 const Orden = require("../models/Orden");
 
 const ordenitem = db.sequelize.define(
-    'ordenitem',
+    'orden_item',
     {
         id: {
             type: Sequelize.INTEGER,
@@ -24,7 +24,7 @@ const ordenitem = db.sequelize.define(
     {
         timestamps: false,
         freezeTableName: true,
-        tableName: 'ordenitem'
+        tableName: 'orden_item'
     }
 )
 

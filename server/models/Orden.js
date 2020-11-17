@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
 const Usuario = require("../models/Usuario");
+const Ordenitem = require("./OrdenItem");
 
 const Orden = db.sequelize.define(
     'orden',
@@ -23,5 +24,6 @@ const Orden = db.sequelize.define(
         tableName: 'orden'
     }
 )
+Orden.hasMany(Ordenitem, {foreignKey: "id_orden"});
 
 module.exports = Orden;

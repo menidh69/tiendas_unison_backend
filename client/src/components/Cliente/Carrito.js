@@ -55,7 +55,7 @@ function Tabla () {
         const items = await data.json();
         const data2 = await fetch (`http://localhost:5000/api/v1/carritoItem/${items[0].id}`);
         const items2 = await data2.json();
-        //console.log(items2[0])
+        console.log(items2[0])
         if (items2 == null) {
             //console.log("hola");
         } else {
@@ -118,12 +118,12 @@ function Tabla () {
                 <hr/>
                         <div><h5>Total a pagar: ${Number.parseFloat(total).toFixed(2)}</h5></div>
                         <div class = "container">
-                          <StripeCheckout
-                            stripeKey="pk_test_51HmMEiAPtTk1CtqMah55yLPk0yqel4OMqZpV5Cq2ekcY8jBWzrwcObp3E513fGCiOqiW9cz1ts4BNaOBICOUIPWk00PIx7to3Y"
+                          {/* <StripeCheckout
+                            stripeKey="pk_test_51HoJ01K9hN8J4SbUqEiL2Amsb8RleP8IsJYQndlu4PcDJ1vVRC7dCX2wOKvO1WSGQ0NCvxejBlDxiFVjb6mippAO00wL2DOUxs"
                             token={handleToken}
                             amount = {Number.parseFloat(total).toFixed(2) * 100}
                             name = 'Compra'
-                            />
+                            /> */}
                         </div>
                         <div>
                           <button type="button" class="btn btn-success" data-dismiss="modal"onClick={()=>orden(items)}>Pagar</button>

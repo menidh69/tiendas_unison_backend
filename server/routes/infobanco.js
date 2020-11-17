@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Info_bancaria = require('../models/Info_bancaria');
+const Usuario = require('../models/Usuario');
 
 
 
@@ -26,7 +27,25 @@ router.post("/infobanco/:id", async (req, res)=>{
         cvv: req.body.cvv,
         cpp: req.body.cpp
     }
-    Info_bancaria.create(infobanco)
+    Usuario.findOne({where:{id: id_usuario}})
+    .then(found=>{
+        if(!found || found==""){
+
+        }else{
+            Info_bancaria.create(infobanco)
+            // const account = await stripe.accounts.create({
+            //     type: 'standard',
+            //     country: "MX",
+            //     email: found.email,
+            //   });
+            //   const accountLinks = await stripe.accountLinks.create({
+            //     account: account.id,
+            //     refresh_url: 'https://localhost:3000/',
+            //     return_url: 'https://localhost:3000/',
+            //     type: 'account_onboarding',
+            //   });
+        }
+    })
 })
 
 //UPDATE
