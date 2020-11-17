@@ -4,6 +4,9 @@ import { UserContext } from '../../UserContext';
 import {Modal, Button} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons'
+import {GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, InfoBox} from 'react-google-maps';
+import MapStyles from '../MapStyles';
+
 
 
 
@@ -13,16 +16,30 @@ const TiendaInfo = () => {
   const {user , setUser} = useContext(UserContext);
   const [validacion, setValidacion] = useState(false);
   const {id} = useParams();
+  const [markerPosition, setMarkerPosition] = useState();
 
 
 
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   useEffect(()=>{
-    fetchdata();
+    let isMounted = true;
+    fetchdata()
+    .then(json=>{
+      if(isMounted){
+      if(json.validada===false){
+        fetchValidar();
+    }
+    setData(json)
+    setMarkerPosition({
+      lat: parseFloat(json.ubicacion.lat),
+      lng: parseFloat(json.ubicacion.lng)
+    })
+  }
+  return ()=> isMounted=false;
+    })
     // fetchValidar();
   }, [])
 
@@ -41,12 +58,15 @@ const TiendaInfo = () => {
   const fetchdata = async ()=>{
     const prom = await fetch(`http://localhost:5000/api/v1/tiendas/${id}`);
     const record = await prom.json();
-    setData(record.tienda[0]);
-    console.log("tienda validacion general:"+record.tienda[0].validada)
-    if(record.tienda[0].validada===false){
-      fetchValidar();
-  }
-    console.log(record.tienda[0])
+    console.log(record.tienda[0].ubicacion)
+    return record.tienda[0];
+  //   setData(record.tienda[0]);
+  //   console.log("tienda validacion general:"+record.tienda[0].validada)
+  //   if(record.tienda[0].validada===false){
+  //     fetchValidar();
+  // }
+  //   console.log(record.tienda[0])
+
 }
 
 const reportar = async()=>{
@@ -119,6 +139,10 @@ const validar = async(id_usuario,id_tienda)=>{
       <div className="col-md-6 border rounded py-auto" style={bgStyle}>
             <img alt="Tienda" className="border my-auto py-auto" style={imgStyle} src={data.url_imagen}></img>
         </div>
+        <div className="col-12 my-2 border rounded">
+          <h1 className="my-4 text-dark">Ubicacion</h1>
+          <MapaTienda markerPosition={markerPosition}/>
+        </div>
         </div>
         
         
@@ -166,6 +190,50 @@ const validar = async(id_usuario,id_tienda)=>{
     </div>
     
   </Fragment>)
+}
+
+const Map = (props)=>{
+
+  const options ={
+    styles: MapStyles,
+    disableDefaultUI: true,
+
+}
+
+  return(
+    <GoogleMap
+          defaultZoom={16.5} 
+          center={props.markerPosition}
+          options={options}
+          >
+
+          <Marker
+          position={props.markerPosition}
+          icon={{
+              url: "/store-solid.svg",
+              scaledSize: new window.google.maps.Size(30,30),
+              origin: new window.google.maps.Point(0,0),
+              anchor: new window.google.maps.Point(15,15)
+          }}
+          />     
+          </GoogleMap>
+      )
+}
+const MyMapComponent = withScriptjs(withGoogleMap(Map))
+
+const MapaTienda = (props)=>{
+  console.log(props.markerPosition)
+  return(
+    <div>
+      <MyMapComponent
+      googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCcUw9PQsvW0euSqylR6x4rCBXLpFn6VCo`}
+      loadingElement={<div style={{ height: `100%` }} />}
+      containerElement={<div style={{ height: `400px` }} />}
+      mapElement={<div style={{ height: `100%` }} />}
+      markerPosition={props.markerPosition}
+    />
+</div>
+)
 }
 
 export default TiendaInfo;

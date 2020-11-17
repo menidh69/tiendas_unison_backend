@@ -49,7 +49,9 @@ a:hover {
   text-align: center;
 } */
 
-
+button{
+  cursor: pointer;
+}
 
 @keyframes App-logo-spin {
   from {

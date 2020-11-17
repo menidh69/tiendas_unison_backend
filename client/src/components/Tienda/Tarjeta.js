@@ -118,16 +118,20 @@ function InfoBancaria() {
                   </div>
                 </div>
               </div>
+              {items ? 
               <div class="row">
                 <hr/>
                 <button type="button" class="btn btn-info" data-toggle="modal" href="#Agregar">Agregar Nueva Información Bancaria</button>
                 </div>
                 <Info/>
               </div>
+              : ''}
             </div>
           </div>
         </div>
+
       <div id="Agregar" class="modal fade">
+
           <div class="modal-dialog">
               <div class="modal-content">
                   <div class="modal-header">
@@ -201,6 +205,7 @@ function InfoBancaria() {
               </div>
           </div>
       </div>
+      : ''}
   </div>
 </>
 )}
