@@ -12,8 +12,12 @@ const Menu = ()=>{
 
     const {id} = useParams();
     const [items, setItems] = useState([]);
+    const [filter, setFilter] = useState([]);
     const [modaldata, setmodalData] = useState({});
     const [tienda, setTienda] = useState({});
+    const [searchTerm, setSearchTerm] = useState("");
+    const [data, setData] = useState([]);
+    const [sortType, setSortType] = useState('items');
 
 
     const [show, setShow] = useState(false);
@@ -22,6 +26,23 @@ const Menu = ()=>{
         setmodalData(item)
         setShow(true);
     }
+
+
+    useEffect(() => {
+      const sortArray = type => {
+        const types = {
+          nombre: 'nombre',
+          precio: 'precio',
+          
+        };
+        const sortProperty = types[type];
+        const sorted = [...items].sort((a, b) => b[sortProperty] - a[sortProperty]);
+        setData(sorted);
+      };
+  
+      sortArray(sortType);
+    }, [sortType]); 
+
 
     const fetchValidar = async ()=>{
         const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
@@ -60,20 +81,32 @@ const Menu = ()=>{
 
 
 
+
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
 
-    const style = {
-        width: '12rem'
+
+    const styleImgTienda={
+        maxWidth: '25%'
     }
     const styleImg={
         maxWidth: '100%',
         height: '175px',
         objectFit: 'cover'
     }
-    const styleImgTienda={
-        maxWidth: '25%'
-     }
+
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
+
+   
+
+    const editSearchTerm = (e) => {
+        setSearchTerm(e.target.value);
+    }
+
+    const dynamicSearch = () => {
+        return items.filter(item => item.nombre.toLowerCase().includes(searchTerm.toString().toLowerCase()))
+    }
 
     return(
         <Fragment>
@@ -84,29 +117,21 @@ const Menu = ()=>{
                 <h1 className="text-dark my-4">{tienda.nombre}</h1>
                 <hr></hr>
                 <h1 className="text-dark my-4 display-4">Menú</h1>
+                <input type="text" value={searchTerm} onChange={editSearchTerm}></input>
             <div className="row">
-            {items.map(item =>(
 
-                <div key={item.id} className="col-md-3 my-2">        
+                <Producto name={dynamicSearch()}/>
 
-                    <div className="card rounded shadow text-center h-100" style={style}>
-                        <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
-                        <div className="card-body h-75">
-                            <div className="container h-50">
-                            <h6 className="card-title">{item.nombre}</h6>
-                            </div>
-
-                            <div className="card-text">
-                                   ${item.precio}
-                            </div>
-                        </div>
-                        <button className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button>
-                        <AgregarCarrito item={item}/>
-
-                    </div>
-                </div>
-            ))}
             </div>
+            <div class="col-sm-3">
+
+            <select onChange={(e) => setSortType(e.target.value)}> 
+            <option value="mayor">Precio</option>
+            <option value="abc">Nombre</option>
+            </select>
+        
+      
+    </div>
             <div>
             <Modal show={show2} onHide={handleClose2} animation={true}>
                 <Modal.Header closeButton>
@@ -122,7 +147,60 @@ const Menu = ()=>{
                   </Button>
                 </Modal.Footer>
               </Modal>
-            {(show)?
+            
+            </div>
+            </div>
+        </Fragment>
+    )
+}
+
+function Producto(props) {
+
+    const [modaldata, setmodalData] = useState({});
+    const [show, setShow] = useState(false);
+    const [items, setItems] = useState([]);
+
+    console.log(props.name)
+
+    const style = {
+        width: '12rem'
+    }
+    const styleImg={
+        maxWidth: '100%',
+        height: '175px',
+        objectFit: 'cover'
+    }
+
+    const handleShow = (item) => {
+        setmodalData(item)
+        setShow(true);
+    }
+
+    const handleClose = () => setShow(false);
+
+
+    return(
+        <Fragment>
+            {props.name.map(item =>(
+                    <div className="col-md-3 my-2">        
+                        <div className="card rounded shadow text-center h-100" style={style}>
+                            <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
+                            <div className="card-body h-75">
+                                <div className="container h-50">
+                                <h6 className="card-title">{item.nombre}</h6>
+                                </div>
+                            
+                                <div className="card-text">
+                                    ${item.precio}
+                                </div>
+                            </div>
+                            <button className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button> 
+                            <AgregarCarrito item={item}/> 
+
+                        </div>   
+                    </div>
+                ))}
+                {(show)?
             <Modal show={show} onHide={handleClose} className="text-center">
                 <Modal.Header closeButton>
             <Modal.Title>{modaldata.nombre}</Modal.Title>
@@ -151,10 +229,8 @@ const Menu = ()=>{
 
 
             }
-            </div>
-            </div>
         </Fragment>
-    )
+    );
 }
 
 function AgregarCarrito(props) {
@@ -171,7 +247,6 @@ function AgregarCarrito(props) {
 }
 
 function Agregar(props){
-
 
     const {user , setUser} = useContext(UserContext);
     const [data, setData] = useState({
@@ -215,5 +290,5 @@ function Agregar(props){
     );
 }
 
-
 export default Menu;
+

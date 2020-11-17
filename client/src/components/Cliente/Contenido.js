@@ -1,4 +1,5 @@
-import React, { Fragment, useReducer, useContext, useState, useEffect} from "react";
+
+import React, { Fragment, useReducer, useContext, useState, Component, useEffect} from "react";
 import "./Contenido.css";
 import IndexTiendas from './IndexTiendas'
 import { UserContext } from '../../UserContext';
@@ -7,6 +8,19 @@ import MapaTiendas from './MapaTiendas';
 
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import TiendaInfo from "./TiendaInfo";
+import Menu from "./Menu";
+
+
+
+
+      
+      
+
+  const Contenido = () => {
+
+    const {user, setUser} = useContext(UserContext)
+
 
 const Contenido = () => {
   const {user, setUser} = useContext(UserContext)
@@ -28,6 +42,7 @@ const fetchitems = async ()=>{
     return json;
 };
   
+
   return (
     <Fragment>
         <div className="text-center my-4 container">
@@ -36,6 +51,7 @@ const fetchitems = async ()=>{
 
             </div>
             <h4>Bienvenido {user.nombre}</h4>
+
                 <MapaTiendas></MapaTiendas>
                 
                 {/* <button  className="btn btn-lg btn-primary rounded-pill my-4">Ver listado de todas las tiendas</button> */}
@@ -44,9 +60,10 @@ const fetchitems = async ()=>{
                 <div>
                 <IndexTiendas className="my-4"/>
                 </div>
+
         </div>
     </Fragment>
-  );
+  )
 };
 
 export default Contenido;
