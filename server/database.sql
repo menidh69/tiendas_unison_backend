@@ -114,3 +114,99 @@ CREATE TABLE productos (
     REFERENCES tienda(id)
     ON DELETE SET NULL
 );
+
+CREATE TABLE ubicacion (
+    id SERIAL PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    lat DECIMAL(18,15),
+    lng DECIMAL(18,15),
+
+    CONSTRAINT fk_tienda_ubi
+    FOREIGN KEY (id_tienda)
+    REFERENCES tienda(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE ubicacionUni (
+    id SERIAL PRIMARY KEY,
+    id_universidad BIGINT UNSIGNED,
+    lat DECIMAL(18,15),
+    lng DECIMAL(18,15),
+
+    CONSTRAINT fk_universidad_ubi
+    FOREIGN KEY (id_universidad)
+    REFERENCES universidad(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE carrito (
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+
+    CONSTRAINT fk_usuario3
+    FOREIGN KEY (id_usuario)
+    REFERENCES  usuario(id)
+    ON DELETE SET NULL
+);
+
+CREATE TABLE carrito_item (
+    id SERIAL PRIMARY KEY,
+    id_producto BIGINT UNSIGNED,
+    id_carrito BIGINT UNSIGNED,
+    cantidad INT,
+
+    CONSTRAINT fk_producto
+    FOREIGN KEY (id_producto)
+    REFERENCES productos(id)
+    ON DELETE SET NULL,
+
+    CONSTRAINT fk_carrito
+    FOREIGN KEY (id_carrito)
+    REFERENCES carrito(id)
+    ON DELETE SET NULL
+);
+
+CREATE TABLE info_bancaria(
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+
+    nombre_titular VARCHAR (100),
+    num_tarjeta VARCHAR(50),
+    exp_date VARCHAR (20),
+    cvv BIGINT,
+    cpp BIGINT,
+
+    CONSTRAINT fk_usuario4
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE orden (
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+    fecha Date,
+
+    CONSTRAINT fk_usuario5
+    FOREIGN KEY (id_usuario)
+    REFERENCES  usuario(id)
+    ON DELETE SET NULL
+);
+
+CREATE TABLE orden_item (
+    id SERIAL PRIMARY KEY,
+    id_orden BIGINT UNSIGNED,
+    id_producto BIGINT UNSIGNED,
+    cantidad INT,
+
+    CONSTRAINT fk_producto1
+    FOREIGN KEY (id_producto)
+    REFERENCES productos(id)
+    ON DELETE SET NULL,
+
+    CONSTRAINT fk_orden
+    FOREIGN KEY (id_orden)
+    REFERENCES orden(id)
+    ON DELETE SET NULL
+);
+

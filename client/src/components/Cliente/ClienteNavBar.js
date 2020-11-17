@@ -53,9 +53,9 @@ function NavItem(props) {
     return (
         <li className="nav-item">
 
-                <a className="icon-button" onClick={() => setOpen(!open)}>
+                <button className="icon-button" onClick={() => setOpen(!open)}>
                     {props.icon}
-                </a>
+                </button>
             <div style={{display: 'contents'}} onClick={() => setOpen(!open)}>
                 {open && props.children}
             </div>
@@ -65,6 +65,13 @@ function NavItem(props) {
 }
 
 function DropdownMenu(){
+    
+    const [items, setItems] = useState([]);
+
+    useEffect(()=>{
+        fetchitems();
+    }, []);
+
     const {user, setUser} = useContext(UserContext);
     const history = useHistory();
     const logout = ()=>{
@@ -72,6 +79,20 @@ function DropdownMenu(){
         alert('Hiciste logout')
         setUser(null);
         history.push('/')
+    }
+
+    const fetchitems = async () => {
+        const data = await fetch (`http://localhost:5000/api/v1/carrito/${user.id}`);
+        const items = await data.json();
+        const data2 = await fetch (`http://localhost:5000/api/v1/carritoItem/${items[0].id}`);
+        const items2 = await data2.json();
+        console.log(items2[0])
+        if (items2 == null) {
+            console.log("hola");
+        } else {
+            setItems(items2[0]);
+
+        }
     }
 
     function DropdownItem(props){
@@ -92,11 +113,13 @@ function DropdownMenu(){
                 Mi perfil
             </DropdownItem>
             </Link>
+            <Link to="/carrito">
             <DropdownItem
             href='#'
             leftIcon={<Cart/>}>
-                Carrito
+                Carrito({items.length})
             </DropdownItem>
+            </Link>
             <DropdownItem
             href='#'
             leftIcon={<Settings/>}>

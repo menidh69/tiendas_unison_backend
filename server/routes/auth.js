@@ -9,6 +9,7 @@ const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
 const jwt = require('jsonwebtoken');
 const FBUser = require('../models/FBUser');
+const request = require('request');
 
 
 router.get('/api/v1/auth/user', auth, async (req, res)=>{
@@ -107,7 +108,65 @@ router.post("/api/v1/usuario/login", async (req, res)=>{
       
   })
 
- 
+router.post("/api/v1/auth/fbLogin", async (req, res)=>{
+    let appAccessToken='2718234125104025|eMIf4gcmm8TyEj4RoG3wQ22KkzA';
+    // request("https://graph.facebook.com/oauth/access_token?client_id=2718234125104025&client_secret=f108417941ced47690c7030351ba68af&grant_type=client_credentials",
+    // {json:true}, async(err, resp, body)=>{
+    //     console.log(body)
+    //     res.json({message: body})
+    // })
+
+    request(`https://graph.facebook.com/debug_token?input_token=${req.body.accessToken}
+    &access_token=${appAccessToken}`, {json: true}, async (err, resp, body)=>{
+        if(err){
+            console.log(err)
+        }else{
+                
+            console.log(body);
+            if(body.error){
+                return res.json({fatalerror: body.error});
+            }else{
+                if(body.data.is_valid){
+                const result = await Usuario.findOne({where: {email: req.body.email}})
+                .then(user=>{
+                    if(!user||user==""){
+                        res.json({exists:false, user: []})
+                    }else{
+                    console.log(user)
+                    jwt.sign(
+                        {id: user.id},
+                        'secretosupersecreto', //ESTE SECRETO DEBERA GUARDARSE EN ARCHIVO DE CONGIFURACION DESPUES
+                        {expiresIn: 3600},
+                        (err, token) =>{
+                            if(err) throw err;
+                            console.log(token)
+                            res.json({
+                                exists: true,
+                                user: {
+                                    token,
+                                    isLoggedIn: result,
+                                    id: user.id,
+                                    nombre: user.nombre,
+                                    email: user.email,
+                                    tipo_usuario: user.tipo_usuario,
+                                    id_universidad: user.id_universidad
+                                }
+                            })
+                        }
+                    )
+                    } 
+                })
+                }else{
+                    return res.json({user: false})
+                }
+
+            }
+            }
+}
+    );
+        
+
+});
 
 router.post("/olvidarcontra",(req,res)=>{
     crypto.randomBytes(32,(err,buffer)=>{

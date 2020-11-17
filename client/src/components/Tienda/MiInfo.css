@@ -9,8 +9,6 @@
 }
 
 
-
-
 .navbar-nav {
     max-width: 90%;
     flex-direction: unset;
@@ -18,9 +16,10 @@
     justify-content: flex-end;
 }
 
-.nav-item {
-    background-color: #813434;
+.nav-item{
     justify-content: center;
+    width: auto;
+
 }
 
 .image-container {
@@ -53,4 +52,21 @@
 
 .image-container:hover .middle {
   opacity: 1;
+}
+
+
+.izq {
+    float: left;
+}
+.atras {
+    color: black;
+}
+
+.atras:hover {
+    color: black;
+}
+.top-container-item {
+    margin: auto;
+    display: inline-block;
+    width: 30%;
 }

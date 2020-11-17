@@ -15,7 +15,7 @@ class EditarMenu extends Component {
     render(){
 
         return(
-    
+
             <Fragment>
                 <div className="mainContainer">
                     <div className="top-container">
@@ -27,7 +27,7 @@ class EditarMenu extends Component {
                             </Link>
                             <h6 className="izq">| Menú</h6>
                         </div>
-                        
+
                         <div className="top-container-item der">
                             <Link to='/panel/Menu/EditarMenu/AgregarProducto'>
                                 <button  className="btn btn-success der">Agregar producto</button>
@@ -49,7 +49,7 @@ function Tabla() {
 
     useEffect(() =>{
         fetchitems();
-    }, []);
+    });
 
 
 
@@ -112,14 +112,14 @@ function Editar(props) {
 }
 
 function Eliminar (props){
-        
+
     return(
         <Fragment>
             <a href={"#eliminar" + props.item.id} role="button" className="btn btn-danger" data-toggle="modal">
                 Eliminar
             </a>
             <Modal item={props.item}></Modal>
-            
+
         </Fragment>
 
     );
@@ -172,7 +172,7 @@ function ModalEditar(props){
         descripcion: props.item.descripcion
     });
 
-    
+
     const updateField = e => {
         setData({
             ...data,
@@ -180,7 +180,7 @@ function ModalEditar(props){
         });
     }
 
-    
+
     let history = useHistory();
 
     const seCancela = () =>{
@@ -193,20 +193,29 @@ function ModalEditar(props){
             descripcion: props.item.descripcion
         });
         setProgress(0)
+        setUrl("")
         console.log(props.item.url_imagen)
     }
 
     const editarClick = async(idProducto,idTienda) => {
 
-        if (data.url_imagen=="") {
-            if (url == "") {
-              data.url_imagen = props.item.url_imagen
-            }
-    
+        // if (data.url_imagen=="") {
+        //     if (url == "") {
+        //       data.url_imagen = props.item.url_imagen
+        //     }
+
+        // } else {
+        //     data.url_imagen = url;
+        // }
+
+        if (url=="") {
+            data.url_imagen= props.item.url_imagen
         } else {
             data.url_imagen = url;
+
         }
         setProgress(0)
+        setUrl("")
 
         if (data.nombre!=="" && data.precio !=="" && data.categoria!="") {
             const body = data;
@@ -229,7 +238,7 @@ function ModalEditar(props){
                     </div>
                     <div class="modal-body">
                         <form className="">
-                
+
                             <div className="form-group row">
                                 <label for="nombre" className="col-sm-2 col-form-label">Nombre:</label>
                                 <div className="col-sm-10">
@@ -257,7 +266,7 @@ function ModalEditar(props){
                                     <br/>
                                 </div>
                                 <div className="col-sm-10 text-center">
-                                    <img alt={"Imagen del producto: " + props.item.nombre} src={data.url_imagen||"https://via.placeholder.com/300x300"} className="imagenP"></img>
+                                    <img alt={"Imagen del producto: " + props.item.nombre} src={url||data.url_imagen||"https://via.placeholder.com/300x300"} className="imagenP"></img>
                                 </div>
                             </div>
                             <div className="form-group row">
@@ -280,7 +289,7 @@ function ModalEditar(props){
 
 function Modal(props){
 
-    
+
     let history = useHistory();
 
 

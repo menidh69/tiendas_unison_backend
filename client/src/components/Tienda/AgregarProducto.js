@@ -34,9 +34,7 @@ class AgregarProducto extends Component {
                     </div>
                     <div class="mainContainer alinear">
                         <Formulario />
-                        <div className="imagenContainer align-top">
-                            <div className="imagenP"></div>
-                        </div>
+                        
                         
                     </div>
                 </div>
@@ -104,7 +102,7 @@ function Formulario () {
 
     useEffect(() =>{
         fetchitems();
-    }, []);
+    });
 
     const fetchitems = async (id) => {
         const data = await fetch(`http://localhost:5000/api/v1/miTienda/${user.id}`);
@@ -144,51 +142,56 @@ function Formulario () {
     data.id_tienda = items.id;
 
     return(
-    <form className="formulario" onSubmit={onSubmitForm}>
-        
-        <div className="form-group row">
-            <label for="nombre" className="col-sm-2 col-form-label">Nombre:</label>
-            <div className="col-sm-10">
-                <input type="text" className="form-control" id="nombre" name="nombre" value={data.nombre} onChange={updateField}></input>
+        <Fragment>
+            <form className="formulario" onSubmit={onSubmitForm}>
+                
+                <div className="form-group row">
+                    <label for="nombre" className="col-sm-2 col-form-label">Nombre:</label>
+                    <div className="col-sm-10">
+                        <input type="text" className="form-control" id="nombre" name="nombre" value={data.nombre} onChange={updateField}></input>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label for="precio" className="col-sm-2 col-form-label">Precio:</label>
+                    <div className="col-sm-10">
+                        <input type="number" className="form-control" id="precio" name="precio" value={data.precio} onChange={updateField} min="0"></input>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label for="categoria" className="col-sm-2 col-form-label">Categoría:</label>
+                    <div className="col-sm-10">
+                        <input type="text" className="form-control" id="categoria" name="categoria" value={data.categoria} onChange={updateField}></input>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label for="imagen" className="col-sm-2 col-form-label">Imagen:</label>
+                    <div className="col-sm-10">
+                        <input type="file" id="imagen" name="file" onChange={handleChange}></input>
+                        <br/>
+                            <progress value={progress} max="100"/>
+                        <br/>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label for="descripcion" className="col-sm-2 col-form-label">Descripción:</label>
+                    <div className="col-sm-10">
+                        <textarea className="form-control" id="descripcion" rows="5" name="descripcion" value={data.descripcion} onChange={updateField}></textarea>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <div className="col-sm-10 m-auto">
+                        <Link to="/panel/Menu/EditarMenu">
+                            <button className="btn btn-danger ml float-right">Cancelar</button>
+                        </Link>
+                        <button className="btn btn-success float-right" type="submit">Guardar</button>
+                    </div>
+                </div>
+                
+            </form>
+            <div className="imagenContainer align-top">
+                <img alt="imagen del producto" src={url||data.url_imagen||"https://via.placeholder.com/300x300"} className="imagenP"></img>
             </div>
-        </div>
-        <div className="form-group row">
-            <label for="precio" className="col-sm-2 col-form-label">Precio:</label>
-            <div className="col-sm-10">
-                <input type="number" className="form-control" id="precio" name="precio" value={data.precio} onChange={updateField} min="0"></input>
-            </div>
-        </div>
-        <div className="form-group row">
-            <label for="categoria" className="col-sm-2 col-form-label">Categoría:</label>
-            <div className="col-sm-10">
-                <input type="text" className="form-control" id="categoria" name="categoria" value={data.categoria} onChange={updateField}></input>
-            </div>
-        </div>
-        <div className="form-group row">
-            <label for="imagen" className="col-sm-2 col-form-label">Imagen:</label>
-            <div className="col-sm-10">
-                <input type="file" id="imagen" name="file" onChange={handleChange}></input>
-                <br/>
-                    <progress value={progress} max="100"/>
-                <br/>
-            </div>
-        </div>
-        <div className="form-group row">
-            <label for="descripcion" className="col-sm-2 col-form-label">Descripción:</label>
-            <div className="col-sm-10">
-                <textarea className="form-control" id="descripcion" rows="5" name="descripcion" value={data.descripcion} onChange={updateField}></textarea>
-            </div>
-        </div>
-        <div className="form-group row">
-            <div className="col-sm-10 m-auto">
-                <Link to="/panel/Menu/EditarMenu">
-                    <button className="btn btn-danger ml float-right">Cancelar</button>
-                </Link>
-                <button className="btn btn-success float-right" type="submit">Guardar</button>
-            </div>
-        </div>
-        
-    </form>
+        </Fragment>
     );
 }
 

@@ -1,36 +1,40 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
 const Usuario = require("./Usuario");
-const UbicacionUni = require("./UbicacionUni")
 
-const Universidad = db.sequelize.define(
-    'universidad',
+const Info_bancaria = db.sequelize.define(
+    'info_bancaria',
     {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        nombre: {
+        id_usuario:{
+            type: Sequelize.INTEGER
+        },
+        nombre_titular:{
             type: Sequelize.STRING
         },
-        ciudad: {
+        num_tarjeta:{
             type: Sequelize.STRING
         },
-        estado: {
+        exp_date:{
             type: Sequelize.STRING
         },
-        validada: {
-            type: Sequelize.BOOLEAN
+        cvv:{
+            type: Sequelize.INTEGER
+        },
+        cpp:{
+            type: Sequelize.INTEGER
         }
 
     },
     {
         timestamps: false,
         freezeTableName: true,
-        tableName: 'universidad'
+        tableName: 'info_bancaria'
     }
 )
-Universidad.hasOne(UbicacionUni, {foreignKey: "id_universidad"});
 
-module.exports = Universidad;
+module.exports = Info_bancaria;

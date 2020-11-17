@@ -5,7 +5,8 @@ import Confirm from './Confirm';
 import Success from './Success';
 import RegGen from './RegGen';
 import {useHistory} from "react-router-dom";
-import {storage} from '../../firebase'
+import {storage} from '../../firebase';
+import MapReg from './MapReg';
 
 
 export class UserForm extends Component {
@@ -21,7 +22,10 @@ export class UserForm extends Component {
       tipo_tienda: '',
       url_imagen: '',
       tarjeta: '',
-      uni_nombre: ''
+      uni_nombre: '',
+      coordinates: null,
+      lat: null,
+      lng: null
     };
 
 
@@ -53,6 +57,12 @@ export class UserForm extends Component {
     this.setState({ [input]: e.target.value });
   };
 
+  handleLocation = (coordinates)=>{
+    this.setState({coordinates: coordinates,
+      lat: coordinates.lat,
+    lng: coordinates.lng})
+    
+  }
 
   handleUpload = (file) => {
 
@@ -133,8 +143,8 @@ export class UserForm extends Component {
 
   render() {
       const { step } = this.state;
-      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre } = this.state;
-      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre };
+      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre, latitud, longitud, coordinates } = this.state;
+      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre, latitud, longitud, coordinates };
 
     switch (step) {
       case 1:
@@ -156,7 +166,15 @@ export class UserForm extends Component {
             values={values}
           />
         );
-      case 3:
+        case 3:
+          return(
+            <MapReg nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            values={values}
+            handleLocation={this.handleLocation}
+            />
+          )
+      case 4:
         return (
           <Confirm
             submit={this.submit}

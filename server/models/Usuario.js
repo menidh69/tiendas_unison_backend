@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../db/db");
 const Tienda = require("./Tienda");
 const Universidad = require("./Universidad");
+const Info_bancaria = require("./Info_bancaria");
 
 const Usuario = db.sequelize.define(
     'usuario',
@@ -46,4 +47,5 @@ const Usuario = db.sequelize.define(
 )
 
 Usuario.hasOne(Tienda, {foreignKey: 'id_usuario'});
+Usuario.hasOne(Info_bancaria, {foreignKey: 'id_usuario'});
 module.exports = Usuario;

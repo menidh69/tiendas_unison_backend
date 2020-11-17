@@ -27,6 +27,7 @@ const Menu = ()=>{
         setShow(true);
     }
 
+
     useEffect(() => {
       const sortArray = type => {
         const types = {
@@ -41,6 +42,7 @@ const Menu = ()=>{
   
       sortArray(sortType);
     }, [sortType]); 
+
 
     const fetchValidar = async ()=>{
         const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
@@ -77,6 +79,13 @@ const Menu = ()=>{
       }
     const [show2, setShow2] = useState(false);
 
+
+
+
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
+
+
     const styleImgTienda={
         maxWidth: '25%'
     }
@@ -110,7 +119,9 @@ const Menu = ()=>{
                 <h1 className="text-dark my-4 display-4">Menú</h1>
                 <input type="text" value={searchTerm} onChange={editSearchTerm}></input>
             <div className="row">
+
                 <Producto name={dynamicSearch()}/>
+
             </div>
             <div class="col-sm-3">
 
@@ -128,7 +139,7 @@ const Menu = ()=>{
                 </Modal.Header>
                 <Modal.Body>
                 <p>¡Con tu información ayudas a las tiendas y a que los usuarios tengan compras más seguras! <br/>
-                Al enviar este informe estas afirmando que la tienda si existe.  </p>   
+                Al enviar este informe estas afirmando que la tienda si existe.  </p>
                   </Modal.Body>
                 <Modal.Footer>
                   <Button variant="primary"  className="mx-auto" onClick={validar}>
@@ -213,10 +224,10 @@ function Producto(props) {
                 </Modal.Footer>
             </Modal>
             :
-            
+
             ''
-            
-            
+
+
             }
         </Fragment>
     );
@@ -229,7 +240,7 @@ function AgregarCarrito(props) {
                 Agregar al carrito
             </a>
             <Agregar item={props.item} cantidad="1" ></Agregar>
-            
+
         </Fragment>
 
     );
@@ -237,7 +248,6 @@ function AgregarCarrito(props) {
 
 function Agregar(props){
 
-    
     const {user , setUser} = useContext(UserContext);
     const [data, setData] = useState({
         cantidad: props.cantidad
@@ -280,5 +290,5 @@ function Agregar(props){
     );
 }
 
-
 export default Menu;
+

@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
+const Info_bancaria = require('../models/Info_bancaria');
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
+const Carrito = require('../models/Carrito');
+const Carrito_item = require('../models/CarritoItem');
+const Productos = require('../models/Productos');
+const { sequelize } = require('../db/db');
 
 router.post("/usuarios", async (req, res)=>{
     const user = {
@@ -11,7 +16,7 @@ router.post("/usuarios", async (req, res)=>{
         email: req.body.email,
         contra: req.body.contra,
         tel: req.body.tel,
-        id_universidad: req.body.universidad
+        id_universidad: req.body.universidad || req.body.id_universidad
     }
     console.log(user)
     Usuario.findOne({
@@ -25,7 +30,11 @@ router.post("/usuarios", async (req, res)=>{
               user.contra = hash
               Usuario.create(user)
               .then(usuario=> {
-                res.json({status: usuario.email + ' registrado con exito'})  
+                const cart = {
+                  id_usuario: usuario.id
+                }
+                Carrito.create(cart)
+                res.json({status: usuario.email + ' registrado con exito'})
                 const msg ={
                     to: user.email,
                     from: "tiendasuniv@hotmail.com",
@@ -40,7 +49,7 @@ router.post("/usuarios", async (req, res)=>{
               })
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })  
+            res.json({ error: "Ya existe un usuario con esa cuenta" })
         }
     })
     .catch(err =>{
@@ -112,6 +121,108 @@ router.get("/usuarioinfo/:id", async (req, res)=>{
       console.log(err);
   }
 })
+
+
+//CARRITO
+
+// Productos.hasMany(Carrito_item, {as: 'producto', foreignKey: 'id_producto'});
+// Carrito_item.belongsTo(Productos, {foreignKey: 'id'});
+
+
+router.get("/carrito/:id", async (req, res) => {
+  try {
+    const carrito = await Carrito.findAll({where: {id_usuario: req.params.id}})
+    
+
+    .then(result => {
+      res.json(result);
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.post("/carritoCrear/:id", async (req, res) => {
+  try {
+    const c = {
+      id_usuario: req.params.id
+    }
+    const crear = await Carrito.create(c)
+    
+
+    .then(result => {
+      res.json(result);
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+// Carrito_item.hasOne(Productos, {as: 'id_producto', foreignKey:'id'})
+
+router.get("/carritoItem/:id", async (req,res) => {
+  try {
+    // const carritoItem = await Carrito_item.findAll({
+    // include: [
+    //   {model: Productos}
+    // ],
+    // where: {id_carrito: req.params.id}})
+    const carritoItem = await sequelize.query("SELECT carrito_item.id, carrito_item.id_producto, carrito_item.cantidad, productos.nombre, productos.precio, productos.id_tienda, tienda.nombre as tienda_nombre FROM carrito_item INNER JOIN productos ON carrito_item.id_producto = productos.id INNER JOIN tienda ON productos.id_tienda = tienda.id WHERE id_carrito = " + req.params.id)
+    // console.log(carritoItem)
+    .then(result => {
+      res.json(result);
+    })
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+router.delete("/eliminarCarritoItem/:id", async (req, res)=>{
+    
+  Carrito_item.destroy({where:{
+      id: req.params.id
+  }})
+  .then(result => {
+      res.json(result)
+  })
+})
+
+//router.get("/carritoItems")
+
+router.post("/agregarCarrito/:id_producto/:idCarrito/:cantidad", async (req,res) => {
+  try {
+    const carritoItem = {
+      id_producto: req.params.id_producto,
+      id_carrito: req.params.idCarrito,
+      cantidad: req.params.cantidad
+    }
+
+    Carrito_item.create(carritoItem)
+    .then(result => {
+      res.json({status: "agregado con exito"})
+    })
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+//AQUI TERMINA LO DEL CARRITO
+
+
+//info usuario e info bancaria
+router.get("/usuarioinfoperfil/:id", async (req, res)=>{
+  try{
+      const user = await Usuario.findAll({where: {id: req.params.id}, include: Info_bancaria, raw:true})
+      .then(result =>{
+          res.json(result);
+      })
+
+  }catch(err){
+      console.error(err)
+      console.log(err);
+  }
+})
+
 
 
 //PUT nueva info en usuario
