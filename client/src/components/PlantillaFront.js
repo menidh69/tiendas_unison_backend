@@ -1,7 +1,8 @@
 import React, {Fragment, useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../UserContext';
 import {Modal, Button} from 'react-bootstrap';
-import datosVentas from './dataJSON/ventas_entregadas_JSON'
+//Aqui importamos un archivo JSON estatico de la carpeta dataJSON
+import datosVentas from './dataJSON/ventas_entregadas_JSON';
 
 
 const MisReportes = () =>{
