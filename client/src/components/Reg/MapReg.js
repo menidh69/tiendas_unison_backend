@@ -1,4 +1,4 @@
-import React, { Component, Fragment, useState } from 'react';
+import React, { Component, Fragment, useState, useEffect } from 'react';
 import {compose, withProps} from 'recompose';
 import { Marker, withGoogleMap, withScriptjs, GoogleMap } from 'react-google-maps';
 import LandingNav from '../Landing-Registro/LandingNav'
@@ -7,7 +7,33 @@ const MapReg = (props)=>{
 
 const [markerPosition, setMarkerPosition] = useState(props.values.coordinates || null)
 const [markerShown, setMarkerShown] = useState(true)
+const [center, setCenter] = useState();
 
+useEffect(()=>{
+    let isMounted = true;
+    fetchuniversidad()
+    .then(json=>{
+        if(isMounted) setCenter(json)
+    });
+    return ()=>isMounted=false;
+}, []);
+
+const fetchuniversidad = async ()=>{
+    if(props.values.universidad){
+    const data = await fetch(`http://localhost:5000/api/v1/universidades/ubi/${props.values.universidad}`);
+    const json = await data.json();
+    const ubicacion = {
+        lat: parseFloat(json.lat),
+        lng: parseFloat(json.lng)
+    }
+    console.log(ubicacion)
+    return ubicacion;
+    }else{
+    alert("Primero ingrese una universidad")
+    return;
+    }
+    
+};
 
 
   const back = e => {
@@ -32,7 +58,7 @@ const Map = compose(
 )((props)=>
 <GoogleMap 
 defaultZoom={17} 
-defaultCenter={markerPosition || {lat: 29.0824139, lng: -110.966389}}
+defaultCenter={markerPosition || center}
 onClick={setLocation}
 >
 <Marker position={markerPosition}></Marker>

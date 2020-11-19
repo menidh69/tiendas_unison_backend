@@ -129,9 +129,9 @@ function Tabla () {
                             name = 'Compra'
                             />
                         </div>
-                        <div>
+                        {/* <div>
                           <button type="button" class="btn btn-success" data-dismiss="modal"onClick={()=>orden(items)}>Pagar</button>
-                        </div>
+                        </div> */}
             </Fragment>
         );
     } else {

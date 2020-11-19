@@ -73,7 +73,9 @@ function Items() {
                 <Link to='/panel/Menu'>
                 <button className="boton">Menu</button>
                 </Link>
-                <button className="boton">Promociones</button>
+                <Link to="/panel/misReportes">
+                <button className="boton">Mis Reportes</button>
+                </Link>
             </div>
             <hr />
             <div className="itemsContainer">

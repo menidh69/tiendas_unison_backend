@@ -112,10 +112,19 @@ const Menu = ()=>{
                 <h1 className="text-dark my-4">{tienda.nombre}</h1>
                 <hr></hr>
                 <h1 className="text-dark my-4 display-4">Menú</h1>
+            
+            
                 <label for="search">Buscar: </label>
                 <input type="text" id="search" className="mx-2 rounded-pill border border-dark px-2" placeholder="Ej. Brownie de mota" value={searchTerm} onChange={editSearchTerm}></input>
+                <div className="mx-5">
+                <label for="ordenar">Ordenar por:</label>
+                <select className="mx-2" id="ordenar" onChange={(e) => setSortType(e.target.value)}> 
+                    <option value="abc">Nombre</option>
+                    <option value="mayor">Precio</option>
+                </select>
+                </div>
             <div className="row">
-
+            
                 <Producto name={dynamicSearch()}/>
                 {/* {items.map(item =>(
 
@@ -140,15 +149,7 @@ const Menu = ()=>{
                 ))} */}
 
             </div>
-            <div class="col-sm-3">
-
-            <select onChange={(e) => setSortType(e.target.value)}> 
-            <option value="mayor">Precio</option>
-            <option value="abc">Nombre</option>
-            </select>
-        
-      
-    </div>
+            
             <div>
             <Modal show={show2} onHide={handleClose2} animation={true}>
                 <Modal.Header closeButton>
