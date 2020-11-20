@@ -84,7 +84,9 @@ function Items() {
                 <button className="boton">Mi información</button>
                 </Link>
 
-                <button className="boton">Ventas</button>
+                <Link to='panel/Pedidos'>
+                <button className="boton">Pedidos</button>
+                </Link>
 
                 <Link to='panel/Tarjeta'>
                 <button className="boton">Tarjeta</button>
