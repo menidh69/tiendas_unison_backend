@@ -6,7 +6,8 @@ const router = express.Router();
 const Usuario = require('../models/Usuario');
 const Tienda = require('../models/Tienda');
 const Ubicacion = require('../models/Ubicacion');
-
+const Info_Stripe = require('../models/Info_Stripe');
+const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLXiWLmtRBdyX6M68fdjwuoYbrf1pc8i1R54cN1dVy8D5jfpYkHCHH00KUpKrBFG");
 
 
 
@@ -54,6 +55,16 @@ router.post("/tiendas", async (req, res)=>{
                     ubicacion.id_tienda = tiendacreada.id
                     await Ubicacion.create(ubicacion)
                     .then(async ubi=>{
+                        const account = await stripe.accounts.create({
+                            type: 'standard',
+                            country: "MX",
+                            email: usuario.email,
+                          });
+                          const infoStripe = {
+                              id_tienda: tiendacreada.id,
+                              id_stripe: account.id
+                          }
+                          Info_Stripe.create(infoStripe)
                         res.json({
                             status: tiendacreada.nombre + ': Tienda y usuario creada con exito'
                         })
@@ -207,7 +218,10 @@ router.get("/tiendainfo/:id", async (req, res)=>{
 
 router.get("/tiendafecha/:id", async (req, res)=>{
   try{
-      const tienda = await Tienda.findAll({where: {id_usuario: req.params.id}})
+      const tienda = await Tienda.findAll({
+          where: {id_usuario: req.params.id},
+          include: Info_Stripe, raw:true
+        })
       .then(result =>{
           res.json(result);
       })

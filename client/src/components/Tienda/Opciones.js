@@ -6,6 +6,7 @@ import Banner from 'react-js-banner'
 import { UserContext } from '../../UserContext'
 import {useHistory} from "react-router-dom";
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import InfoStripe from './InfoStripe';
 
 const Opciones = ()=> {
     return(
@@ -18,26 +19,46 @@ const Opciones = ()=> {
 }
 
 function Items() {
+
     let history = useHistory()
     const [items, setItems] = useState([])
     const {user, setUser} = useContext(UserContext);
     const [days, setDays] = useState(null);
+    const [tiendaID, setID] = useState(null);
+
     useEffect(()=>{
-        fetchitems();
+        let isMounted = true;
+        if(isMounted){
+            fetchitems()
+            .then(json=>{
+                setItems(json.items);
+                setDays(json.days);
+                setID(json.items[0]['id'])
+            })
+        }
+        return ()=>{isMounted=false};
+        
     }, []);
 
     const fetchitems = async (id)=>{
         const data = await fetch(`http://localhost:5000/api/v1/tiendafecha/${user.id}`);
         const items = await data.json();
-        setItems(items[0])
+        console.log(items)
         let finaldate = new Date();
         let today = new Date(Date.now())
+        console.log("today:", today)
         let subdate = new Date(items[0].fechaSub)
-        finaldate.setDate(subdate.getDate() + 21)
+        finaldate.setDate(subdate.getDate())
+        console.log("subdate", subdate)
+        console.log("finaldate", finaldate)
         let diffTime = Math.abs(finaldate - today);
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         console.log(diffDays)
-        setDays(diffDays)
+        const json = {
+            items: items,
+            days: diffDays
+        }
+        return json
     };
 
     const eliminar = async (id)=>{
@@ -114,6 +135,9 @@ function Items() {
                     </div>
                 </div>
             </div>
+            {tiendaID ? 
+            <InfoStripe id_tienda={tiendaID}/>
+            : null}
         </div>
 
 

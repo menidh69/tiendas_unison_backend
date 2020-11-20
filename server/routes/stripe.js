@@ -4,6 +4,7 @@ const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLX
 const uuid = require("uuid")
 const Usuario = require('../models/Usuario');
 const sgMail = require("@sendgrid/mail");
+const Info_Stripe = require('../models/Info_Stripe');
 sgMail.setApiKey('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');
 
 router.post("/checkout", async (req, res) => {
@@ -51,7 +52,10 @@ router.post("/checkout", async (req, res) => {
 //   res.json({client_secret: paymentIntent.client_secret})
 // })
 
-
+router.get("/stripeInfo/:id", async(req, res)=>{
+  const info = await Info_Stripe.findOne({where:{id_tienda: req.params.id}});
+    return res.json({info: info})
+})
 
 
 module.exports = router;

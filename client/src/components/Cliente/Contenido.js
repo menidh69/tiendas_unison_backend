@@ -44,7 +44,6 @@ const fetchitems = async ()=>{
         <div className="text-center my-4 container">
             <div className="arriba">
                 <h3>Tiendas Universidad</h3>
-
             </div>
             <h4>Bienvenido {user.nombre}</h4>
 

@@ -2,13 +2,14 @@ import React, {Fragment, useContext, useMemo} from 'react';
 import ClienteNavBar from './ClienteNavBar';
 import Contenido from './Contenido'
 import { UserContext } from '../../UserContext'
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 import IndexTiendas from './IndexTiendas';
 import PerfilCliente from './PerfilCliente';
 import TiendaInfo from './TiendaInfo';
 import Menu from './Menu';
 import SelectUni from './SelectUni';
 import Carrito from './Carrito';
+import PlantillaFront from '../PlantillaFront'
 
 const Home = (props)=>{
 
@@ -26,7 +27,10 @@ const Home = (props)=>{
                 <Route path='/tiendas/:id' exact component={TiendaInfo}/>
                 <Route path='/tiendas/:id/menu' exact component={Menu}/>
                 <Route path='/carrito' exact component={Carrito}/>
+                <Route path='/ejemplo' exact component={PlantillaFront}/>
+                <Redirect from="/" to="/home"/>
             </Switch>
+            
             </UserContext.Provider>
         </Router>
 
