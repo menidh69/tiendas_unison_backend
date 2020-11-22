@@ -22,6 +22,7 @@ import LandingPage from './components/Landing-Registro/LandingPage'
 import LoginFactory from './components/Factory'
 import { UserContext } from './UserContext'
 import RegistroTipo from './components/Landing-Registro/RegistroTipo'
+import { setObservableConfig } from 'recompose';
 
 
 
@@ -45,12 +46,8 @@ function App() {
               .then(async resp=>{
                 const usuario = await resp.json();
                 if(resp.status==400){
-                  console.log('no user')
-                  console.log(usuario)
                   localStorage.removeItem('token.utw')
                 }else{
-                  console.log(usuario)
-                console.log(resp)
                 setUser(usuario)
                 }
               })
@@ -70,14 +67,16 @@ function App() {
     switch (usuario.tipo_usuario) {
       case 'cliente':
         return(
-          <Router>
-            <UserContext.Provider value={value}>
-              <Switch>
-              <Route path="/home" component={Home}/>
-              <Redirect from="/" to="/home"/>
-              </Switch>
-            </UserContext.Provider>
-          </Router>
+          <UserContext.Provider value={value}>
+          <Home/>
+          </UserContext.Provider>
+          // <Router>
+          //   <UserContext.Provider value={value}>
+          //     <Switch>
+          //     <Route path="/" component={Home}/>
+          //     </Switch>
+          //   </UserContext.Provider>
+          // </Router>
           );
           break;
       case 'admin':

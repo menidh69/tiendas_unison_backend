@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState, useContext} from 'react';
-import { UserContext } from '../../UserContext';
+import { UserContext } from '../UserContext';
 import {Modal, Button} from 'react-bootstrap';
 //Aqui importamos un archivo JSON estatico de la carpeta dataJSON
 import datosVentas from './dataJSON/ventas_entregadas_JSON';
@@ -26,6 +26,7 @@ const MisReportes = () =>{
         // esa informacion no esté lista, usaremos los archivos json predefinidos,
         // se los asignaremos a una variable y haremos return. Ejemplo a continuacion:
         const json = datosVentas;
+        // console.log(json)
         return json;
     }
 
@@ -35,12 +36,19 @@ const MisReportes = () =>{
             {data ?
             <div>
                 {/* Lo que mostraremos si tenemos los datos cargados*/}
+                <h1>Ejemplos</h1>
+                <div className="text-dark">
+                {/* {data.map(item=>(
+                    
+                    <h1 className="text-dark">{item.total}</h1>
 
-
+                ))} */}
+                </div>
             </div>
         : 
         <div>
             {/* Lo que mostraremos si no hay datos para mostrar*/}
+            No hay Ejemplos
 
         </div>
         

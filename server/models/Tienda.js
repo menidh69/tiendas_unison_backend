@@ -3,6 +3,8 @@ const db = require("../db/db");
 const Reporte_tienda = require("./Reporte_tienda");
 const Ubicacion = require("./Ubicacion");
 const Usuario = require("./Usuario");
+const Info_Stripe = require("./Info_Stripe");
+const Productos = require("./Productos")
 
 const Tienda = db.sequelize.define(
     'tienda',
@@ -48,5 +50,7 @@ const Tienda = db.sequelize.define(
 )
 
 Tienda.hasMany(Reporte_tienda, {foreignKey: 'id_tienda'});
-Tienda.hasOne(Ubicacion, {foreignKey: 'id_tienda'})
+Tienda.hasOne(Ubicacion, {foreignKey: 'id_tienda'});
+Tienda.hasMany(Info_Stripe, {foreignKey: "id_tienda"})
+
 module.exports = Tienda;

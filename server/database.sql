@@ -185,11 +185,17 @@ CREATE TABLE info_bancaria(
 CREATE TABLE orden (
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
+    id_tienda BIGINT UNSIGNED,
     fecha Date,
 
     CONSTRAINT fk_usuario5
     FOREIGN KEY (id_usuario)
     REFERENCES  usuario(id)
+    ON DELETE SET NULL
+
+    CONSTRAINT fk_tienda4
+    FOREIGN KEY (id_tienda)
+    REFERENCES  tienda(id)
     ON DELETE SET NULL
 );
 
@@ -210,3 +216,36 @@ CREATE TABLE orden_item (
     ON DELETE SET NULL
 );
 
+CREATE TABLE info_stripe(
+    id SERIAL PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    id_stripe VARCHAR(255),
+
+     CONSTRAINT fk_tienda3
+    FOREIGN KEY (id_tienda)
+    REFERENCES tienda(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE stripe_customer(
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+    id_stripe VARCHAR(255),
+
+     CONSTRAINT fk_usuario6
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE venta(
+    id SERIAL PRIMARY KEY,
+    id_transaccion VARCHAR(255),
+    amount INT,
+    id_orden BIGINT UNSIGNED,
+ 
+    CONSTRAINT fk_orden2
+    FOREIGN KEY (id_orden)
+    REFERENCES orden(id)
+    ON DELETE CASCADE
+);

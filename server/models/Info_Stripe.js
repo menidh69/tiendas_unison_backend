@@ -1,27 +1,27 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
-const Usuario = require("../models/Usuario");
-const Carrito_item = require("../models/CarritoItem")
+const Usuario = require("./Usuario");
 
-const Carrito = db.sequelize.define(
-    'carrito',
+const Info_Stripe = db.sequelize.define(
+    'info_stripe',
     {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        id_usuario: {
+        id_tienda:{
             type: Sequelize.INTEGER
+        },
+        id_stripe:{
+            type: Sequelize.STRING
         }
     },
     {
         timestamps: false,
         freezeTableName: true,
-        tableName: 'carrito'
+        tableName: 'info_stripe'
     }
 )
 
-
-
-module.exports = Carrito;
+module.exports = Info_Stripe;
