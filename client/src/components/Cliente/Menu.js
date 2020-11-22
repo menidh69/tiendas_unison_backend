@@ -278,11 +278,17 @@ function Agregar(props){
         });
     }
     const agregarCarrito = async(id_producto, cantidad) => {
-        const data = await fetch (`http://localhost:5000/api/v1/carrito/${user.id}`);
-        const iCarrito = await data.json();
-        const data2 = await fetch (`http://localhost:5000/api/v1/agregarCarrito/${id_producto}/${iCarrito[0].id}/${cantidad}`, {
-            method: "POST"
+        const itemCarrito = {
+            id_producto: id_producto,
+            cantidad: cantidad
+        }
+        const data = await fetch (`http://localhost:5000/api/v1/agregarCarrito/${user.id}`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(itemCarrito)
         });
+        const response = await data.json()
+        console.log(response)
     }
 
 
