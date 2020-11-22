@@ -14,48 +14,48 @@ const Venta= require('../models/Venta');
 
 
 //crear orden
-router.post("/nuevaOrden", async (req, res) => {
-  // let total = 0;
-  const info = await Info_Stripe.findOne({where:{id_stripe: req.body.id_stripe_tienda}})
-  const items = Carrito.findAll({
-    where: {
-      id_usuario: req.body.id_user
-    }, 
-    include: {
-      model: Carrito_item, 
-      include: {
-        model: Productos, where:{id_tienda: info.id_tienda}
-      }
-    }, raw: true
-  })
-  .then(async found=>{
-    let id_carrito = ""
-    const orden = await Orden.create({
-      id_usuario: req.body.id_usuario,
-      id_tienda: info.id_tienda,
-      fecha: Date.now(), 
-      entregado: false
-  })
-    found.map(async item=>{
-      
-      let ordenitem = {
-            id_orden:  orden.id,
-            id_producto: item['carrito_items.id_producto'],
-            cantidad: item['carrito_items.cantidad'],
-          }
-          const newordenitem = await Ordenitem.create(ordenitem) 
-          Carrito_item.destroy({where:{id_carrito: item.id, id_producto: newordenitem.id_producto}})
+// router.post("/nuevaOrden", async (req, res) => {
+//   // let total = 0;
+//   const info = await Info_Stripe.findOne({where:{id_stripe: req.body.id_stripe_tienda}})
+//   const items = await Carrito.findAll({
+//     where: {
+//       id_usuario: req.body.id_user
+//     }, 
+//     include: {
+//       model: Carrito_item, 
+//       include: {
+//         model: Productos, where:{id_tienda: info.id_tienda}
+//       }
+//     }, raw: true
+//   })
+  
+    
+//     const orden = await Orden.create({
+//       id_usuario: req.body.id_usuario,
+//       id_tienda: info.id_tienda,
+//       fecha: Date.now(), 
+//       entregado: false
+//   })
+//     await items.map(async item=>{
+//       let ordenitem = {
+//             id_orden:  orden.id,
+//             id_producto: item['carrito_items.id_producto'],
+//             cantidad: item['carrito_items.cantidad'],
+//           }
+//           const newordenitem = await Ordenitem.create(ordenitem) 
+//           Carrito_item.destroy({where:{id_carrito: item.id, id_producto: newordenitem.id_producto}})  
+//     })
 
-      
-    })
-    let venta = {
-      id_orden: orden.id,
-      id_transaccion: req.body.id_transaccion,
-      amount: req.body.total
-    }
-    Venta.create(venta);
-    return res.json({status: "Exito"})
-  })
+//     let venta = {
+//       id_orden: orden.id,
+//       id_transaccion: req.body.id_transaccion,
+//       amount: req.body.total
+//     }
+//     await Venta.create(venta);
+//     return res.json({status: "Exito"})
+//   })
+
+
     // req.body.productos.map(item=>{
     //   let ordenitem = {
     //     id_orden:  orden.id,
@@ -68,10 +68,7 @@ router.post("/nuevaOrden", async (req, res) => {
     // })
     // Carrito_item.findAll({where:{id}})
 
-    
-    
- 
-})
+
 
 
 

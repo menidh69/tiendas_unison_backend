@@ -14,9 +14,15 @@ const Orden = db.sequelize.define(
         id_usuario: {
             type: Sequelize.INTEGER
         },
+        id_tienda:{
+            type: Sequelize.INTEGER
+        },
         fecha: {
           type: Sequelize.DATE
-        }
+        },
+        entregado: {
+            type: Sequelize.BOOLEAN
+        },
     },
     {
         timestamps: false,

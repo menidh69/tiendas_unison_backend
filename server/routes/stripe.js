@@ -167,9 +167,12 @@ router.post('/stripe/webhook', bodyParser.raw({type: 'application/json'}), (requ
 });
 
 const handleSuccessfulPaymentIntent = async (paymentIntent) => {
-  const infoTienda = await Info_Stripe.findOne({where:{id_stripe: paymentIntent.on_behalf_of}})
-  const infoCliente = await Stripe_Customer.findOne({where:{id_stripe: paymentIntent.customer}})
-  const items = Carrito.findAll({
+  const infoTienda = await Info_Stripe.findOne({where:{id_stripe: paymentIntent.on_behalf_of}, raw:true})
+  const infoCliente = await Stripe_Customer.findOne({where:{id_stripe: paymentIntent.customer}, raw:true})
+  console.log(infoCliente)
+  console.log(infoTienda)
+  
+  const items = await Carrito.findAll({
     where: {
       id_usuario: infoCliente.id_usuario
     }, 
@@ -180,29 +183,30 @@ const handleSuccessfulPaymentIntent = async (paymentIntent) => {
       }
     }, raw: true
   })
-  .then(async found=>{
+  
     const orden = await Orden.create({
       id_usuario: infoCliente.id_usuario,
       id_tienda: infoTienda.id_tienda,
       fecha: Date.now(), 
       entregado: false
   })
-    found.map(item=>{
+    items.map(async item=>{
       let ordenitem = {
             id_orden:  orden.id,
             id_producto: item['carrito_items.id_producto'],
             cantidad: item['carrito_items.cantidad'],
           }
-          Ordenitem.create(ordenitem) 
+          const newordenitem = await Ordenitem.create(ordenitem) 
+          Carrito_item.destroy({where:{id_carrito: item.id, id_producto: newordenitem.id_producto}})  
     })
     let venta = {
       id_orden: orden.id,
       id_transaccion: paymentIntent.id,
       amount: paymentIntent.amount
     }
-    Venta.create(venta);
+    await Venta.create(venta);
     
-  })
+  
   console.log("success");
   console.log(paymentIntent)
 }

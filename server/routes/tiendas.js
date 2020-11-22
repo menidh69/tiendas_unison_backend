@@ -59,6 +59,10 @@ router.post("/tiendas", async (req, res)=>{
                             type: 'express',
                             country: "MX",
                             email: usuario.email,
+                            capabilities: {
+                                card_payments: {requested: true},
+                                transfers: {requested: true},
+                              }
                           });
                           const infoStripe = {
                               id_tienda: tiendacreada.id,
