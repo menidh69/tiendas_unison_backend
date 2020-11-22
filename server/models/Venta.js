@@ -16,6 +16,9 @@ const Venta = db.sequelize.define(
         id_orden:{
             type: Sequelize.INTEGER
         },
+        amount:{
+            type: Sequelize.INTEGER
+        }
        
     },
     {

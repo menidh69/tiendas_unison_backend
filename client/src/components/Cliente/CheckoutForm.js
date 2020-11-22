@@ -27,36 +27,41 @@ export default function CheckoutForm(props) {
     }
     const data = await fetch(`http://localhost:5000/api/v1/paySecret/${props.ID}/${user.id}`)
     const intent = await data.json()
-    console.log(intent.total)
-    const result = await stripe.confirmCardPayment(intent.client_secret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: user.nombre,
-        },
-      }
-    });
+    console.log(intent.client_secrets)
+    const results = await Promise.all(intent.client_secrets.map(async secret=>{
+      const result = await stripe.confirmCardPayment(secret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name: user.nombre,
+          },
+        }
+      });
+      return result;
+    }))
+  
 
-    if (result.error) {
-      // Show error to your customer (e.g., insufficient funds)
-      setProcessing(false);
-      setError(true)
-      console.log(result.error.message);
-
-    } else {
-      // The payment has been processed!
-      
-      if (result.paymentIntent.status === 'succeeded') {
-        console.log("success")
+    for(let i=0; i<results.length; i++){
+      if (results[i].error) {
+        // Show error to your customer (e.g., insufficient funds)
+        setProcessing(false);
+        setError(true)
+        console.log(results[i].error.message);
+        break;
+      } else {
+      if (results[i].paymentIntent.status === 'succeeded') {
         setProcessing(false)
         setSuccess(true)
-        console.log(result)
-        const body = {
-          id_user: user.id,
-          id_stripe_tienda: props.ID,
-          total: props.total,
-          id_transaccion: result.paymentIntent.id
-        }
+        console.log("success")
+        console.log(results[i])
+    }
+  }}
+    
+
+    
+      // The payment has been processed!
+      
+      
         // const orden = await fetch('http://localhost:5000/api/v1/nuevaOrden', {
         //   method: "POST",
         //   headers: {"Content-Type":"application/json"},
@@ -70,8 +75,8 @@ export default function CheckoutForm(props) {
         // execution. Set up a webhook or plugin to listen for the
         // payment_intent.succeeded event that handles any business critical
         // post-payment actions.
-      }
-    }
+      
+    
   };
 
   if(error){

@@ -102,49 +102,60 @@ router.get("/stripeInfo/accountLink/:id_tienda", async (req, res)=>{
 });
 
 router.get("/paySecret/:id_stripe/:id_user", async (req, res)=>{
-  const info = await Info_Stripe.findOne({where:{id_stripe: req.params.id_stripe}})
-  if(!info || info==""){
-    return res.json({status:"failed", error: "No existe este registro en la bd", id: req.params.id_stripe})
-  }
+  // const info = await Info_Stripe.findOne({where:{id_stripe: req.params.id_stripe}})
+  // if(!info || info==""){
+  //   return res.json({status:"failed", error: "No existe este registro en la bd", id: req.params.id_stripe})
+  // }
   const customer_info = await Stripe_Customer.findOne({where:{id_usuario: req.params.id_user}})
   if(!customer_info || customer_info==""){
     return res.json({status:"failed", error: "El usuario no existe", id: req.params.id_stripe})
   }
-
-  const items = Carrito.findAll({
+  const items = await Carrito.findAll({
     where: {
       id_usuario: req.params.id_user
     }, 
     include: {
       model: Carrito_item, 
       include: {
-        model: Productos, where:{id_tienda: info.id_tienda}
+        model: Productos
       }
     }, raw: true
-  }).then(async foundObject=>{
-    let total=0;
-      foundObject.map(item=>{
-        total += item['carrito_items.producto.precio']*item['carrito_items.cantidad']
-      })
-      
-     
-        const paymentIntent = await stripe.paymentIntents.create({
-          payment_method_types: ['card'],
-          amount: total*100,
-          currency: 'mxn',
-          application_fee_amount: 1000,
-          customer: customer_info.id_stripe,
-          on_behalf_of: req.params.id_stripe,
-          transfer_data:{
-            destination: req.params.id_stripe
-          }
-        });
-        res.json({client_secret: paymentIntent.client_secret, total: total})
-      
-      
   })
+
+  let tiendas = [];
   
-})
+  await items.map(item=>{
+    if(!tiendas.includes(item['carrito_items.producto.id_tienda']))
+        tiendas.push(item['carrito_items.producto.id_tienda'])
+      })
+      console.log(tiendas);
+      
+      const secrets = await Promise.all(tiendas.map(async tienda=>{
+      let total=0;
+      await items.map(item=>{
+        if(tienda==item['carrito_items.producto.id_tienda']){
+        total += item['carrito_items.producto.precio']*item['carrito_items.cantidad']
+        }
+      })
+      const infoTienda = await Info_Stripe.findOne({where:{id_tienda: tienda}})
+      const paymentIntent = await stripe.paymentIntents.create({
+        payment_method_types: ['card'],
+        amount: total*100,
+        currency: 'mxn',
+        application_fee_amount: 500,
+        customer: customer_info.id_stripe,
+        on_behalf_of: infoTienda.id_stripe,
+        transfer_data:{
+          destination: infoTienda.id_stripe
+        }
+      });
+      console.log(paymentIntent.client_secret)
+      return paymentIntent.client_secret
+    }));
+    console.log(secrets)
+        res.json({client_secrets: secrets})
+  
+});
 
 router.post('/stripe/webhook', bodyParser.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
@@ -183,19 +194,20 @@ const handleSuccessfulPaymentIntent = async (paymentIntent) => {
       }
     }, raw: true
   })
-  
+  console.log(items)
     const orden = await Orden.create({
       id_usuario: infoCliente.id_usuario,
       id_tienda: infoTienda.id_tienda,
       fecha: Date.now(), 
       entregado: false
   })
-    items.map(async item=>{
+    await items.map(async item=>{
       let ordenitem = {
             id_orden:  orden.id,
             id_producto: item['carrito_items.id_producto'],
             cantidad: item['carrito_items.cantidad'],
           }
+          console.log(item)
           const newordenitem = await Ordenitem.create(ordenitem) 
           Carrito_item.destroy({where:{id_carrito: item.id, id_producto: newordenitem.id_producto}})  
     })
