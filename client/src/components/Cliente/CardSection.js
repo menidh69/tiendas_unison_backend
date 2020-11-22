@@ -23,7 +23,7 @@ const CARD_ELEMENT_OPTIONS = {
 function CardSection() {
   return (
     <Fragment>
-    <label for="card">
+    <label htmlFor="card">
       Card details
     </label>
     <CardElement id="card" className="my-4" options={CARD_ELEMENT_OPTIONS} />

@@ -11,52 +11,52 @@ const LandingPage = ()=> {
   let history = useHistory()
   const {user, setUser} = useContext(UserContext);
 
-  const [data, setData] = useState({
-      email: '',
-      contra: ''
-  });
+//   const [data, setData] = useState({
+//       email: '',
+//       contra: ''
+//   });
 
-  const [alert, setAlert] = useState([])
+//   const [alert, setAlert] = useState([])
 
-  const updateField = e =>{
-      setData({
-          ...data,
-          [e.target.name]: e.target.value
-      });
-  }
+//   const updateField = e =>{
+//       setData({
+//           ...data,
+//           [e.target.name]: e.target.value
+//       });
+//   }
 
-  const onSubmitForm = async e =>{
+//   const onSubmitForm = async e =>{
 
-    e.preventDefault();
-    try{
-        const body = data;
-        console.log(body);
-        const response = await fetch('http://localhost:5000/api/v1/usuario/login',
-        {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(body)
-        })
-        .then(async resp =>{
-            const result = await resp.json()
-            if(result.error){
-                console.log(result.error)
-                history.push("/home")
-            }else{
-              console.log(result)
-                console.log(result.user);
-                console.log(result)
-                console.log(resp)
-                localStorage.setItem("token.tuw", result.user.token)
-                setUser(result.user);
-                history.push("/")
+//     e.preventDefault();
+//     try{
+//         const body = data;
+//         console.log(body);
+//         const response = await fetch('http://localhost:5000/api/v1/usuario/login',
+//         {
+//             method: "POST",
+//             headers: {"Content-Type": "application/json"},
+//             body: JSON.stringify(body)
+//         })
+//         .then(async resp =>{
+//             const result = await resp.json()
+//             if(result.error){
+//                 console.log(result.error)
+//                 history.push("/home")
+//             }else{
+//               console.log(result)
+//                 console.log(result.user);
+//                 console.log(result)
+//                 console.log(resp)
+//                 localStorage.setItem("token.tuw", result.user.token)
+//                 setUser(result.user);
+//                 history.push("/")
 
-            }
-        })
-    }catch(err){
+//             }
+//         })
+//     }catch(err){
 
-    }
-}
+//     }
+// }
 
 
     return(
@@ -84,7 +84,7 @@ const LandingPage = ()=> {
             <div className= "lpright col-sm-7 bg-color">
 
                 <div className="container LandingPage">
-                <div className="form-group text-left">
+                {/* <div className="form-group text-left">
                     <form className ="ini1" onSubmit={onSubmitForm}>
                         <div className="row">
                             <div className="col-md-3 mx-auto">
@@ -122,7 +122,7 @@ const LandingPage = ()=> {
                             </div>
                         </div>
                     </form>
-                </div>
+                </div> */}
                     <div className= "ini3 text-center my-5">
                         <div className="container py-5">
                         <h1>Olvídate del efectivo,</h1>
