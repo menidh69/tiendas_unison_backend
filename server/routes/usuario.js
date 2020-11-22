@@ -5,10 +5,16 @@ const Info_bancaria = require('../models/Info_bancaria');
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
-const Carrito = require('../models/Carrito');
 const Carrito_item = require('../models/CarritoItem');
+const Carrito = require('../models/Carrito');
+const Info_Stripe = require('../models/Info_Stripe')
 const Productos = require('../models/Productos');
 const { sequelize } = require('../db/db');
+const Tienda = require('../models/Tienda');
+const entities = require('../models/entities')
+const Stripe_Customer = require("../models/Stripe_Customer")
+const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLXiWLmtRBdyX6M68fdjwuoYbrf1pc8i1R54cN1dVy8D5jfpYkHCHH00KUpKrBFG");
+
 
 router.post("/usuarios", async (req, res)=>{
     const user = {
@@ -29,11 +35,18 @@ router.post("/usuarios", async (req, res)=>{
             bcrypt.hash(req.body.contra, 10, (err, hash) => {
               user.contra = hash
               Usuario.create(user)
-              .then(usuario=> {
+              .then(async usuario=> {
                 const cart = {
                   id_usuario: usuario.id
                 }
                 Carrito.create(cart)
+                const customer = await stripe.customers.create({
+                  email: usuario.email,
+                  description: "Usuario tiendas unison",
+                  name: usuario.nombre
+                });
+                Stripe_Customer.create({id_usuario: usuario.id, id_stripe: customer.id})
+
                 res.json({status: usuario.email + ' registrado con exito'})
                 const msg ={
                     to: user.email,
@@ -176,6 +189,34 @@ router.get("/carritoItem/:id", async (req,res) => {
     console.log(error);
   }
 })
+
+router.get("/carrito/payment/:id_usuario", async (req,res) => {
+  try {
+    const carritoInfo = await entities.Carrito.findAll({
+      where:{
+        id_usuario: req.params.id_usuario
+      }, 
+      include: { model: entities.Carrito_item,
+        include: {
+          model: entities.Productos,
+          include: {
+            model:Tienda, 
+            include:{
+              model: Info_Stripe
+            }  
+          }  
+      }
+    }, 
+    })
+
+
+    res.json({result: carritoInfo});
+    
+  } catch (error) {
+    console.log(error);
+  }
+})
+
 
 router.delete("/eliminarCarritoItem/:id", async (req, res)=>{
     

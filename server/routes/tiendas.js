@@ -56,7 +56,7 @@ router.post("/tiendas", async (req, res)=>{
                     await Ubicacion.create(ubicacion)
                     .then(async ubi=>{
                         const account = await stripe.accounts.create({
-                            type: 'standard',
+                            type: 'express',
                             country: "MX",
                             email: usuario.email,
                           });

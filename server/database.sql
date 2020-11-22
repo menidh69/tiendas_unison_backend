@@ -227,3 +227,25 @@ CREATE TABLE info_stripe(
     ON DELETE CASCADE
 );
 
+CREATE TABLE stripe_customer(
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+    id_stripe VARCHAR(255),
+
+     CONSTRAINT fk_usuario6
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE venta(
+    id SERIAL PRIMARY KEY,
+    id_transaccion VARCHAR(255),
+    amount INT,
+    id_orden BIGINT UNSIGNED,
+ 
+    CONSTRAINT fk_orden2
+    FOREIGN KEY (id_orden)
+    REFERENCES orden(id)
+    ON DELETE CASCADE
+);

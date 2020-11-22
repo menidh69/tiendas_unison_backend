@@ -10,8 +10,14 @@ const indexRoutes = require('./routes/index')
 
 
 app.use(cors());
-app.use(bodyParser.json()) //req.body
-app.use(bodyParser.urlencoded({extended: false}))
+app.use((req, res, next) => {
+    if (req.originalUrl === "/api/v1/stripe/webhook") {
+      next();
+    } else {
+      bodyParser.json()(req, res, next);
+      bodyParser.urlencoded({extended: false})
+    }
+  });
 moment().format();
 
 

@@ -28,8 +28,4 @@ const Carrito_item = db.sequelize.define(
     }
 )
 
-
-// Carrito_item.belongsTo(Productos);
-
-
 module.exports = Carrito_item;

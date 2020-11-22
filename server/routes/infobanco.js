@@ -19,37 +19,19 @@ const Info_Stripe = require('../models/Info_Stripe');
 //   }
 // })
 
-//GET ACCOUNT LINK DE STRIPE CON ID TIENDA
-router.get("/stripeInfo/accountLink/:id_tienda", async (req, res)=>{
-    const infoStripe = await Info_Stripe.findOne({where:{id_tienda: req.params.id_tienda}})
-    const account = await stripe.accounts.retrieve(infoStripe.id_stripe);
-    if(account.charges_enabled){
-        return res.json({status: "Success", stripe: true})
-    }else{
-        const accountLinks = await stripe.accountLinks.create({
-            account: infoStripe.id_stripe,
-            refresh_url: 'https://localhost:3000/',
-            return_url: 'https://localhost:3000/',
-            type: 'account_onboarding',
-            });
-            return res.json({status: "success", accountLink: accountLinks, stripe: false})
-    }
 
-
-    
-});
 
 
 //GET ID_STRIPE CON ID TIENDA
-router.get("/stripeInfo/:id_tienda", async (req, res)=>{
-    const infoStripe = await Info_Stripe.findOne({where:{id_tienda: req.params.id_tienda}})
-    if(!infoStripe || infoStripe==''){
-        return res.json({status: "failed", message: "Ocurrió un error"})
+// router.get("/stripeInfo/:id_tienda", async (req, res)=>{
+//     const infoStripe = await Info_Stripe.findOne({where:{id_tienda: req.params.id_tienda}})
+//     if(!infoStripe || infoStripe==''){
+//         return res.json({status: "failed", message: "Ocurrió un error"})
 
-    }else{
-        res.json({status: "success", infoStripe: infoStripe})
-    }
-});
+//     }else{
+//         res.json({status: "success", infoStripe: infoStripe})
+//     }
+// });
 
 //UPDATE
 router.put("/infobanco/:id", async (req, res)=>{
