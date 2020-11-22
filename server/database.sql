@@ -186,14 +186,15 @@ CREATE TABLE orden (
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
     id_tienda BIGINT UNSIGNED,
+    entregado boolean,
     fecha Date,
 
     CONSTRAINT fk_usuario5
     FOREIGN KEY (id_usuario)
     REFERENCES  usuario(id)
-    ON DELETE SET NULL
+    ON DELETE SET NULL,
 
-    CONSTRAINT fk_tienda4
+    CONSTRAINT fk_tienda6
     FOREIGN KEY (id_tienda)
     REFERENCES  tienda(id)
     ON DELETE SET NULL

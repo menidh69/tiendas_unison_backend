@@ -34,8 +34,7 @@ export default function CheckoutForm(props) {
         billing_details: {
           name: user.nombre,
         },
-      },
-      setup_future_usage: 'off_session'
+      }
     });
 
     if (result.error) {
@@ -58,13 +57,13 @@ export default function CheckoutForm(props) {
           total: props.total,
           id_transaccion: result.paymentIntent.id
         }
-        const orden = await fetch('http://localhost:5000/api/v1/nuevaOrden', {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify(body)
-        })
-        const resp = await orden.json();
-        console.log(resp)
+        // const orden = await fetch('http://localhost:5000/api/v1/nuevaOrden', {
+        //   method: "POST",
+        //   headers: {"Content-Type":"application/json"},
+        //   body: JSON.stringify(body)
+        // })
+        // const resp = await orden.json();
+        // console.log(resp)
 
         // Show a success message to your customer
         // There's a risk of the customer closing the window before callback
