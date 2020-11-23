@@ -200,10 +200,7 @@ router.get("/carrito/payment/:id_usuario", async (req,res) => {
         include: {
           model: entities.Productos,
           include: {
-            model:Tienda, 
-            include:{
-              model: Info_Stripe
-            }  
+            model:Tienda 
           }  
       }
     }, 

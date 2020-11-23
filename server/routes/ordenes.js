@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
-const Orden = require('../models/Orden');
-const Ordenitem = require('../models/OrdenItem');
-const Productos = require('../models/Productos');
+
 const sgMail = require("@sendgrid/mail");
 const Info_Stripe = require('../models/Info_Stripe');
 const Tienda = require('../models/Tienda');
 const { Carrito_item, Carrito } = require('../models/entities');
 sgMail.setApiKey('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');
 const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLXiWLmtRBdyX6M68fdjwuoYbrf1pc8i1R54cN1dVy8D5jfpYkHCHH00KUpKrBFG");
-const Venta= require('../models/Venta');
+const {Productos, Orden, Ordenitem, Venta} = require('../models/entities')
 
 
 //crear orden
@@ -70,6 +68,24 @@ const Venta= require('../models/Venta');
 
 
 
+router.get("/orden/:id_transaccion", async (req, res)=>{
+  const registroVenta = await Venta.findOne({
+    where:{
+      id_transaccion: req.params.id_transaccion
+    }, include: {
+      model: Orden,
+      include: {
+        model: Ordenitem,
+        include:{
+          model: Productos
+        }
+      }
+    }
+  })
+
+  res.json({venta: registroVenta})
+
+})
 
 
 

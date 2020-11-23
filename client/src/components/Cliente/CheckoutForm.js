@@ -12,7 +12,15 @@ export default function CheckoutForm(props) {
   const [success, setSuccess] = useState()
   const [error, setError] = useState()
 
+  function setProductosNull(){
+    props.setProductos(null)
+  }
 
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  
 
   const handleSubmit = async (event) => {
     // We don't want to let default form submission happen here,
@@ -27,8 +35,11 @@ export default function CheckoutForm(props) {
     }
     const data = await fetch(`http://localhost:5000/api/v1/paySecret/${props.ID}/${user.id}`)
     const intent = await data.json()
+    let results = []
     console.log(intent.client_secrets)
-    const results = await Promise.all(intent.client_secrets.map(async secret=>{
+
+    for(const secret of intent.client_secrets) {
+      console.log("before result")
       const result = await stripe.confirmCardPayment(secret, {
         payment_method: {
           card: elements.getElement(CardElement),
@@ -36,24 +47,46 @@ export default function CheckoutForm(props) {
             name: user.nombre,
           },
         }
-      });
-      return result;
-    }))
+    })
+    console.log("after result")
+    results.push(result)
+  }
+  console.log(results)
+      // intent.client_secrets.map(async secret=>{
+      // const result = await stripe.confirmCardPayment(secret, {
+      //   payment_method: {
+      //     card: elements.getElement(CardElement),
+      //     billing_details: {
+      //       name: user.nombre,
+      //     },
+      //   }
+      // })
+    
+     
+     
+    
   
 
     for(let i=0; i<results.length; i++){
       if (results[i].error) {
         // Show error to your customer (e.g., insufficient funds)
         setProcessing(false);
-        setError(true)
+        setError(results[i].error.message)
         console.log(results[i].error.message);
         break;
       } else {
       if (results[i].paymentIntent.status === 'succeeded') {
-        setProcessing(false)
-        setSuccess(true)
         console.log("success")
         console.log(results[i])
+        if((i+1)==results.length){
+          setProductosNull();
+          setProcessing(false)
+          setSuccess(true)
+         
+        }
+        
+
+        
     }
   }}
     
@@ -79,11 +112,6 @@ export default function CheckoutForm(props) {
     
   };
 
-  if(error){
-    return(
-      <Fragment><h1 className="text-dark">Ocurrió un error</h1></Fragment>
-    )
-  }
 
   return (
     <Fragment>
@@ -91,14 +119,16 @@ export default function CheckoutForm(props) {
       <div className="text-center py-5">
       <h2 className="text-dark">¡Tu compra ha sido realizada!</h2>
       <p>Puedes ir a recoger tu orden a la tienda correspondiente.</p>
-      <button className="btn btn-lg btn-primary">Ir a Pedidos</button>
+      <button className="btn btn-lg btn-primary">Ver mi Orden</button>
       </div>
       :
       <div className="text-center">
     <form onSubmit={handleSubmit}>
+      
       <CardSection disabled={processing}/>
-      {processing ? <div> <Spinner animation="border" variant="primary" /> </div>:
-      <button className="btn btn-lg btn-primary" disabled={!stripe || processing}>Confirm order</button>
+      {error ? <p className="text-danger">{error}</p> : null}
+      {processing ? <div> <p>Realizando compra...</p><Spinner animation="border" variant="primary" /> </div>:
+      <button className="btn btn-lg btn-primary" disabled={!stripe || processing}>Confirmar orden</button>
       }
     </form>
     </div>

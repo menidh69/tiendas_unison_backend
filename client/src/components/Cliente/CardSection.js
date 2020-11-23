@@ -24,7 +24,7 @@ function CardSection() {
   return (
     <Fragment>
     <label htmlFor="card">
-      Card details
+      Información Bancaria
     </label>
     <CardElement id="card" className="my-4" options={CARD_ELEMENT_OPTIONS} />
     </Fragment>

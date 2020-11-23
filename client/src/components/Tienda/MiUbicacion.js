@@ -20,7 +20,10 @@ function Map(props){
 
         <GoogleMap
         defaultZoom={16} 
-        defaultCenter={{lat: 29.082548182329212, lng: -110.96178531646729}}
+        defaultCenter={{
+            lat: parseFloat(props.info['ubicacion.lat']),
+            lng: parseFloat(props.info['ubicacion.lng'])
+        }}
         options={options}
         onClick={props.onMapClick}
         >
