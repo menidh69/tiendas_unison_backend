@@ -12,7 +12,15 @@ export default function CheckoutForm(props) {
   const [success, setSuccess] = useState()
   const [error, setError] = useState()
 
+  function setProductosNull(){
+    props.setProductos(null)
+  }
 
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  
 
   const handleSubmit = async (event) => {
     // We don't want to let default form submission happen here,
@@ -27,36 +35,66 @@ export default function CheckoutForm(props) {
     }
     const data = await fetch(`http://localhost:5000/api/v1/paySecret/${props.ID}/${user.id}`)
     const intent = await data.json()
-    console.log(intent.total)
-    const result = await stripe.confirmCardPayment(intent.client_secret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: user.nombre,
-        },
-      }
-    });
+    let results = []
+    console.log(intent.client_secrets)
 
-    if (result.error) {
-      // Show error to your customer (e.g., insufficient funds)
-      setProcessing(false);
-      setError(true)
-      console.log(result.error.message);
+    for(const secret of intent.client_secrets) {
+      console.log("before result")
+      const result = await stripe.confirmCardPayment(secret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name: user.nombre,
+          },
+        }
+    })
+    console.log("after result")
+    results.push(result)
+  }
+  console.log(results)
+      // intent.client_secrets.map(async secret=>{
+      // const result = await stripe.confirmCardPayment(secret, {
+      //   payment_method: {
+      //     card: elements.getElement(CardElement),
+      //     billing_details: {
+      //       name: user.nombre,
+      //     },
+      //   }
+      // })
+    
+     
+     
+    
+  
 
-    } else {
+    for(let i=0; i<results.length; i++){
+      if (results[i].error) {
+        // Show error to your customer (e.g., insufficient funds)
+        setProcessing(false);
+        setError(results[i].error.message)
+        console.log(results[i].error.message);
+        break;
+      } else {
+      if (results[i].paymentIntent.status === 'succeeded') {
+        console.log("success")
+        console.log(results[i])
+        if((i+1)==results.length){
+          setProductosNull();
+          setProcessing(false)
+          setSuccess(true)
+         
+        }
+        
+
+        
+    }
+  }}
+    
+
+    
       // The payment has been processed!
       
-      if (result.paymentIntent.status === 'succeeded') {
-        console.log("success")
-        setProcessing(false)
-        setSuccess(true)
-        console.log(result)
-        const body = {
-          id_user: user.id,
-          id_stripe_tienda: props.ID,
-          total: props.total,
-          id_transaccion: result.paymentIntent.id
-        }
+      
         // const orden = await fetch('http://localhost:5000/api/v1/nuevaOrden', {
         //   method: "POST",
         //   headers: {"Content-Type":"application/json"},
@@ -70,15 +108,10 @@ export default function CheckoutForm(props) {
         // execution. Set up a webhook or plugin to listen for the
         // payment_intent.succeeded event that handles any business critical
         // post-payment actions.
-      }
-    }
+      
+    
   };
 
-  if(error){
-    return(
-      <Fragment><h1 className="text-dark">Ocurrió un error</h1></Fragment>
-    )
-  }
 
   return (
     <Fragment>
@@ -86,14 +119,16 @@ export default function CheckoutForm(props) {
       <div className="text-center py-5">
       <h2 className="text-dark">¡Tu compra ha sido realizada!</h2>
       <p>Puedes ir a recoger tu orden a la tienda correspondiente.</p>
-      <button className="btn btn-lg btn-primary">Ir a Pedidos</button>
+      <button className="btn btn-lg btn-primary">Ver mi Orden</button>
       </div>
       :
       <div className="text-center">
     <form onSubmit={handleSubmit}>
+      
       <CardSection disabled={processing}/>
-      {processing ? <div> <Spinner animation="border" variant="primary" /> </div>:
-      <button className="btn btn-lg btn-primary" disabled={!stripe || processing}>Confirm order</button>
+      {error ? <p className="text-danger">{error}</p> : null}
+      {processing ? <div> <p>Realizando compra...</p><Spinner animation="border" variant="primary" /> </div>:
+      <button className="btn btn-lg btn-primary" disabled={!stripe || processing}>Confirmar orden</button>
       }
     </form>
     </div>

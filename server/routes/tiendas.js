@@ -135,7 +135,6 @@ router.get("/universidades/tiendas/:id_universidad", async (req, res)=>{
             }
         ], raw:true})
     .then(result => {
-        console.log(result)
         res.json(result)
     })
 })

@@ -200,10 +200,7 @@ router.get("/carrito/payment/:id_usuario", async (req,res) => {
         include: {
           model: entities.Productos,
           include: {
-            model:Tienda, 
-            include:{
-              model: Info_Stripe
-            }  
+            model:Tienda 
           }  
       }
     }, 
@@ -230,21 +227,31 @@ router.delete("/eliminarCarritoItem/:id", async (req, res)=>{
 
 //router.get("/carritoItems")
 
-router.post("/agregarCarrito/:id_producto/:idCarrito/:cantidad", async (req,res) => {
-  try {
-    const carritoItem = {
-      id_producto: req.params.id_producto,
-      id_carrito: req.params.idCarrito,
-      cantidad: req.params.cantidad
-    }
-
-    Carrito_item.create(carritoItem)
-    .then(result => {
-      res.json({status: "agregado con exito"})
-    })
-  } catch (error) {
-    console.log(error);
+router.post("/agregarCarrito/:id_user", async (req,res) => {
+  const carrito = await Carrito.findOne({where: {id_usuario: req.params.id_user}, raw:true})
+  const item = {
+    id_producto: req.body.id_producto,
+    cantidad: req.body.cantidad,
+    id_carrito: carrito.id
   }
+
+  const itemExiste = await Carrito_item.findOne({
+    where:{
+      id_carrito: carrito.id,
+      id_producto: item.id_producto
+    }, raw: true
+  })
+  console.log(itemExiste)
+  if(!itemExiste || itemExiste==""){
+    const newItem = await Carrito_item.create(item);
+    return res.json({status: "success", item: newItem})
+
+  }else{
+    const cantidad = Number(itemExiste.cantidad) + Number(item.cantidad)
+    const updated = await Carrito_item.update({cantidad: cantidad}, {where:{id_carrito: itemExiste.id_carrito, id_producto:itemExiste.id_producto}})
+    return res.json({status: "updated", item: updated})
+  }
+  
 })
 
 //AQUI TERMINA LO DEL CARRITO
