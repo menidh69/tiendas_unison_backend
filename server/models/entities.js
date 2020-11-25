@@ -22,6 +22,10 @@ entities.Ordenitem.belongsTo(entities.Orden, {foreignKey: "id_orden"})
 entities.Productos.hasMany(entities.Ordenitem, {foreignKey: "id_producto"})
 entities.Ordenitem.belongsTo(entities.Productos, {foreignKey: "id_producto"})
 entities.Orden.hasOne(entities.Venta, {foreignKey: "id_orden"})
+
+entities.Usuario.hasMany(entities.Orden, {foreignKey: "id_usuario"})
+entities.Orden.belongsTo(entities.Usuario, {foreignKey: "id_usuario"})
 entities.Tienda.hasMany(entities.Orden, {foreignKey: "id_tienda"})
-entities.Orden.belongsTo(entities.Tienda, {foreignKey:"id_tienda"})
+entities.Orden.belongsTo(entities.Tienda, {foreignKey: "id_tienda"})
+
 module.exports = entities;
