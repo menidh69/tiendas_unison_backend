@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import {CardElement} from '@stripe/react-stripe-js';
-import './CardSectionStyles.css'
+import '../Cliente/CardSectionStyles.css'
 
 const CARD_ELEMENT_OPTIONS = {
   style: {
@@ -23,6 +23,7 @@ const CARD_ELEMENT_OPTIONS = {
 function CardSub() {
   return (
     <Fragment>
+      <h4 className="w-75 my-4 mx-auto">Porfavor, ingresa tu información bancaria para terminar con el proceso</h4>
     <label htmlFor="card">
       Información Bancaria
     </label>

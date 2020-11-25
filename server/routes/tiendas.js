@@ -65,7 +65,7 @@ router.post("/tiendas", async (req, res)=>{
                                 transfers: {requested: true},
                               }
                           });
-                          const customer= await stripe.customer.create({
+                          const customer= await stripe.customers.create({
                               email: usuario.email
                           })
                           const infoStripe = {

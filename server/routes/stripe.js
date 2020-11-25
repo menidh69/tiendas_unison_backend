@@ -14,6 +14,7 @@ const webhook_secret = "whsec_iMVkeqCIyczJ6Oj7qUR7Qy3b5OONmSIB"
 const Orden = require('../models/Orden')
 const Ordenitem = require('../models/OrdenItem')
 const Venta = require('../models/Venta')
+const Subscripcion_Tienda = require("../models/Subscripcion_Tienda")
 
 
 router.post("/checkout", async (req, res) => {
@@ -225,6 +226,12 @@ const handleSuccessfulPaymentIntent = async (paymentIntent) => {
 
 router.post('/stripe/create-subscription', async (req, res) => {
   // Attach the payment method to the customer
+  let plan = null;
+  if(req.body.plan==0){
+    plan = false
+  }else{
+    plan = true
+  }
   try {
     await stripe.paymentMethods.attach(req.body.paymentMethodId, {
       customer: req.body.customerId,
@@ -246,11 +253,33 @@ router.post('/stripe/create-subscription', async (req, res) => {
   // Create the subscription
   const subscription = await stripe.subscriptions.create({
     customer: req.body.customerId,
-    items: [{ price: 'price_1HrC6IK9hN8J4SbUnGpManU8' }],
+    items: [{ price: 'price_1HrF5VK9hN8J4SbU6bunPrdI' }],
     expand: ['latest_invoice.payment_intent'],
+    trial_period_days: 30,
+    cancel_at_period_end: plan
   });
 
-  res.send(subscription);
+  const tienda = await Tienda.findOne({where:{id_usuario: req.body.id_usuario}})
+  const registroSub = await Subscripcion_Tienda.create({id_subscripcion: subscription.id, id_tienda: tienda.id})
+  res.json({subscripcion: subscription, registroSub: registroSub});
 });
+
+router.get("/stripe/subscripcion/:id_tienda", async (req, res)=>{
+  const subscripcion = await Subscripcion_Tienda.findOne({where:{id_tienda: req.params.id_tienda}})
+  if(!subscripcion || subscripcion===null){
+    return res.json({status_code: 404, message:"No existe la subscripcion"})
+  }
+  const stripeData = await stripe.subscriptions.retrieve(
+    subscripcion.id_subscripcion
+  );
+    res.json({subscripcion: stripeData})
+
+
+})
+
+router.get("/stripe/customer/:id_user", async (req,res)=>{
+  const info = await Stripe_Customer.findOne({where:{id_usuario: req.params.id_user}})
+  res.json({customer_id: info.id_stripe})
+})
 
 module.exports = router;
