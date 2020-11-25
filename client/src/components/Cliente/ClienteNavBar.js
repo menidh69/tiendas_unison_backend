@@ -120,6 +120,13 @@ function DropdownMenu(){
                 Carrito({items.length})
             </DropdownItem>
             </Link>
+            <Link to="/pedidos">
+            <DropdownItem
+            href='#'
+            leftIcon={<Cart/>}>
+                Pedidos recientes
+            </DropdownItem>
+            </Link>
             <DropdownItem
             href='#'
             leftIcon={<Settings/>}>

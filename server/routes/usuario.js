@@ -297,5 +297,41 @@ router.delete("/usuariosdelete/:id", async (req, res)=>{
   }
 })
 
+//GET ordenes no completadas usuario
+router.get("/usuarios/pedidos/:id_usuario", async(req, res) => {
+    
+  try {
+
+  
+      const pedidos = await entities.Orden.findAll ({
+          where: {
+              id_usuario: req.params.id_usuario,
+              entregado: 0
+          },
+          include: [
+              {
+                  model: entities.Usuario
+              },
+              {
+                  model: entities.Tienda
+              },
+              {
+                  model: entities.Ordenitem,
+                  include: {
+                      model: entities.Productos,
+                      include: {
+                          model: entities.Tienda
+                      }
+                  }
+              }
+          ]
+      })
+  
+      res.json({result: pedidos});
+      
+  } catch (error) {
+      console.log(error)
+  }
+})
 
 module.exports = router;
