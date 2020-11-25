@@ -80,7 +80,7 @@ function DropdownMenu(){
     }
 
     return(
-        <div className="dropdown">
+        <div className="dropdown-nav">
             <Link to="/panel">
                 <DropdownItem 
                 leftIcon={<Panel/>}>

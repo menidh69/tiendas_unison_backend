@@ -20,7 +20,7 @@ const ModalPagar = (props)=>{
           <Modal.Title>Realizar la compra</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <CheckoutForm setProductos={props.setProductos} ID={props.id_stripe} total={props.total}/>
+            <CheckoutForm setProductos={props.setProductos} productos={props.productos} ID={props.id_stripe} total={props.total}/>
         </Modal.Body>
         
       </Modal>

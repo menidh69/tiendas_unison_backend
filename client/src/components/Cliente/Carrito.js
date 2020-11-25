@@ -38,7 +38,7 @@ const Carrito = ()=>{
                             <div className="container mt-4">
                                 <Tabla setIDStripe={setIDStripe} handleShow={handleShow} setProductos={setProductos} productos={productos}/>
                             </div>
-                            <ModalPagar show={show} handleClose={handleClose} setProductos={setProductos} handleShow={handleShow} id_stripe={ID}/>
+                            <ModalPagar show={show} handleClose={handleClose} setProductos={setProductos} productos={productos} handleShow={handleShow} id_stripe={ID}/>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,11 @@ const Usuario = require('../models/Usuario');
 const Tienda = require('../models/Tienda');
 const Ubicacion = require('../models/Ubicacion');
 const Info_Stripe = require('../models/Info_Stripe');
+
 const entities = require('../models/entities');
+
+const Stripe_Customer = require('../models/Stripe_Customer');
+
 const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLXiWLmtRBdyX6M68fdjwuoYbrf1pc8i1R54cN1dVy8D5jfpYkHCHH00KUpKrBFG");
 const Orden = require('../models/Orden')
 
@@ -66,11 +70,19 @@ router.post("/tiendas", async (req, res)=>{
                                 transfers: {requested: true},
                               }
                           });
+                          const customer= await stripe.customers.create({
+                              email: usuario.email
+                          })
                           const infoStripe = {
                               id_tienda: tiendacreada.id,
                               id_stripe: account.id
                           }
+                          const customer_info={
+                              id_usuario: usuario.id,
+                              id_stripe: customer.id
+                          }
                           Info_Stripe.create(infoStripe)
+                          Stripe_Customer.create(customer_info);
                         res.json({
                             status: tiendacreada.nombre + ': Tienda y usuario creada con exito'
                         })

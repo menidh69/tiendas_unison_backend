@@ -250,3 +250,15 @@ CREATE TABLE venta(
     REFERENCES orden(id)
     ON DELETE CASCADE
 );
+
+CREATE TABLE subscripcion_tienda(
+    id SERIAL PRIMARY KEY,
+    id_subscripcion VARCHAR(255),
+    id_tienda BIGINT UNSIGNED,
+
+    CONSTRAINT fk_tienda7
+    FOREIGN KEY (id_tienda)
+    REFERENCES tienda(id)
+    ON DELETE CASCADE
+
+);

@@ -9,8 +9,10 @@ import TiendaInfo from './TiendaInfo';
 import Menu from './Menu';
 import SelectUni from './SelectUni';
 import Carrito from './Carrito';
-import PlantillaFront from '../PlantillaFront'
+
 import ComprasR from './ComprasR';
+import MisCompras from './MisCompras'
+
 
 const Home = (props)=>{
 
@@ -28,8 +30,11 @@ const Home = (props)=>{
                 <Route path='/tiendas/:id' exact component={TiendaInfo}/>
                 <Route path='/tiendas/:id/menu' exact component={Menu}/>
                 <Route path='/carrito' exact component={Carrito}/>
-                <Route path='/ejemplo' exact component={PlantillaFront}/>
+
                 <Route path='/pedidos' exact component={ComprasR}></Route>
+
+                <Route path="/misCompras" exact component={MisCompras}/>
+
                 <Redirect from="/" to="/home"/>
             </Switch>
             
