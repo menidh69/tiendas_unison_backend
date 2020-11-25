@@ -116,14 +116,21 @@ function Items() {
             <div className="itemsContainer">
 
                 <Link to='panel/MiInfo'>
-                <button className="boton">Mi información</button>
+                    <button className="boton">Mi información</button>
                 </Link>
+
+
+                <Link to='panel/Pedidos'>
+                    <button className="boton">Pedidos</button>
+                 </Link>
+
                 <Link to="panel/misVentas">
                 <button className="boton">Ventas</button>
+
                 </Link>
 
                 <Link to='panel/Tarjeta'>
-                <button className="boton">Tarjeta</button>
+                    <button className="boton">Tarjeta</button>
                 </Link>
             </div>
             <hr />

@@ -7,8 +7,13 @@ const Usuario = require('../models/Usuario');
 const Tienda = require('../models/Tienda');
 const Ubicacion = require('../models/Ubicacion');
 const Info_Stripe = require('../models/Info_Stripe');
+
+const entities = require('../models/entities');
+
 const Stripe_Customer = require('../models/Stripe_Customer');
+
 const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLXiWLmtRBdyX6M68fdjwuoYbrf1pc8i1R54cN1dVy8D5jfpYkHCHH00KUpKrBFG");
+const Orden = require('../models/Orden')
 
 
 
@@ -295,6 +300,58 @@ router.put("/tiendas/ubicacion/:id_tienda", async(req, res)=>{
     .catch(err=>{
         return res.json({status: err})
     })
+})
+
+//GET pedidos de la tienda
+router.get("/tiendas/pedidos/:id_usuario", async(req, res) => {
+    
+    try {
+        const tienda = await entities.Tienda.findOne({
+            where:{
+                id_usuario: req.params.id_usuario
+            }
+        })
+    
+        const pedidos = await entities.Orden.findAll ({
+            where: {
+                id_tienda: tienda.id,
+                entregado: 0
+            },
+            include: [
+                {
+                    model: entities.Usuario
+                },
+                {
+                    model: entities.Ordenitem,
+                    include: {
+                        model: entities.Productos,
+                        include: {
+                            model: entities.Tienda
+                        }
+                    }
+                }
+            ]
+        })
+    
+        res.json({result: pedidos});
+        
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+//PUT entregar pedido al cliente
+router.put("/tiendas/entregar/:id_orden", async(req,res) => {
+    
+    try {
+        const orden = await Orden.update({entregado: 1}, {where: {id: req.params.id_orden}})
+        .then(result =>{
+            console.log(result)
+            res.json({status: 'success'})
+        })
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 module.exports = router;
