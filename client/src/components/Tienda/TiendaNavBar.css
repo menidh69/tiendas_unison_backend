@@ -73,7 +73,7 @@ a:hover {
     height: 20px;
 }
 
-.dropdown {
+.dropdown-nav {
     position: absolute;
     z-index: 1;
     top: 58px;

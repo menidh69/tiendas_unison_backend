@@ -7,6 +7,7 @@ import { UserContext } from '../../UserContext'
 import {useHistory} from "react-router-dom";
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import InfoStripe from './InfoStripe';
+import BillingInfo from './BillingInfo';
 
 const Opciones = ()=> {
     return(
@@ -25,6 +26,7 @@ function Items() {
     const {user, setUser} = useContext(UserContext);
     const [days, setDays] = useState(null);
     const [tiendaID, setID] = useState(null);
+    const [subscripcion, setSubscripcion] = useState()
 
     useEffect(()=>{
         let isMounted = true;
@@ -78,12 +80,23 @@ function Items() {
     }
 
 
-
+    const checkSubscription = ()=>{
+        if(subscripcion){
+            if(subscripcion.status == "trialing" && subscripcion.cancel_at_period_end===true){
+                return <Banner title={`Usted se encuentra en periodo de prueba`} />
+            }else{
+                return null
+            }
+        }else{
+            return null
+        }
+    }
 
     return(
         <div className="mainContainer">
 
-            <Banner title={`SU PERIODO DE PRUEBA VENCE EN: ${days} días`} visibleTime={3000}/>
+            {checkSubscription()}
+           
             {/* <Banner title= {date} visibleTime={3000}/> */}
 
 
@@ -104,8 +117,9 @@ function Items() {
                 <Link to='panel/MiInfo'>
                 <button className="boton">Mi información</button>
                 </Link>
-
+                <Link to="panel/misVentas">
                 <button className="boton">Ventas</button>
+                </Link>
 
                 <Link to='panel/Tarjeta'>
                 <button className="boton">Tarjeta</button>
@@ -136,7 +150,10 @@ function Items() {
                 </div>
             </div>
             {tiendaID ? 
+            <Fragment>
             <InfoStripe id_tienda={tiendaID}/>
+            <BillingInfo id_tienda={tiendaID} setSubscripcion={setSubscripcion}/>
+            </Fragment>
             : null}
         </div>
 
