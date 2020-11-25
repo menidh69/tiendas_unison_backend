@@ -29,7 +29,7 @@ router.post("/tiendas", async (req, res)=>{
         tarjeta: req.body.tarjeta,
         fechaSub: Date.now(),
         validada: 'false',
-        activo: 'true'
+        activo: 'false'
     }
     const user = {
         nombre: req.body.nombre,
@@ -98,7 +98,8 @@ router.post("/tiendas", async (req, res)=>{
                 })
                 .catch(err=>{
                     res.json({
-                        status: 'Ocurrio un error al crear la tienda, vuelve a intentarlo'}
+                        status: 'Ocurrio un error al crear la tienda, vuelve a intentarlo',
+                        error: err}
                         )
                 })
               }).catch(err=>{
@@ -121,10 +122,10 @@ router.post("/tiendas", async (req, res)=>{
 //GET INDEX TIENDAS
 router.get("/tiendas", async (req, res)=>{
     const todas = await Tienda.findAll(
-        //{
-        // where:{
-        //     activo: 'True'
-        // }},
+        {
+        where:{
+            activo: 1
+        }},
         {raw:true})
     .then(result => {
         res.json(result)
@@ -137,10 +138,11 @@ router.get("/universidades/tiendas/:id_universidad", async (req, res)=>{
         {
         where:{
             id_universidad: req.params.id_universidad,
-            tipo_usuario: 'tienda'
+            tipo_usuario: 'tienda',
         }, include: [
             {
                 model: Tienda, 
+                where:{activo: 1},
                 include: [
                     {
                         model: Ubicacion
@@ -160,7 +162,7 @@ router.get("/universidades/tiendas/:id_universidad/all", async (req, res)=>{
         where:{
             id_universidad: req.params.id_universidad,
             tipo_usuario: 'tienda'
-        }, include: Tienda, raw:true})
+        }, include: {model: Tienda, where:{activo: 1}}, raw:true})
     .then(result => {
         console.log(result)
         res.json(result)
@@ -185,10 +187,10 @@ router.get("/miTienda/:id", async (req, res)=>{
 //GET INDEX TIENDAS ACTIVAS
 router.get("/tiendas/activas", async (req, res)=>{
     const todas = await Tienda.findAll(
-        // {
-        // where:{
-        //     activo: 'True'
-        // }},
+        {
+        where:{
+            activo: 1
+        }},
         {raw:true})
     .then(result => {
         res.json(result)
@@ -200,7 +202,8 @@ router.get("/tiendas/:id", async (req, res)=>{
     const todas = await Tienda.findAll(
         {
         where:{
-            id: req.params.id
+            id: req.params.id,
+            activo: 1
         }, include: [
             {
                 model: Ubicacion

@@ -262,3 +262,8 @@ CREATE TABLE subscripcion_tienda(
     ON DELETE CASCADE
 
 );
+
+-- Agregar tipo tienda
+
+INSERT INTO tipo_tienda (tipo_tienda, descripcion) VALUES ("Cooperativa", "Tienda con contrato de la universidad"),
+("Puesto", "Puesto independiente dentro de la universidad"), ("Cafeteria", "Cafeteria oficial universitaria");

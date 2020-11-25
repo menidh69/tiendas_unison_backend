@@ -12,6 +12,7 @@ import Carrito from './Carrito';
 
 import ComprasR from './ComprasR';
 import MisCompras from './MisCompras'
+import Productos from './Productos';
 
 
 const Home = (props)=>{
@@ -34,6 +35,8 @@ const Home = (props)=>{
                 <Route path='/pedidos' exact component={ComprasR}></Route>
 
                 <Route path="/misCompras" exact component={MisCompras}/>
+
+                <Route path="/productos" exact component={Productos}/>
 
                 <Redirect from="/" to="/home"/>
             </Switch>

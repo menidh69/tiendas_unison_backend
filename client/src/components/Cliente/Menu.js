@@ -7,7 +7,23 @@ const Menu = ()=>{
     const {user , setUser} = useContext(UserContext);
 
     useEffect(()=>{
-        fetchitems();
+        let isMounted = true
+        if(isMounted){
+        fetchitems()
+        .then(json=>{
+            setItems(json)
+        })
+        fetchValidacionGeneral()
+        .then(json=>{
+            setTienda(json);
+            if(json.validada===false){
+                fetchValidar()
+                .then(response=>{
+                    setValidada(response)
+                })
+            }
+        })
+        }
     }, []);
 
     const {id} = useParams();
@@ -18,8 +34,8 @@ const Menu = ()=>{
     const [searchTerm, setSearchTerm] = useState("");
     const [data, setData] = useState([]);
     const [sortType, setSortType] = useState('items');
-
-
+    const [categoria, setCategoria] = useState();
+    const [validada, setValidada] = useState()
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = (item) => {
@@ -43,6 +59,10 @@ const Menu = ()=>{
       sortArray(sortType);
     }, [sortType]); 
 
+  
+
+
+
 
     const fetchValidar = async ()=>{
         const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
@@ -50,15 +70,23 @@ const Menu = ()=>{
         console.log("tienda validacion personal:"+json.status);
         if(json.status=='false'){
           handleShow2();
+          return json.status
         }
-        // }else{
-        // setValidacion(json.status)
-        // }
+        else{
+        return json.status
+        }
       }
 
+    const fetchValidacionGeneral = async()=>{
+        const datatienda = await fetch(`http://localhost:5000/api/v1/tiendas/${id}`);
+        const itemtienda = await datatienda.json();
+        return itemtienda.tienda[0]
+
+    }
     const fetchitems = async ()=>{
         const data = await fetch(`http://localhost:5000/api/v1/productosTienda/${id}`);
         const items = await data.json();
+        return items
         console.log(items);
         setItems(items);
         const datatienda = await fetch(`http://localhost:5000/api/v1/tiendas/${id}`);
@@ -75,6 +103,7 @@ const Menu = ()=>{
         });
         const json = await response.json()
         console.log(json)
+        setValidada("true")
         handleClose2();
       }
     const [show2, setShow2] = useState(false);
@@ -99,15 +128,21 @@ const Menu = ()=>{
         setSearchTerm(e.target.value);
     }
 
+   
+
     const dynamicSearch = () => {
         return items.filter(item => item.nombre.toLowerCase().includes(searchTerm.toString().toLowerCase()))
+    }
+
+    const dynamicFilter = ()=>{
+        return items.filter(item=>item.categoria.includes(categoria))
     }
 
     return(
         <Fragment>
             <div className="container my-4 text-center">
                 <Link to={`/tiendas/${id}`}>
-                <img src={tienda.url_imagen||"https://via.placeholder.com/300x300"} className="rounded-circle" style={styleImgTienda}></img>
+                <img src={"https://via.placeholder.com/300x300"||tienda.url_imagen} className="rounded-circle" style={styleImgTienda}></img>
                 </Link>
                 <h1 className="text-dark my-4">{tienda.nombre}</h1>
                 <hr></hr>
@@ -122,10 +157,17 @@ const Menu = ()=>{
                     <option value="abc">Nombre</option>
                     <option value="mayor">Precio</option>
                 </select>
+                <label for="ordenar">Filtrar por:</label>
+                <select className="mx-2" id="ordenar" onChange={(e) => setCategoria(e.target.value)}> 
+                    <option value="Postre">Sin filtro</option>
+                    <option value="Postre">Postre</option>
+                    <option value="Comida">Comida</option>
+                    <option value="Botana">Botana</option>
+                </select>
                 </div>
             <div className="row">
             
-                <Producto name={dynamicSearch()}/>
+                <Producto name={dynamicSearch()} validada={validada} validar={validar} categoria={categoria}/>
                 {/* {items.map(item =>(
 
                 <div key={item.id} className="col-md-3 my-2">        
@@ -197,9 +239,14 @@ function Producto(props) {
     const handleClose = () => setShow(false);
 
 
+
     return(
         <Fragment>
             {props.name.map(item =>(
+                <Fragment>
+                    {props.categoria ?
+                    <Fragment>
+                    {props.categoria==item.categoria?
                     <div className="col-md-3 my-2">        
                         <div className="card rounded shadow text-center h-100" style={style}>
                             <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
@@ -213,10 +260,32 @@ function Producto(props) {
                                 </div>
                             </div>
                             <button className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button> 
-                            <AgregarCarrito item={item}/> 
+                            <AgregarCarrito validada={props.validada} validar={props.validar} item={item}/> 
 
                         </div>   
                     </div>
+                    :
+                    null}
+                    </Fragment>
+                    : <div className="col-md-3 my-2">        
+                    <div className="card rounded shadow text-center h-100" style={style}>
+                        <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
+                        <div className="card-body h-75">
+                            <div className="container h-50">
+                            <h6 className="card-title">{item.nombre}</h6>
+                            </div>
+                        
+                            <div className="card-text">
+                                ${item.precio}
+                            </div>
+                        </div>
+                        <button className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button> 
+                        <AgregarCarrito validada={props.validada} validar={props.validar} item={item}/> 
+
+                            </div>   
+                        </div>
+                }
+                    </Fragment>
                 ))}
                 {(show)?
             <Modal show={show} onHide={handleClose} className="text-center">
@@ -252,12 +321,14 @@ function Producto(props) {
 }
 
 function AgregarCarrito(props) {
+    
+
     return(
         <Fragment>
             <a href={"#agregar" + props.item.id} role="button" className="btn btn-block btn-info w-75 my-2 mx-auto" data-toggle="modal">
                 Agregar al carrito
             </a>
-            <Agregar item={props.item} cantidad="1" ></Agregar>
+            <Agregar validada={props.validada} validar={props.validar} item={props.item} cantidad="1" ></Agregar>
 
         </Fragment>
 
@@ -293,6 +364,8 @@ function Agregar(props){
 
 
     return(
+        <Fragment>
+            {props.validada!=='false' ?
         <div id={"agregar" + props.item.id} class="modal fade">
             <div className="modal-dialog">
                 <div className="modal-content">
@@ -311,6 +384,29 @@ function Agregar(props){
                 </div>
             </div>
         </div>
+        : 
+        <div id={"agregar" + props.item.id} class="modal fade">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h4 className="modal-title">Advertencia</h4>
+                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div className="modal-body">
+                        <h4>¡La tienda no esta validada!</h4>
+                        <p>Estas intentando agregar productos de una tienda que no has validado, si
+                            conoces esta tienda validala para poder agregar sus productos a tu carrito
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"  onClick={()=>props.validar()}>Validar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+        </Fragment>
     );
 }
 

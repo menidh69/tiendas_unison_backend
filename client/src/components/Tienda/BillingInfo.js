@@ -17,8 +17,8 @@ const options = {
     const [plan, setPlan] = useState();
     const [show, setShow] = useState(false);
     const [step, setStep] = useState(1);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => props.setShow(false);
+    const handleShow = () => props.setShow(true);
     const [link, setLink] = useState();
 
     useEffect(()=>{
@@ -76,7 +76,7 @@ const options = {
     return (
       <Elements options={options} stripe={stripePromise}>
       <Fragment>
-      <Modal size="lg" className="text-center" centered show={show} onHide={handleClose}>
+      <Modal size="lg" className="text-center" centered show={props.show} onHide={handleClose}>
           <Modal.Header className="text-center" closeButton>
           <h3 className="text-center">Plan de subscripción</h3>
           </Modal.Header>
