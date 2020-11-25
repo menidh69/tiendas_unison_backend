@@ -106,7 +106,7 @@ function DropdownMenu(){
     }
 
     return(
-        <div className="dropdown">
+        <div className="dropdown-nav">
             <Link to="/PerfilCliente">
             <DropdownItem 
             leftIcon={<Panel/>}>
@@ -118,6 +118,12 @@ function DropdownMenu(){
             href='#'
             leftIcon={<Cart/>}>
                 Carrito({items.length})
+            </DropdownItem>
+            </Link>
+            <Link to="/misCompras">
+            <DropdownItem 
+            leftIcon={<Panel/>}>
+                Mis compras
             </DropdownItem>
             </Link>
             <DropdownItem

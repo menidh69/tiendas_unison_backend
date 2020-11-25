@@ -29,7 +29,8 @@
     "react-stripe-checkout": "^2.6.3",
     "recompose": "^0.30.0",
     "stripe": "^8.121.0",
-    "use-places-autocomplete": "^1.6.0"
+    "use-places-autocomplete": "^1.6.0",
+    "victory": "^35.3.5"
   },
   "scripts": {
     "start": "react-scripts start",

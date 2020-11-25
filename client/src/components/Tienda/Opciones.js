@@ -83,7 +83,9 @@ function Items() {
     return(
         <div className="mainContainer">
 
-            <Banner title={`SU PERIODO DE PRUEBA VENCE EN: ${days} días`} visibleTime={3000}/>
+            {days?
+            <Banner title={`SU PERIODO DE PRUEBA VENCE EN: ${days} días`} />
+            : null}
             {/* <Banner title= {date} visibleTime={3000}/> */}
 
 
@@ -104,8 +106,9 @@ function Items() {
                 <Link to='panel/MiInfo'>
                 <button className="boton">Mi información</button>
                 </Link>
-
+                <Link to="panel/misVentas">
                 <button className="boton">Ventas</button>
+                </Link>
 
                 <Link to='panel/Tarjeta'>
                 <button className="boton">Tarjeta</button>

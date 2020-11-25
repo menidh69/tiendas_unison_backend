@@ -1,7 +1,7 @@
 import React , {useContext, Fragment, useState} from 'react';
 import {useStripe, useElements, CardElement} from '@stripe/react-stripe-js';
 import { UserContext } from '../../UserContext'
-import {Spinner} from 'react-bootstrap';
+import {Spinner, Table} from 'react-bootstrap';
 import CardSection from './CardSection';
 
 export default function CheckoutForm(props) {
@@ -11,6 +11,7 @@ export default function CheckoutForm(props) {
   const [processing, setProcessing] = useState(null)
   const [success, setSuccess] = useState()
   const [error, setError] = useState()
+  const [orden, setOrden] = useState(null)
 
   function setProductosNull(){
     props.setProductos(null)
@@ -79,6 +80,7 @@ export default function CheckoutForm(props) {
         console.log("success")
         console.log(results[i])
         if((i+1)==results.length){
+          setOrden(props.productos)
           setProductosNull();
           setProcessing(false)
           setSuccess(true)
@@ -119,6 +121,25 @@ export default function CheckoutForm(props) {
       <div className="text-center py-5">
       <h2 className="text-dark">¡Tu compra ha sido realizada!</h2>
       <p>Puedes ir a recoger tu orden a la tienda correspondiente.</p>
+      <Table striped bordered hover size="sm" responsive borderless className="my-4">
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Nombre de Tienda</th>
+    </tr>
+  </thead>
+  <tbody>
+    {orden.map(producto=>(
+      <tr key={producto.producto.id}>
+      <td scope="row">{producto.producto.nombre}</td>
+      <td>{producto.cantidad}</td>
+      <td>{producto.producto.tienda.nombre}</td>
+      </tr>
+    ))}
+    
+  </tbody>
+</Table>
       <button className="btn btn-lg btn-primary">Ver mi Orden</button>
       </div>
       :
