@@ -27,6 +27,7 @@ function Items() {
     const [days, setDays] = useState(null);
     const [tiendaID, setID] = useState(null);
     const [subscripcion, setSubscripcion] = useState()
+    const [show, setShow] = useState(false);
 
     useEffect(()=>{
         let isMounted = true;
@@ -151,8 +152,11 @@ function Items() {
             </div>
             {tiendaID ? 
             <Fragment>
-            <InfoStripe id_tienda={tiendaID}/>
-            <BillingInfo id_tienda={tiendaID} setSubscripcion={setSubscripcion}/>
+                <BillingInfo id_tienda={tiendaID} show={show} setShow={setShow} setSubscripcion={setSubscripcion}/>
+
+            {show?null:
+             <InfoStripe id_tienda={tiendaID} />
+            }
             </Fragment>
             : null}
         </div>

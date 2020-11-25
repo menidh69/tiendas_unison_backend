@@ -74,7 +74,7 @@ function Map(props){
     }
     return(
         <GoogleMap
-        defaultZoom={16.5} 
+        defaultZoom={17} 
         center={center}
         options={options}
         >

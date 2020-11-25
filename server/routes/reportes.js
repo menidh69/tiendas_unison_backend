@@ -25,11 +25,9 @@ router.post("/reporte_tienda/:id_usuario/:id_tienda", async (req,res) =>{
             console.log(result.rows)
             console.log(result)
             if(result>5){
-                Tienda.findOne({where:{id: req.params.id_tienda}})
+                Tienda.update({validada: false},{where:{id: req.params.id_tienda}})
                 .then(tienda=>{
-                    tienda.activo = 'false';
-                    tienda.save()
-                    return res.json({status: 'Tienda verificada', verificada: 'true' })
+                    return res.json({status: 'Tienda verificada', verificada: 'false' })
                 })
             }
         })

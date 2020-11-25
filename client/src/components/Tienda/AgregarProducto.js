@@ -92,7 +92,7 @@ function Formulario () {
         nombre: '',
         id_tienda: '',
         precio: '',
-        categoria: '',
+        categoria: 'Comida',
         url_imagen: '',
         descripcion: ''
       });
@@ -102,7 +102,7 @@ function Formulario () {
 
     useEffect(() =>{
         fetchitems();
-    });
+    }, []);
 
     const fetchitems = async (id) => {
         const data = await fetch(`http://localhost:5000/api/v1/miTienda/${user.id}`);
@@ -160,7 +160,11 @@ function Formulario () {
                 <div className="form-group row">
                     <label for="categoria" className="col-sm-2 col-form-label">Categoría:</label>
                     <div className="col-sm-10">
-                        <input type="text" className="form-control" id="categoria" name="categoria" value={data.categoria} onChange={updateField}></input>
+                        <select class="form-control form-control-sm" id="categoria" name="categoria" value={data.categoria} onChange={updateField}>
+                            <option>Comida</option>
+                            <option>Postre</option>
+                            <option>Botana</option>
+                        </select>
                     </div>
                 </div>
                 <div className="form-group row">

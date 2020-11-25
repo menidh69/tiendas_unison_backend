@@ -1,7 +1,9 @@
 const express = require('express');
 const { Pool } = require('pg');
 const router = express.Router();
-const Productos = require('../models/Productos');
+const {Productos, Tienda, Usuario} = require('../models/entities');
+const { Op } = require("sequelize");
+
 
 router.get("/productosTienda/:id", async (req, res)=>{
     
@@ -73,6 +75,20 @@ router.post("/nuevoProducto", async (req, res)=>{
     .then(producto => {
         res.json({status: producto.nombre + ' registrado con exito'})
     })
+})
+
+
+//No funciona, error desconocido
+router.get("/universidad/:id_universidad/productos/:nombre", async(req,res)=>{
+    const items = await Productos.findAll({
+        where:{[Op.like]: ("%"+req.params.nombre)
+        }, include: {
+            model: Tienda, include: {
+                model: Usuario, where: {id_universidad: req.params.id_universidad}
+                }
+            }
+        })
+    res.json({productos: items})
 })
 
 module.exports = router;

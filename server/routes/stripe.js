@@ -261,6 +261,7 @@ router.post('/stripe/create-subscription', async (req, res) => {
 
   const tienda = await Tienda.findOne({where:{id_usuario: req.body.id_usuario}})
   const registroSub = await Subscripcion_Tienda.create({id_subscripcion: subscription.id, id_tienda: tienda.id})
+  await Tienda.update({activo: "true"},{where:{id_usuario: req.body.id_usuario}})
   res.json({subscripcion: subscription, registroSub: registroSub});
 });
 
