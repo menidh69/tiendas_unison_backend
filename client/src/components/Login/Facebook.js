@@ -17,6 +17,7 @@ const Facebook = ()=>{
       id_universidad: null,
       tel: null
     })
+    const [err, setErr] = useState(null);
     const [unis, setUnis] = useState([]);
     const history = useHistory();
 
@@ -30,7 +31,7 @@ const Facebook = ()=>{
         alert('Al iniciar sesión con facebook serás registrado como usuario regular')
     }
     const fetchUniversidades = async ()=>{
-        const data = await fetch('http://localhost:5000/api/v1/universidades')
+        const data = await fetch('http://localhost:5000/api/v1/universidadesvalidadas')
         const json = await data.json();
         console.log(json)
         setUnis(json);
@@ -64,9 +65,10 @@ const Facebook = ()=>{
 
       const guardarInfo = async e =>{
         e.preventDefault()
-        handleClose();
+        
         try{
-        if(loginData.contra===match){
+        if((loginData.contra!==null && loginData.contra!=="")&&(match!==null && match!=="")&&(loginData.contra===match) && (loginData.id_universidad!==null && loginData.id_universidad!=="")){
+          handleClose();
           const body = loginData;
           const response = await fetch('http://localhost:5000/api/v1/usuarios', {
             method: "POST",
@@ -83,8 +85,17 @@ const Facebook = ()=>{
         }
       }
         else{
+          if(loginData.contra!==match){
+            setErr("Contraseñas no coinciden")
+          }
+          else if(loginData.id_universidad===null || loginData.id_universidad===""){
+            setErr("Seleccion una universidad porfavor")
+          } 
+          else if(match==null || match=="" || loginData.contra==null ||loginData.contra==""){
+            setErr("Hay que ingresar la contraseña en ambos campos")
+          }
           console.log('passwords dont match')
-          alert('La contraseña no concuerda')
+          
         }
       }catch(err){
         console.log(err)
@@ -130,7 +141,6 @@ const Facebook = ()=>{
 
       const setPassword=e=>{
         setLoginData({...loginData, contra: e.target.value})
-        console.log(e.target.value)
       }
   
       const confirmPassword=e=>{
@@ -167,13 +177,16 @@ const Facebook = ()=>{
                   ))}
                 </select>
               </div>
+              {err?
+              <p className="text-danger small">{err}</p>
+              :null}
               <div className="form-group">
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" className="form-control" onChange={setPassword}></input>
               </div>
               <div className="form-group">
                   <label for="password">Repetir contraseña</label>
-                  <input type="password" id="password" className="form-control" onChange={confirmPassword}></input>
+                  <input type="password" id="repeat-password" className="form-control" onChange={confirmPassword}></input>
               </div>
 
           </Modal.Body>
