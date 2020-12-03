@@ -3,6 +3,7 @@ import {useStripe, useElements, CardElement} from '@stripe/react-stripe-js';
 import { UserContext } from '../../UserContext'
 import {Spinner, Table} from 'react-bootstrap';
 import CardSection from './CardSection';
+import {Link} from 'react-router-dom'
 
 export default function CheckoutForm(props) {
   const stripe = useStripe();
@@ -140,7 +141,9 @@ export default function CheckoutForm(props) {
     
   </tbody>
 </Table>
+      <Link to="/pedidos">
       <button className="btn btn-lg btn-primary">Ver mi Orden</button>
+      </Link>
       </div>
       :
       <div className="text-center">
