@@ -263,6 +263,24 @@ CREATE TABLE subscripcion_tienda(
 
 );
 
+CREATE TABLE review(
+    id SERIAL PRIMARY KEY,
+    id_producto BIGINT UNSIGNED,
+    id_usuario BIGINT UNSIGNED,
+    calificacion INTEGER,
+    comentario VARCHAR(255),
+
+    CONSTRAINT fk_producto2
+    FOREIGN KEY (id_producto)
+    REFERENCES productos(id)
+    ON DELETE SET NULL,
+
+    CONSTRAINT fk_usuario7
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id)
+    ON DELETE SET NULL
+);
+
 -- Agregar tipo tienda
 
 INSERT INTO tipo_tienda (tipo_tienda, descripcion) VALUES ("Cooperativa", "Tienda con contrato de la universidad"),
