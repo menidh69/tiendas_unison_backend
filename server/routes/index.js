@@ -10,6 +10,7 @@ const infobanco = require('./infobanco');
 const ordenes = require('./ordenes');
 const stripe = require('./stripe');
 const ventas = require('./ventas');
+const reviews = require('./reviews')
 
 const path = require('path');
 
@@ -24,6 +25,7 @@ router.use("/api/v1", infobanco);
 router.use("/api/v1", ordenes)
 router.use("/api/v1", stripe);
 router.use("/api/v1", ventas);
+router.use("/api/v1", reviews);
 
 
 router.use("/", authRoutes);

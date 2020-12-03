@@ -7,7 +7,6 @@ import IndexTiendas from './IndexTiendas';
 import PerfilCliente from './PerfilCliente';
 import TiendaInfo from './TiendaInfo';
 import Menu from './Menu';
-import SelectUni from './SelectUni';
 import Carrito from './Carrito';
 
 import ComprasR from './ComprasR';

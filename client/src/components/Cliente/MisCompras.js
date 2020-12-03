@@ -1,6 +1,7 @@
 import React, {Fragment, useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../UserContext';
 import {Modal, Button, Form,Table, Container, Col, Row, ListGroup, Card, Image} from 'react-bootstrap';
+import ReviewTienda from './ReviewTienda';
 
 
 const MisCompras = ()=>{
@@ -50,7 +51,7 @@ return (
     <div>
         <Container style={bgStyle} className="py-2 rounded">
             <Row>
-                <Col className="bg-light mx-2 rounded" style={scroll}>
+                <Col className="bg-light mx-2 rounded my-2" style={scroll}>
                     <h4 className="my-4">Compras recientes</h4>
                 <Table>
                     <thead>
@@ -94,6 +95,7 @@ return (
                                             <Card.Subtitle className="mb-2 text-muted">${selectedCompra.ventum.amount/100}</Card.Subtitle>
                                             <Card.Title>Tienda</Card.Title>
                                             <Card.Subtitle className="mb-2 text-muted">{selectedCompra.orden_items[0].producto.tienda.nombre}</Card.Subtitle>
+                                            <Card.Title><ReviewTienda id_tienda={selectedCompra.orden_items[0].producto.id_tienda} nombre={selectedCompra.orden_items[0].producto.tienda.nombre}/></Card.Title>
                                         </Col>
                                         <Col>
                                         <Container className="my-4">
