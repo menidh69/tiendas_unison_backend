@@ -8,9 +8,11 @@ import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import ModalPagar from './ModalPagar';
 import { UserContext } from '../../UserContext'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTrash, faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 
 
-import {Modal, Button} from 'react-bootstrap';
+import {Modal, Button, Col, Row} from 'react-bootstrap';
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
 
@@ -34,7 +36,7 @@ const Carrito = ()=>{
                 <div className="mainContainer h">
                     <div className="top-container">
                         <div className="container">
-                            <h2>Carrito de compras</h2>
+                            
                             <div className="container mt-4">
                                 <Tabla setIDStripe={setIDStripe} handleShow={handleShow} setProductos={setProductos} productos={productos}/>
                             </div>
@@ -107,6 +109,8 @@ function Tabla (props) {
         return json.result[0].carrito_items;
     }
     
+
+
 function handleClick(productos){
     let total=0;
     // productos.productos.map(p=>{
@@ -124,46 +128,81 @@ const calculaTotal = ()=>{
     })
     return total
 }
-    
+
+const styleImg={
+    maxWidth: '100%',
+    height: '50px',
+    objectFit: 'cover'
+} 
+
+const checkoutStyle={
+    backgroundColor: "#29698f"
+}
+
+const btnStyle={
+    backgroundColor: "#FF9500"
+}
 
         return(
             <Fragment>
                 {props.productos ? 
                 <Fragment>
-                <table className="table">
-                            <thead>
-                                <tr>
-                                <th scope="col">Producto</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">Cantidad</th>
-                                <th scope="col">Tienda</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">•</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                
-                                {props.productos.map(item =>(
-                                <tr key={item.producto.id}>
-                                    <td scope="row">{item.producto.nombre}</td>
-                                    <td>${Number.parseFloat(item.producto.precio).toFixed(2)}</td>
-                                    <td>{item.cantidad}</td>
-                                    <td>{item.producto.tienda.nombre}</td>
-                                    <td>${Number.parseFloat(item.producto.precio*item.cantidad).toFixed(2)}</td>
-                                    <td><Eliminar handleDelete={handleDelete} item={item}/></td>
-                                </tr>
-                                ))}
-                            </tbody>
-                    </table>
-                    <hr/>
-                            <div><h5>Total a pagar: ${Number.parseFloat(calculaTotal()).toFixed(2)}</h5></div>
-                            <div className= "container">
+                   
+                    <Row>
+                    <Col md={8}>
+                    <h2 className="my-4">Carrito de compras</h2>
+                        <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        <th scope="col">Producto</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Tienda</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">•</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                        
+                                        {props.productos.map(item =>(
+                                        <tr key={item.producto.id} className="py-auto">
+                                            <td scope="row">{item.producto.url_imagen ? 
+                                            <img src={item.producto.url_imagen} style={styleImg}></img>
+                                            :
+                                            <img src="https://via.placeholder.com/300" style={styleImg}></img>
+                                            }</td>
+                                                <td>{item.producto.nombre}</td>
+                                            <td className="my-auto py-auto">${Number.parseFloat(item.producto.precio).toFixed(2)}</td>
+                                            <td>{item.cantidad}</td>
+                                            <td>{item.producto.tienda.nombre}</td>
+                                            <td>${Number.parseFloat(item.producto.precio*item.cantidad).toFixed(2)}</td>
+                                            <td><Eliminar handleDelete={handleDelete} item={item}/></td>
+                                        </tr>
+                                        ))}
+                                    </tbody>
+                            </table>
+                            </Col>
 
+                    
+                            <Col md={4} className="rounded" style={checkoutStyle}>
+                            <div className= " px-2 container text-light text-left">
+                            <h2 className="my-4 text-center">Checkout <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon></h2>
+                            <div><h5>Subtotal: </h5>
+                            <h6>${Number.parseFloat(calculaTotal()).toFixed(2)}</h6>
+                            </div>
+                            <div><h5>Comisiones: </h5>
+                                <h6>$12</h6>
+                                </div>
+                            <div><h5>Total a pagar: </h5>
+                                <h6>${Number.parseFloat(calculaTotal()+12).toFixed(2)}</h6></div>
+                            
                             </div>
                             <div>
-                          <button type="button" className="btn btn-success" data-dismiss="modal" onClick={()=>handleClick()}>Pagar</button>
+                          <button type="button" className="btn btn-lg rounded-pill text-light my-4" style={btnStyle} data-dismiss="modal" onClick={()=>handleClick()}>Pagar</button>
                         </div>
-                
+                        </Col>
+                        </Row>
                         <Modal show={variasTiendas} onHide={handleClose}>
                             <Modal.Header closeButton>
                             <Modal.Title>Aviso</Modal.Title>
@@ -202,7 +241,7 @@ function Eliminar (props){
     return(
         <Fragment>
             <a href={"#eliminar" + props.item.id} role="button" className="btn btn-danger btn-sm" data-toggle="modal">
-               Eliminar
+               <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
             </a>
             <ModalDelete handleDelete={props.handleDelete} item={props.item}></ModalDelete>
 

@@ -48,10 +48,7 @@ export class Confirm extends Component {
                 <h5>Email</h5>
                 <p>{email}</p>
               </li>
-              <li class="list-group-item bg-color">
-                <h5>Contraseña</h5>
-                <p>{contra}</p>
-              </li>
+              
               <li class="list-group-item bg-color">
                 <h5>Telefono</h5>
                 <p>{telefono}</p>

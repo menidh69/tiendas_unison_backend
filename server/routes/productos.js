@@ -3,15 +3,19 @@ const { Pool } = require('pg');
 const router = express.Router();
 const {Productos, Tienda, Usuario} = require('../models/entities');
 const { Op } = require("sequelize");
+const entities = require('../models/entities');
 
 
 router.get("/productosTienda/:id", async (req, res)=>{
     
-    const todas = await Productos.findAll(
+    const todas = await entities.Productos.findAll(
         {
         where:{
             id_tienda: req.params.id
-        }})
+        },
+    include:{
+        model: entities.Review 
+    }})
     .then(result => {
         res.json(result)
     })

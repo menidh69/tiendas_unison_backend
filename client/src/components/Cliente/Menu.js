@@ -1,7 +1,10 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import {Link, useParams} from 'react-router-dom';
-import {Modal, Button} from 'react-bootstrap';
+import {Modal, Button, Row, Col} from 'react-bootstrap';
 import { UserContext } from '../../UserContext';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCartArrowDown} from '@fortawesome/free-solid-svg-icons';
+import StarIcon from './StarIcon'
 
 const Menu = ()=>{
     const {user , setUser} = useContext(UserContext);
@@ -61,8 +64,7 @@ const Menu = ()=>{
 
   
 
-
-
+  
 
     const fetchValidar = async ()=>{
         const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
@@ -86,6 +88,7 @@ const Menu = ()=>{
     const fetchitems = async ()=>{
         const data = await fetch(`http://localhost:5000/api/v1/productosTienda/${id}`);
         const items = await data.json();
+        console.log(items)
         return items
         console.log(items);
         setItems(items);
@@ -116,7 +119,9 @@ const Menu = ()=>{
 
 
     const styleImgTienda={
-        maxWidth: '25%'
+        maxWidth: '100%',
+        height: '100px',
+        objectFit: 'cover'
     }
     const styleImg={
         maxWidth: '100%',
@@ -141,30 +146,38 @@ const Menu = ()=>{
     return(
         <Fragment>
             <div className="container my-4 text-center">
+                
+                
+            <Row className="my-2">
+                <Col></Col>
+                <Col>
                 <Link to={`/tiendas/${id}`}>
                 <img src={"https://via.placeholder.com/300x300"||tienda.url_imagen} className="rounded-circle" style={styleImgTienda}></img>
                 </Link>
-                <h1 className="text-dark my-4">{tienda.nombre}</h1>
-                <hr></hr>
-                <h1 className="text-dark my-4 display-4">Menú</h1>
-            
-            
-                <label for="search">Buscar: </label>
-                <input type="text" id="search" className="mx-2 rounded-pill border border-dark px-2" placeholder="Ej. Brownie de mota" value={searchTerm} onChange={editSearchTerm}></input>
-                <div className="mx-5">
-                <label for="ordenar">Ordenar por:</label>
-                <select className="mx-2" id="ordenar" onChange={(e) => setSortType(e.target.value)}> 
-                    <option value="abc">Nombre</option>
-                    <option value="mayor">Precio</option>
-                </select>
-                <label for="ordenar">Filtrar por:</label>
-                <select className="mx-2" id="ordenar" onChange={(e) => setCategoria(e.target.value)}> 
-                    <option value="Postre">Sin filtro</option>
-                    <option value="Postre">Postre</option>
-                    <option value="Comida">Comida</option>
-                    <option value="Botana">Botana</option>
-                </select>
-                </div>
+                    <h1 className="text-dark my-0">{tienda.nombre}</h1>
+                    <h4 className="text-dark my-0">Menú</h4>
+                </Col>
+                <Col>
+                    
+                </Col>
+            </Row>
+            <label for="search">Buscar: </label>
+                    <input type="text" id="search" className="mx-2 rounded-pill border border-dark px-2" placeholder="Ej. Brownie de mota" value={searchTerm} onChange={editSearchTerm}></input>
+                    <div className="mx-5">
+                    <label for="ordenar">Ordenar por:</label>
+                    <select className="mx-2" id="ordenar" onChange={(e) => setSortType(e.target.value)}> 
+                        <option value="abc">Nombre</option>
+                        <option value="mayor">Precio</option>
+                    </select>
+                    <label for="ordenar">Filtrar por:</label>
+                    <select className="mx-2" id="ordenar" onChange={(e) => setCategoria(e.target.value)}> 
+                        <option value="Postre">Sin filtro</option>
+                        <option value="Postre">Postre</option>
+                        <option value="Comida">Comida</option>
+                        <option value="Botana">Botana</option>
+                    </select>
+                    </div>
+                
             <div className="row">
             
                 <Producto name={dynamicSearch()} validada={validada} validar={validar} categoria={categoria}/>
@@ -231,6 +244,20 @@ function Producto(props) {
         objectFit: 'cover'
     }
 
+    const calculaRating = (reviews)=>{
+        let total = 0;
+        reviews.map(review=>{
+            total += review.calificacion
+        })
+        total = total / reviews.length
+        let array = [];
+        for(let i=0; i<total; i++){
+            array.push(i);
+        }
+        return array
+    }
+
+
     const handleShow = (item) => {
         setmodalData(item)
         setShow(true);
@@ -238,7 +265,9 @@ function Producto(props) {
 
     const handleClose = () => setShow(false);
 
-
+    const btnStyle={
+        backgroundColor: "#FF9500"
+    }
 
     return(
         <Fragment>
@@ -251,15 +280,15 @@ function Producto(props) {
                         <div className="card rounded shadow text-center h-100" style={style}>
                             <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
                             <div className="card-body h-75">
-                                <div className="container h-50">
+                                <div className="container">
                                 <h6 className="card-title">{item.nombre}</h6>
                                 </div>
-                            
+                                <div>{calculaRating(item.reviews).map(star=>(<StarIcon fill={true}/>))}</div>
                                 <div className="card-text">
                                     ${item.precio}
                                 </div>
                             </div>
-                            <button className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button> 
+                            <button className="btn btn-block btn-info w-75 my-2 mx-auto" style={btnStyle}  onClick={()=>handleShow(item)}>Mas info</button> 
                             <AgregarCarrito validada={props.validada} validar={props.validar} item={item}/> 
 
                         </div>   
@@ -271,15 +300,15 @@ function Producto(props) {
                     <div className="card rounded shadow text-center h-100" style={style}>
                         <img src={item.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
                         <div className="card-body h-75">
-                            <div className="container h-50">
+                            <div className="container">
                             <h6 className="card-title">{item.nombre}</h6>
                             </div>
-                        
-                            <div className="card-text">
+                            <div>{calculaRating(item.reviews).map(star=>(<StarIcon fill={true}/>))}</div>
+                            <div className="card-text my-2">
                                 ${item.precio}
                             </div>
                         </div>
-                        <button className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button> 
+                        <button style={btnStyle}  className="btn btn-block btn-info w-75 my-2 mx-auto" onClick={()=>handleShow(item)}>Mas info</button> 
                         <AgregarCarrito validada={props.validada} validar={props.validar} item={item}/> 
 
                             </div>   
@@ -296,6 +325,7 @@ function Producto(props) {
                     <div className="container">
                     <img src={modaldata.url_imagen||"https://via.placeholder.com/300x300"} style={styleImg}></img>
                     </div>
+                    <div>{calculaRating(modaldata.reviews).map(star=>(<StarIcon fill={true}/>))}</div>
                     <p>
                     $ {modaldata.precio}
                     <br/>
@@ -321,12 +351,14 @@ function Producto(props) {
 }
 
 function AgregarCarrito(props) {
-    
+    const btnStyle={
+        backgroundColor: "#FF9500"
+    }
 
     return(
         <Fragment>
-            <a href={"#agregar" + props.item.id} role="button" className="btn btn-block btn-info w-75 my-2 mx-auto" data-toggle="modal">
-                Agregar al carrito
+            <a href={"#agregar" + props.item.id} role="button" style={btnStyle} className="btn btn-block btn-info w-75 my-2 mx-auto" data-toggle="modal">
+                Agregar <FontAwesomeIcon icon={faCartArrowDown}/>
             </a>
             <Agregar validada={props.validada} validar={props.validar} item={props.item} cantidad="1" ></Agregar>
 

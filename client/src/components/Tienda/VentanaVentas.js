@@ -28,13 +28,17 @@ const fetchVentas = async()=>{
     return json
 }
 
+const getMonth = ()=>{
+    //oBTENER EL MES Y PONERLO COMO DEFAULT
+}
+
 return (
     <Fragment>
     <div className="text-center my-4">
     <h2>Mis ventas</h2>
     <Form.Group controlId="exampleForm.ControlSelect1" className="w-50 mx-auto">
     <Form.Label>Selecciona el mes</Form.Label>
-    <Form.Control as="select" defaultValue="11" onChange={e=>setMonth(e.target.value)}>
+    <Form.Control as="select" defaultValue="12" onChange={e=>setMonth(e.target.value)}>
       <option value="1">Enero</option>
       <option value="2">Febrero</option>
       <option value="3">Marzo</option>
