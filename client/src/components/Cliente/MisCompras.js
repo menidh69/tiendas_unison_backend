@@ -141,7 +141,7 @@ return (
                                                         <td>{item.producto.nombre}</td>
                                                         <td>${Number.parseFloat(item.producto.precio).toFixed(2)}</td>
                                                         <td>{item.cantidad}</td>
-                                                        <td><Calificar item={item} /></td>
+                                                        <td><Calificar item={item} selected={selectedCompra}/></td>
                                                     </tr>
                                                 ))}
                                                 
@@ -169,25 +169,29 @@ return (
 }
 
 function Calificar (props) {
-    
-
     const {user, setUser} = useContext(UserContext);
-
-
-    const [review, setReview] = useState(null)
-    
+    const [review, setReview] = useState(null)  
     useEffect(() =>{
-        fetchitems();
-    });
+        let isMounted = true;
+        if(isMounted){
+            console.log(props)
+        fetchitems()
+        .then(json=>{
+            setReview(json)
+        })
+    }
+    return ()=>isMounted=false
+    }, [props.selected]);
     
     
     const fetchitems = async () => {
         const data = await fetch(`http://localhost:5000/api/v1/usuarios/calificacion/${props.item.producto.id}/${user.id}`);
         const  it= await data.json();
-        setReview(it.result)
+        console.log(it.result)
+        return it.result
     }
 
-    console.log(review)
+
     if (review == null) {
         return(
             <Fragment>
@@ -218,7 +222,7 @@ function ModalC(props){
     const stars = [1, 2, 3, 4, 5];
     const [comment, setComment] = useState('');
 
-    console.log(props.item.producto.id)
+
 
     const [data, setData] = useState({
         id_producto: props.item.producto.id,
@@ -297,7 +301,15 @@ function ModalE(props){
     const stars = [1, 2, 3, 4, 5];
     const [comment, setComment] = useState('');
 
-    console.log(props.item.producto.id)
+    useEffect(()=>{
+        let isMounted = true;
+        if(isMounted){
+            setRating(props.review.calificacion - 1)
+            setData({...data, comentario: props.review.comentario, calificacion: props.review.calificacion - 1})
+        }
+        return ()=>isMounted=false;
+    },[props.review])
+
 
     const [data, setData] = useState({
         id_producto: props.item.producto.id,

@@ -99,6 +99,16 @@ const GraficaVenta = (props)=>{
         return promedio
     }
 
+    const obtenMayor = ()=>{
+        let mayor = 0;
+        ventadiaria.map(venta=>{
+            if(venta.y>mayor){
+                mayor = venta.y
+            }
+        })
+        return mayor;
+    }
+
     const fetchVentas = async()=>{
         const datos = await fetch(`http://localhost:5000/api/v1/ventas/${props.month}/${props.id}`)
         const json = await datos.json()
@@ -145,7 +155,7 @@ const GraficaVenta = (props)=>{
                     </Col>
                     <Col className="bg-light mx-2 rounded">
                     <VictoryChart domainPadding={10} 
-                    containerComponent={<VictoryZoomContainer zoomDomain={{x: [5, 35], y: [0, 100]}}/>}
+                    containerComponent={<VictoryZoomContainer zoomDomain={{x: [5, 35], y: [0, obtenMayor()]}}/>}
                     animate={{
                     duration: 1000,
                     onLoad: { duration: 500 }

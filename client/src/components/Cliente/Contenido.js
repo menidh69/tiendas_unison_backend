@@ -41,7 +41,6 @@ const bgStyle = {
   return (
     <Fragment>
         <div className="text-center my-4 container">
-        <h4>Bienvenido {user.nombre}</h4>
                 <MapaTiendas></MapaTiendas>
         </div>
         

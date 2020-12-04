@@ -33,9 +33,13 @@ export class RegGen extends Component {
 
   continue = e => {
     e.preventDefault();
-
-
+    if(this.props.values.contra == this.props.values.contraConfirm){
       this.props.nextStep();
+    }else{
+      console.log(this.props.values.contra)
+      console.log(this.props.values.contraConfirm)
+      alert("Tus contraseñas no coinciden!")
+    }
 
   };
 
@@ -84,12 +88,12 @@ export class RegGen extends Component {
 
                     <div className="form-group text-left">
                         <label for="pwd">Contraseña</label>
-                        <input id="pwd" className="form-control" type="password"></input>
+                        <input id="pwd" className="form-control" type="password" defaultValue={values.contra} onChange={handleChange('contra')}></input>
                     </div>
                     <div className="form-group text-left">
                         <label for="pwd2">Confirma contraseña</label>
-                        <input id="pwd2" className="form-control"  onChange={handleChange('contra')}
-              defaultValue={values.contra} type="password"></input>
+                        <input id="pwd2" className="form-control"  onChange={handleChange('contraConfirm')}
+              defaultValue={values.contraConfirm} type="password"></input>
                     </div>
 
                     <div className="form-group text-left">

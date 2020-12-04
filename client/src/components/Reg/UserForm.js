@@ -15,6 +15,7 @@ export class UserForm extends Component {
       nombre: '',
       email: '',
       contra: '',
+      contraConfirm: '',
       telefono: '',
       universidad: '',
       nombretienda: '',
@@ -50,7 +51,10 @@ export class UserForm extends Component {
     if(input=='universidad'){
       this.setState({
         universidad: e.target.value,
-        uni_nombre: e.target.options[e.target.selectedIndex].text
+        uni_nombre: e.target.options[e.target.selectedIndex].text,
+        coordinates: null,
+        lat: null,
+        lng: null
       });
       
     }
@@ -146,8 +150,8 @@ export class UserForm extends Component {
 
   render() {
       const { step } = this.state;
-      const { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre, latitud, longitud, coordinates } = this.state;
-      const values = { nombre, email, contra, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre, latitud, longitud, coordinates };
+      const { nombre, email, contra, contraConfirm, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre, latitud, longitud, coordinates } = this.state;
+      const values = { nombre, email, contra, contraConfirm, telefono, universidad, nombretienda, tipo_tienda, url_imagen, tarjeta, horario, uni_nombre, latitud, longitud, coordinates };
 
     switch (step) {
       case 1:

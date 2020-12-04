@@ -1,7 +1,7 @@
 import React, {Fragment, useContext, useEffect, useReducer, useState} from 'react';
 import {Link} from 'react-router-dom';
 import { UserContext } from '../../UserContext';
-import {Button, Modal} from 'react-bootstrap';
+import {Button, Modal, Col, Row} from 'react-bootstrap';
 
 const IndexTiendas = ()=>{
     const {user, setUser} = useContext(UserContext)
@@ -39,9 +39,9 @@ const IndexTiendas = ()=>{
             <div className="container my-4">
                 <h2 className="text-center"> Listado de Tiendas
                 </h2>
-            <div className="row">
+            <Row>
             {items.map(item =>(
-                <div key={item.id} className="col-md-3">
+                <Col key={item.id} lg={3} md={4} sm={6}>
                     <div className="card rounded shadow text-center h-100" style={style}>
                         <img src={item['tienda.url_imagen']||"https://via.placeholder.com/300x300"} style={styleImg} className="card-img-top"/>
                         <div className="card-body h-75">
@@ -58,9 +58,9 @@ const IndexTiendas = ()=>{
                             </Link>
                         </div>
                     </div>
-                </div>
+                </Col>
             ))}
-            </div>
+            </Row>
 
         
             </div>
