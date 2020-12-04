@@ -129,13 +129,13 @@ function Items() {
 
                 </Link>
 
-                <Link to='panel/Tarjeta'>
-                    <button className="boton">Tarjeta</button>
-                </Link>
+                
             </div>
             <hr />
             <div className="itemsContainer">
-                <button className="boton">Ver mi tienda</button>
+                {/* <Link to='panel/Tarjeta'> */}
+                    <button className="boton">Tarjeta</button>
+                {/* </Link> */}
                 <button className="boton" data-toggle="modal" href="#Modal">Baja</button>
                 <button className="boton">Ayuda</button>
             </div>

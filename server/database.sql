@@ -263,6 +263,24 @@ CREATE TABLE subscripcion_tienda(
 
 );
 
+
+CREATE TABLE review_tienda(
+    id SERIAL PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    id_usuario BIGINT UNSIGNED,
+    comentario VARCHAR(255),
+    calificacion INT,
+
+    CONSTRAINT fk_tienda8
+    FOREIGN KEY (id_tienda)
+    REFERENCES tienda(id)
+    ON DELETE CASCADE,
+
+    CONSTRAINT fk_usuario8
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id)
+    ON DELETE CASCADE
+
 CREATE TABLE review(
     id SERIAL PRIMARY KEY,
     id_producto BIGINT UNSIGNED,
@@ -279,6 +297,7 @@ CREATE TABLE review(
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE SET NULL
+
 );
 
 -- Agregar tipo tienda

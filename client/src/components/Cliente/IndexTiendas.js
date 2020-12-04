@@ -1,7 +1,6 @@
 import React, {Fragment, useContext, useEffect, useReducer, useState} from 'react';
 import {Link} from 'react-router-dom';
 import { UserContext } from '../../UserContext';
-import SelectUni from './SelectUni';
 import {Button, Modal} from 'react-bootstrap';
 
 const IndexTiendas = ()=>{

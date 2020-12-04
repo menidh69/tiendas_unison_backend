@@ -44,15 +44,20 @@ function Tabla () {
     const handleShow = () => setVariasTiendas(true);
 
     useEffect(() =>{
+        let isMounted = true;
+        if(isMounted){
         fetchitems()
-    });
+        .then(json=>{
+            setItems(json)
+        })
+        }
+        return ()=>isMounted=false
+    },[]);
     
     const fetchitems = async ()=>{
         const data = await fetch(`http://localhost:5000/api/v1/usuarios/pedidos/${user.id}`)
         const json = await data.json();
-        // console.log(json.result)
-        setItems(json.result)
-        console.log(items)
+        return json.result
     }
     
 
