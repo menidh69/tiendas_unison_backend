@@ -14,6 +14,7 @@ const Tienda = require('../models/Tienda');
 const entities = require('../models/entities')
 const Stripe_Customer = require("../models/Stripe_Customer")
 const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLXiWLmtRBdyX6M68fdjwuoYbrf1pc8i1R54cN1dVy8D5jfpYkHCHH00KUpKrBFG");
+const Review = require("../models/Review");
 
 
 router.post("/usuarios", async (req, res)=>{
@@ -331,6 +332,53 @@ router.get("/usuarios/pedidos/:id_usuario", async(req, res) => {
       
   } catch (error) {
       console.log(error)
+  }
+})
+
+router.post("/usuarios/calificar/:id_producto", async(req, res) => {
+  try {
+    const calificar = {
+      id_producto: req.params.id_producto,
+      id_usuario: req.body.id_usuario,
+      calificacion: req.body.calificacion,
+      comentario: req.body.comentario
+    }
+
+    Review.create(calificar)
+    .then(review => {
+      res.json({status: review.id + "producto calificado con exito"})
+      console.log(res)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.get("/usuarios/calificacion/:id_producto/:id_usuario", async(req, res) => {
+  try {
+    const calificacion = await Review.findOne({
+      where: {
+        id_producto: req.params.id_producto,
+        id_usuario: req.params.id_usuario
+      }
+    })
+
+    res.json({result: calificacion});
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.put("/usuarios/calificarEditar/:id_producto", async(req, res) => {
+  try {
+
+    Review.update({calificacion: req.body.calificacion, comentario: req.body.comentario}, {where: {id_producto: req.params.id_producto, id_usuario: req.body.id_usuario}})
+    .then(review => {
+      res.json({status: review.id + "producto editado calificado con exito"})
+      console.log(res)
+    })
+  } catch (error) {
+    console.log(error)
   }
 })
 

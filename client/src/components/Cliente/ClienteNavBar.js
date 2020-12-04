@@ -126,7 +126,8 @@ function DropdownMenu(){
             href='#'
             leftIcon={<Cart/>}>
                 Pedidos recientes
-
+            </DropdownItem>
+            </Link>
             <Link to="/misCompras">
             <DropdownItem 
             leftIcon={<Panel/>}>
