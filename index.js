@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 moment().format();
 
 
-app.use(express.static('../client/build'));
+app.use(express.static('./client/build'));
 
 app.use(indexRoutes);
 

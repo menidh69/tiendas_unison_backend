@@ -280,6 +280,7 @@ CREATE TABLE review_tienda(
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE CASCADE
+);
 
 CREATE TABLE review(
     id SERIAL PRIMARY KEY,
