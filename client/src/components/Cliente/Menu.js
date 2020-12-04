@@ -151,9 +151,13 @@ const Menu = ()=>{
             <Row className="my-2">
                 <Col></Col>
                 <Col>
+                {tienda.url_imagen?
                 <Link to={`/tiendas/${id}`}>
-                <img src={"https://via.placeholder.com/300x300"||tienda.url_imagen} className="rounded-circle" style={styleImgTienda}></img>
+                <img src={tienda.url_imagen} className="rounded-circle" style={styleImgTienda}></img>
                 </Link>
+                :
+                <img src={"https://via.placeholder.com/300x300"} className="rounded-circle" style={styleImgTienda}></img>
+                }
                     <h1 className="text-dark my-0">{tienda.nombre}</h1>
                     <h4 className="text-dark my-0">Menú</h4>
                 </Col>
