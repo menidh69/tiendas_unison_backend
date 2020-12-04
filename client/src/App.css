@@ -61,3 +61,15 @@ button{
     transform: rotate(360deg);
   }
 }
+
+.star-rating-filled {
+  fill: gold;
+}
+
+.star-rating-blank {
+  fill: #d8d8d8;
+}
+
+.fjcp {
+  display: inline-block;
+}

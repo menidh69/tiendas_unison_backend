@@ -95,7 +95,7 @@ function Formulario () {
         categoria: 'Comida',
         url_imagen: '',
         descripcion: ''
-      });
+    });
 
     const {user, setUser} = useContext(UserContext);
     const [items, setItems] = useState([]);
@@ -112,13 +112,13 @@ function Formulario () {
     }
 
 
-      const updateField = e => {
-        setData({
-          ...data,
-          [e.target.name]: e.target.value
-        });
-      }
-      console.log(data);
+    const updateField = e => {
+    setData({
+        ...data,
+        [e.target.name]: e.target.value
+    });
+    }
+    console.log(data);
 
     const onSubmitForm = async e => {
 
