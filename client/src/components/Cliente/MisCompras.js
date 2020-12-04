@@ -2,6 +2,7 @@ import React, {Fragment, useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../UserContext';
 import {Modal, Button, Form,Table, Container, Col, Row, ListGroup, Card, Image} from 'react-bootstrap';
 import ReviewTienda from './ReviewTienda';
+import StarIcon from './StarIcon'
 
 
 const MisCompras = ()=>{
@@ -21,6 +22,21 @@ useEffect(()=>{
     }
     return ()=>isMounted=false
 }, [])
+
+
+
+const calculaRating = (reviews)=>{
+    let total = 0;
+    reviews.map(review=>{
+        total += review.calificacion
+    })
+    total = total / reviews.length
+    let array = [];
+    for(let i=0; i<total; i++){
+        array.push(i);
+    }
+    return array
+}
 
 const fetchVentas = async()=>{
     const datos = await fetch(`http://localhost:5000/api/v1/compras/cliente/${user.id}`)
@@ -95,7 +111,11 @@ return (
                                             <Card.Subtitle className="mb-2 text-muted">${selectedCompra.ventum.amount/100}</Card.Subtitle>
                                             <Card.Title>Tienda</Card.Title>
                                             <Card.Subtitle className="mb-2 text-muted">{selectedCompra.orden_items[0].producto.tienda.nombre}</Card.Subtitle>
-                                            <Card.Title><ReviewTienda id_tienda={selectedCompra.orden_items[0].producto.id_tienda} nombre={selectedCompra.orden_items[0].producto.tienda.nombre}/></Card.Title>
+                                            <Card.Title>Calificación</Card.Title>
+                                            <Card.Subtitle>{calculaRating(selectedCompra.tienda.review_tiendas).map(star=>(<StarIcon fill={true}/>))}</Card.Subtitle>
+                                            <Card.Title className="my-4">                                 
+                                                <ReviewTienda id_tienda={selectedCompra.orden_items[0].producto.id_tienda} nombre={selectedCompra.orden_items[0].producto.tienda.nombre}/>
+                                            </Card.Title>
                                         </Col>
                                         <Col>
                                         <Container className="my-4">

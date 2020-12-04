@@ -7,7 +7,7 @@ const { Op } = require("sequelize");
 //POST NEW REVIEW DE TIENDA
 router.post("/reviews/tienda", (req, res)=>{
     const review = {
-        calificacion: req.body.rating,
+        calificacion: req.body.calificacion,
         comentario: req.body.comment,
         id_tienda: req.body.id_tienda,
         id_usuario: req.body.id_usuario

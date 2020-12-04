@@ -5,6 +5,7 @@ const Usuario = require('../models/Usuario')
 const sequelize = require("sequelize");
 const db = require("../db/db");
 const { QueryTypes } = require('sequelize');
+const Review_Tienda = require('../models/Review_Tienda');
 
 
 router.get("/ventas/:month/:id_user", async (req, res)=>{
@@ -31,9 +32,13 @@ router.get("/compras/cliente/:id_user", async (req, res)=>{
                 model: Ordenitem,
                 include: {
                     model: Productos,
-                    include: { model: Tienda}
-                }
-            }
+                    include: { 
+                        model: Tienda,
+                        
+                    
+                    }}
+            },
+            {model: Tienda, include:{model:Review_Tienda}}
     ]
     })
     return res.json({compras: ordenes})

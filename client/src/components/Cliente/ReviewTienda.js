@@ -47,6 +47,7 @@ const ReviewTienda= (props)=>{
             const json = await sendReview.json();
             if(json.status=="success"){
                 handleClose();
+                console.log(json)
             }else{
                 console.log(json.err)
             }

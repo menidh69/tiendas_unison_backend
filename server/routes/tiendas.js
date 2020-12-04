@@ -199,7 +199,7 @@ router.get("/tiendas/activas", async (req, res)=>{
 
 //GET TIENDA BY ID
 router.get("/tiendas/:id", async (req, res)=>{
-    const todas = await Tienda.findAll(
+    const todas = await entities.Tienda.findAll(
         {
         where:{
             id: req.params.id,
@@ -207,7 +207,8 @@ router.get("/tiendas/:id", async (req, res)=>{
         }, include: [
             {
                 model: Ubicacion
-            }
+            },
+            {model: entities.Review_Tienda}
         ]},
         {raw:true})
     .then(result => {

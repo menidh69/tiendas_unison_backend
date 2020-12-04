@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons'
 import {GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, InfoBox} from 'react-google-maps';
 import MapStyles from '../MapStyles';
+import StarIcon from './StarIcon';
 
 
 
@@ -17,7 +18,7 @@ const TiendaInfo = () => {
   const [validacion, setValidacion] = useState(false);
   const {id} = useParams();
   const [markerPosition, setMarkerPosition] = useState();
-
+  const [stars, setStars] = useState([])
 
 
   const [show, setShow] = useState(false);
@@ -37,6 +38,8 @@ const TiendaInfo = () => {
       lat: parseFloat(json.ubicacion.lat),
       lng: parseFloat(json.ubicacion.lng)
     })
+    calculaRating(json.review_tiendas)
+    
   }
   return ()=> isMounted=false;
     })
@@ -50,15 +53,29 @@ const TiendaInfo = () => {
     if(json.status=='false'){
       handleShow();
     }
-    // }else{
-    // setValidacion(json.status)
-    // }
+    else{
+    setValidacion(true)
+    }
   }
+
+  const calculaRating = (reviews)=>{
+    let total = 0;
+    reviews.map(review=>{
+        total += review.calificacion
+    })
+    total = total / reviews.length
+    let array = [];
+    for(let i=0; i<total; i++){
+        array.push(i);
+    }
+    setStars(array)
+    return
+}
 
   const fetchdata = async ()=>{
     const prom = await fetch(`http://localhost:5000/api/v1/tiendas/${id}`);
     const record = await prom.json();
-    console.log(record.tienda[0].ubicacion)
+    console.log(record.tienda)
     return record.tienda[0];
   //   setData(record.tienda[0]);
   //   console.log("tienda validacion general:"+record.tienda[0].validada)
@@ -127,12 +144,18 @@ const validar = async(id_usuario,id_tienda)=>{
         <h5>¿Aceptan tarjeta?</h5>
         <p>{data.tarjeta ?'Si':'No'}</p>
         </div>
+        <h5 className="my-2">Calificacion</h5>
+        <div>
+          {stars.length>0 ? stars.map(star=>(<StarIcon fill={true}/>)):null}
+        </div>
         <Link to={`/tiendas/${id}/menu`}>
         <button className="mx-auto text-center btn btn-lg rounded-pill btn-primary shadow btn-block my-4 ml-0 pl-0"> Ver menú </button>
         </Link>
         <div className="text-center">
         <button className="btn btn-lg btn-outline-danger rounded-pill mx-2 shadow" data-toggle="modal" href="#reportar">Reportar</button>
+        {validacion ? null :
         <button  class="btn btn-outline-primary btn-lg rounded-pill mx-2 shadow" data-toggle="modal" href="#validar">Verificar tienda</button>
+        }
         </div>
          
       </div>

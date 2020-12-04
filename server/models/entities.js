@@ -9,7 +9,8 @@ const entities = {
     Orden: require("./Orden"),
     Ordenitem: require("./OrdenItem"),
     Venta: require("./Venta"),
-    Review_Tienda: require("./Review_Tienda")
+    Review_Tienda: require("./Review_Tienda"),
+    Ubicacion: require("./Ubicacion")
 };
 
 entities.Carrito.hasMany(entities.Carrito_item, {foreignKey: "id_carrito"})
@@ -36,5 +37,8 @@ entities.Tienda.hasMany(entities.Review_Tienda, {foreignKey: "id_tienda"})
 entities.Review_Tienda.belongsTo(entities.Tienda, {foreignKey:"id_tienda"});
 entities.Usuario.hasMany(entities.Review_Tienda, {foreignKey:"id_usuario"});
 entities.Review_Tienda.belongsTo(entities.Usuario, {foreignKey:"id_usuario"});
+
+entities.Tienda.hasOne(entities.Ubicacion, {foreignKey: "id_tienda"});
+entities.Ubicacion.belongsTo(entities.Tienda, {foreignKey: "id_tienda"})
 
 module.exports = entities;
