@@ -32,7 +32,7 @@ const InfoStripe = (props)=>{
     }, [])
 
     const fetchStripeID = async ()=>{
-        const dbData = await fetch(`http://localhost:5000/api/v1/stripeInfo/accountLink/${props.id_tienda}`);
+        const dbData = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/stripeInfo/accountLink/${props.id_tienda}`);
         const json = await dbData.json();
         return json;
     }

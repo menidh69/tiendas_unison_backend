@@ -39,7 +39,7 @@ const ReviewTienda= (props)=>{
                 id_tienda: props.id_tienda
 
             }
-            const sendReview = await fetch('http://localhost:5000/api/v1/reviews/tienda', {
+            const sendReview = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/reviews/tienda', {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)

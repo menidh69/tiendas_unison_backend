@@ -29,7 +29,7 @@ useEffect(()=>{
 
 const fetchitems = async()=>{
     const nombre = query.get("producto")
-    const info = await fetch(`http://localhost:5000/api/v1/universidad/${user.id_universidad}/productos/${nombre}`)
+    const info = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/universidad/${user.id_universidad}/productos/${nombre}`)
     const json = await info.json()
     return json
 }

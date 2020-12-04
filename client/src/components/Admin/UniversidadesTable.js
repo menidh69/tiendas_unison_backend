@@ -16,7 +16,7 @@ const UniversidadesTable = ()=>{
     const [data, setData] = useState({})
 
     const fetchitems = async ()=>{
-        const data = await fetch('http://localhost:5000/api/v1/universidades');
+        const data = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/universidades');
         const items = await data.json();
         console.log(items)
         setItems(items)
@@ -24,7 +24,7 @@ const UniversidadesTable = ()=>{
 
     const eliminar = async (id)=>{
         try{
-            const response = await fetch(`http://localhost:5000/api/v1/universidades/${id}`,
+            const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/universidades/${id}`,
             {
                 method: "DELETE",
             });
@@ -44,7 +44,7 @@ const UniversidadesTable = ()=>{
         console.log(item)
         try{
             console.log(body)
-            const response = await fetch(`http://localhost:5000/api/v1/universidades/${item.id}`,
+            const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/universidades/${item.id}`,
             {
                 method: "PUT",
                 headers: {"Content-Type":"application/json"},

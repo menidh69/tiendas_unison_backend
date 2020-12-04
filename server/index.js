@@ -22,7 +22,6 @@ moment().format();
 
 
 app.use(express.static('../client/build'));
-app.use()
 
 app.use(indexRoutes);
 

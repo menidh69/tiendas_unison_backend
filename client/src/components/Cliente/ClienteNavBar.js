@@ -82,9 +82,9 @@ function DropdownMenu(){
     }
 
     const fetchitems = async () => {
-        const data = await fetch (`http://localhost:5000/api/v1/carrito/${user.id}`);
+        const data = await fetch (`https://tiendas-unison-web.herokuapp.com/api/v1/carrito/${user.id}`);
         const items = await data.json();
-        const data2 = await fetch (`http://localhost:5000/api/v1/carritoItem/${items[0].id}`);
+        const data2 = await fetch (`https://tiendas-unison-web.herokuapp.com/api/v1/carritoItem/${items[0].id}`);
         const items2 = await data2.json();
         console.log(items2[0])
         if (items2 == null) {

@@ -105,7 +105,7 @@ function Formulario () {
     }, []);
 
     const fetchitems = async (id) => {
-        const data = await fetch(`http://localhost:5000/api/v1/miTienda/${user.id}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/miTienda/${user.id}`);
         const  it= await data.json();
         setItems(it[0]);
         console.log(items);
@@ -128,7 +128,7 @@ function Formulario () {
         e.preventDefault();
         if (data.nombre!=="" && data.precio !=="" && data.categoria!="") {
             const body = data;
-            const response = await fetch('http://localhost:5000/api/v1/nuevoProducto', {
+            const response = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/nuevoProducto', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -31,7 +31,7 @@ const Facebook = ()=>{
         alert('Al iniciar sesión con facebook serás registrado como usuario regular')
     }
     const fetchUniversidades = async ()=>{
-        const data = await fetch('http://localhost:5000/api/v1/universidadesvalidadas')
+        const data = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/universidadesvalidadas')
         const json = await data.json();
         console.log(json)
         setUnis(json);
@@ -43,7 +43,7 @@ const Facebook = ()=>{
           contra: loginData.contra
         }
         
-          const loginresponse = await fetch('http://localhost:5000/api/v1/usuario/login',
+          const loginresponse = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/usuario/login',
           {
               method: "POST",
               headers: {"Content-Type": "application/json"},
@@ -70,7 +70,7 @@ const Facebook = ()=>{
         if((loginData.contra!==null && loginData.contra!=="")&&(match!==null && match!=="")&&(loginData.contra===match) && (loginData.id_universidad!==null && loginData.id_universidad!=="")){
           handleClose();
           const body = loginData;
-          const response = await fetch('http://localhost:5000/api/v1/usuarios', {
+          const response = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/usuarios', {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -105,7 +105,7 @@ const Facebook = ()=>{
 
     const responseFacebook = async response =>{
       console.log(response)
-      const info = await fetch('http://localhost:5000/api/v1/auth/fbLogin', {
+      const info = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/auth/fbLogin', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

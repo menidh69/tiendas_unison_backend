@@ -66,9 +66,9 @@ function Formulario(props) {
     }, []);
 
     const fetchitems = async (idTienda, idProducto) => {
-        const data = await fetch(`http://localhost:5000/api/v1/miTienda/${user.id}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/miTienda/${user.id}`);
         const  it= await data.json();
-        const data2 = await fetch(`http://localhost:5000/api/v1/productosTienda/${it[0].id}/${props.id}`);
+        const data2 = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/productosTienda/${it[0].id}/${props.id}`);
         const it2 = await data2.json();
         setProducto(it2[0]);
         data.nombre = it2[0].nombre;
@@ -89,7 +89,7 @@ function Formulario(props) {
         e.preventDefault();
         if (data.nombre!=="" && data.precio !=="" && data.categoria!="") {
             const body = data;
-            const response = await fetch(`http://localhost:5000/api/v1/editarProducto/${producto.id}`, {
+            const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/editarProducto/${producto.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

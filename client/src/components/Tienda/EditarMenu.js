@@ -55,9 +55,9 @@ function Tabla() {
 
 
     const fetchitems = async (id) => {
-        const data = await fetch(`http://localhost:5000/api/v1/miTienda/${user.id}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/miTienda/${user.id}`);
         const  it= await data.json();
-        const data2 = await fetch(`http://localhost:5000/api/v1/productosTienda/${it[0].id}`);
+        const data2 = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/productosTienda/${it[0].id}`);
         const it2 = await data2.json();
         setItems(it2);
     }
@@ -219,7 +219,7 @@ function ModalEditar(props){
 
         if (data.nombre!=="" && data.precio !=="" && data.categoria!="") {
             const body = data;
-            const response = await fetch(`http://localhost:5000/api/v1/editarProducto/${props.item.id}`, {
+            const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/editarProducto/${props.item.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -294,7 +294,7 @@ function Modal(props){
 
 
     const eliminarClick = async(idProducto,idTienda) => {
-        const response = await fetch(`http://localhost:5000/api/v1/eliminarProducto/${props.item.id}/${props.item.id_tienda}`, {
+        const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/eliminarProducto/${props.item.id}/${props.item.id_tienda}`, {
             method: "DELETE"
         });
     }

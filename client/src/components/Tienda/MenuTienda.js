@@ -24,7 +24,7 @@ function Arriba() {
     }, []);
 
     const fetchitems = async (id) => {
-        const data = await fetch(`http://localhost:5000/api/v1/miTienda/${user.id}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/miTienda/${user.id}`);
         const  it= await data.json();
         setItems(it[0]);
     }
@@ -74,9 +74,9 @@ function Menu() {
     }, []);
 
     const fetchitems = async (id) => {
-        const data = await fetch(`http://localhost:5000/api/v1/miTienda/${user.id}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/miTienda/${user.id}`);
         const  it= await data.json();
-        const data2 = await fetch(`http://localhost:5000/api/v1/productosTienda/${it[0].id}`);
+        const data2 = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/productosTienda/${it[0].id}`);
         const it2 = await data2.json();
         setProductos(it2);
     }

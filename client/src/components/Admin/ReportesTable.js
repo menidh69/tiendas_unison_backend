@@ -16,7 +16,7 @@ const ReportesTable = ()=>{
 
 
     const fetchitems = async ()=>{
-        const data = await fetch('http://localhost:5000/api/v1/reporte_tienda');
+        const data = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/reporte_tienda');
         const json = await data.json();
         console.log(json)
         setItems(json.result)

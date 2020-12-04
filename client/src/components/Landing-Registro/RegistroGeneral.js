@@ -21,7 +21,7 @@ import LandingNav from './LandingNav';
     }, [])
 
     const fetchUniversidades = async ()=>{
-      const data = await fetch('http://localhost:5000/api/v1/universidadesvalidadas')
+      const data = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/universidadesvalidadas')
       const json = await data.json();
       console.log(json)
       setUnis(json);
@@ -58,7 +58,7 @@ import LandingNav from './LandingNav';
       }
       if (data.nombre!=="" && data.email !=="" && data.contra!="" && data.tel!=="" && data.universidad!=="") {
         const body = data;
-        const response = await fetch('http://localhost:5000/api/v1/usuarios', {
+        const response = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/usuarios', {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

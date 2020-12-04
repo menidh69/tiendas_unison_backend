@@ -14,7 +14,7 @@ const Tienda1 = () => {
   }, [])
 
   const fetchdata = async ()=>{
-    const prom = await fetch(`http://localhost:5000/api/v1/reporte_tienda/usuario/${id}`);
+    const prom = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/reporte_tienda/usuario/${id}`);
     const record = await prom.json();
     setDataUser(record.result[0]);
     const tienda = await record.result[0].tienda
@@ -27,7 +27,7 @@ const Tienda1 = () => {
 };
 
 const deleteAll = async()=>{
-  const prom = await fetch(`http://localhost:5000/api/v1/reporte_tienda/all/${dataTienda.id}`,
+  const prom = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/reporte_tienda/all/${dataTienda.id}`,
   {
     method: "DELETE"
   });
@@ -35,7 +35,7 @@ const deleteAll = async()=>{
 }
 
 const deleteOne = async(id)=>{
-  const prom = await fetch(`http://localhost:5000/api/v1/reporte_tienda/${id}`,
+  const prom = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/reporte_tienda/${id}`,
   {
     method: "DELETE"
   });

@@ -35,7 +35,7 @@ export default function CheckoutForm(props) {
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-    const data = await fetch(`http://localhost:5000/api/v1/paySecret/${props.ID}/${user.id}`)
+    const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/paySecret/${props.ID}/${user.id}`)
     const intent = await data.json()
     let results = []
     console.log(intent.client_secrets)
@@ -98,7 +98,7 @@ export default function CheckoutForm(props) {
       // The payment has been processed!
       
       
-        // const orden = await fetch('http://localhost:5000/api/v1/nuevaOrden', {
+        // const orden = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/nuevaOrden', {
         //   method: "POST",
         //   headers: {"Content-Type":"application/json"},
         //   body: JSON.stringify(body)

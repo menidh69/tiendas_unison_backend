@@ -20,7 +20,7 @@ useEffect(()=>{
 
 const fetchuniversidad = async ()=>{
     if(props.values.universidad){
-    const data = await fetch(`http://localhost:5000/api/v1/universidades/ubi/${props.values.universidad}`);
+    const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/universidades/ubi/${props.values.universidad}`);
     const json = await data.json();
     const ubicacion = {
         lat: parseFloat(json.lat),

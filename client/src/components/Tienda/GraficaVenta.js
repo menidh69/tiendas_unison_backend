@@ -110,7 +110,7 @@ const GraficaVenta = (props)=>{
     }
 
     const fetchVentas = async()=>{
-        const datos = await fetch(`http://localhost:5000/api/v1/ventas/${props.month}/${props.id}`)
+        const datos = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/ventas/${props.month}/${props.id}`)
         const json = await datos.json()
         return json.ventas
     }

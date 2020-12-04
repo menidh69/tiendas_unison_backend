@@ -9,7 +9,7 @@ const Restablecer = ()=> {
 
     const PostData = async ()=>{
         console.log('click')
-        await fetch("http://localhost:5000/new-password", {
+        await fetch("https://tiendas-unison-web.herokuapp.com/new-password", {
             method: "post",
             headers: {
                 "Content-Type": "application/json"

@@ -55,7 +55,7 @@ function Tabla () {
     },[]);
     
     const fetchitems = async ()=>{
-        const data = await fetch(`http://localhost:5000/api/v1/usuarios/pedidos/${user.id}`)
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/usuarios/pedidos/${user.id}`)
         const json = await data.json();
         return json.result
     }
@@ -147,7 +147,7 @@ function ModalDelete(props){
 
 
     const eliminarClick = async() => {
-        const response = await fetch(`http://localhost:5000/api/v1/tiendas/entregar/${props.orden.id}`, {
+        const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/tiendas/entregar/${props.orden.id}`, {
             method: "PUT"
         });
         

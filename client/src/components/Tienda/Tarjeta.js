@@ -21,7 +21,7 @@ function InfoBancaria() {
   const {user, setUser} = useContext(UserContext);
 
   const fetchitems = async (id)=>{
-      const data = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`);
+      const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/infobanco/${user.id}`);
       const  it= await data.json();
       setItems(it[0]);
   };
@@ -83,7 +83,7 @@ function InfoBancaria() {
       } 
         try{
               const body = data;
-              const response = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`,
+              const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/infobanco/${user.id}`,
               {
                   method: "POST",
                   headers: {"Content-Type":"application/json"},
@@ -231,7 +231,7 @@ function Info() {
 
 
   const fetchitems = async (id)=>{
-      const data = await fetch(`http://localhost:5000/api/v1/infobanco/${user.id}`);
+      const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/infobanco/${user.id}`);
       const  it= await data.json();
       setInfobank(it);
   };
@@ -241,7 +241,7 @@ function Info() {
     try{
           console.log("ESTO ES DATA ", data);
           const body = data;
-          const response = await fetch(`http://localhost:5000/api/v1/infobanco/${infobanks.id}`,
+          const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/infobanco/${infobanks.id}`,
           {
               method: "PUT",
               headers: {"Content-Type":"application/json"},
@@ -323,7 +323,7 @@ function Info() {
 
 
       const fetchitems = async (id)=>{
-          const data = await fetch(`http://localhost:5000/api/v1/infobanco/${props.infobanks.id}`);
+          const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/infobanco/${props.infobanks.id}`);
           const  it= await data.json();
       };
 
@@ -375,7 +375,7 @@ function Info() {
                 try{
 
                       const body = data;
-                      const response = await fetch(`http://localhost:5000/api/v1/infobanco/${props.infobanks.id}`,
+                      const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/infobanco/${props.infobanks.id}`,
                       {
                           method: "PUT",
                           headers: {"Content-Type":"application/json"},

@@ -36,7 +36,7 @@ function App() {
 
   const checkSignIn = async ()=>{
       if(token){
-        const response = await fetch('http://localhost:5000/api/v1/auth/user',
+        const response = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/auth/user',
               {
                   method: "GET",
                   headers: {

@@ -67,7 +67,7 @@ const Menu = ()=>{
   
 
     const fetchValidar = async ()=>{
-        const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
+        const response = await fetch (`https://tiendas-unison-web.herokuapp.com/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
         const json = await response.json();
         console.log("tienda validacion personal:"+json.status);
         if(json.status=='false'){
@@ -80,19 +80,19 @@ const Menu = ()=>{
       }
 
     const fetchValidacionGeneral = async()=>{
-        const datatienda = await fetch(`http://localhost:5000/api/v1/tiendas/${id}`);
+        const datatienda = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/tiendas/${id}`);
         const itemtienda = await datatienda.json();
         return itemtienda.tienda[0]
 
     }
     const fetchitems = async ()=>{
-        const data = await fetch(`http://localhost:5000/api/v1/productosTienda/${id}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/productosTienda/${id}`);
         const items = await data.json();
         console.log(items)
         return items
         console.log(items);
         setItems(items);
-        const datatienda = await fetch(`http://localhost:5000/api/v1/tiendas/${id}`);
+        const datatienda = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/tiendas/${id}`);
         const itemtienda = await datatienda.json();
         setTienda(itemtienda.tienda[0]);
         console.log(itemtienda.tienda[0]);
@@ -101,7 +101,7 @@ const Menu = ()=>{
         }
     };
     const validar = async(id_usuario,id_tienda)=>{
-        const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/${id}`,{
+        const response = await fetch (`https://tiendas-unison-web.herokuapp.com/api/v1/validar_tienda/${user.id}/${id}`,{
           method: "POST"
         });
         const json = await response.json()
@@ -385,7 +385,7 @@ function Agregar(props){
             id_producto: id_producto,
             cantidad: cantidad
         }
-        const data = await fetch (`http://localhost:5000/api/v1/agregarCarrito/${user.id}`, {
+        const data = await fetch (`https://tiendas-unison-web.herokuapp.com/api/v1/agregarCarrito/${user.id}`, {
             method: "POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(itemCarrito)

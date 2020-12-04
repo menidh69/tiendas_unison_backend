@@ -23,7 +23,7 @@ useEffect(()=>{
 }, [month])
 
 const fetchVentas = async()=>{
-    const datos = await fetch(`http://localhost:5000/api/v1/ventas/${month}/${user.id}`)
+    const datos = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/ventas/${month}/${user.id}`)
     const json = await datos.json()
     return json
 }

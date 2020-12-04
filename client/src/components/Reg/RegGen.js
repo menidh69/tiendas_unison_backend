@@ -22,7 +22,7 @@ export class RegGen extends Component {
   
 
   async componentWillMount(){
-    const response = await fetch(`http://localhost:5000/api/v1/universidadesvalidadas`)
+    const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/universidadesvalidadas`)
     const json = await response.json()
     this.setState({ universidades: json });
     console.log(response)

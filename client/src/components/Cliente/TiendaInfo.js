@@ -47,7 +47,7 @@ const TiendaInfo = () => {
   }, [])
 
   const fetchValidar = async ()=>{
-    const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
+    const response = await fetch (`https://tiendas-unison-web.herokuapp.com/api/v1/validar_tienda/${user.id}/tiendas/${id}`)
     const json = await response.json();
     console.log("tienda validacion personal:"+json.status);
     if(json.status=='false'){
@@ -73,7 +73,7 @@ const TiendaInfo = () => {
 }
 
   const fetchdata = async ()=>{
-    const prom = await fetch(`http://localhost:5000/api/v1/tiendas/${id}`);
+    const prom = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/tiendas/${id}`);
     const record = await prom.json();
     console.log(record.tienda)
     return record.tienda[0];
@@ -87,7 +87,7 @@ const TiendaInfo = () => {
 }
 
 const reportar = async()=>{
-  const response = await fetch (`http://localhost:5000/api/v1/reporte_tienda/${user.id}/${data.id}`,{
+  const response = await fetch (`https://tiendas-unison-web.herokuapp.com/api/v1/reporte_tienda/${user.id}/${data.id}`,{
     method: "POST"
   })
   const json = await response.json();
@@ -96,7 +96,7 @@ const reportar = async()=>{
 }
 
 const validar = async(id_usuario,id_tienda)=>{
-  const response = await fetch (`http://localhost:5000/api/v1/validar_tienda/${user.id}/${id}`,{
+  const response = await fetch (`https://tiendas-unison-web.herokuapp.com/api/v1/validar_tienda/${user.id}/${id}`,{
     method: "POST"
   });
   const json = await response.json()

@@ -104,7 +104,7 @@ function Tabla (props) {
     }
     
     const fetchitems = async ()=>{
-        const data = await fetch(`http://localhost:5000/api/v1/carrito/payment/${user.id}`)
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/carrito/payment/${user.id}`)
         const json = await data.json();
         return json.result[0].carrito_items;
     }
@@ -258,7 +258,7 @@ function ModalDelete(props){
 
 
     const eliminarClick = async(idProducto,idTienda) => {
-        const response = await fetch(`http://localhost:5000/api/v1/eliminarCarritoItem/${props.item.id}`, {
+        const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/eliminarCarritoItem/${props.item.id}`, {
             method: "DELETE"
         });
         props.handleDelete(props.item.id);

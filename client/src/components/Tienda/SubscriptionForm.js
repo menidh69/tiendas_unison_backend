@@ -25,7 +25,7 @@ export default function SubscriptionForm(props) {
       return;
     }
     
-    const info = await fetch(`http://localhost:5000/api/v1/stripe/customer/${user.id}`);
+    const info = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/stripe/customer/${user.id}`);
     const customerId = await info.json();
     console.log(customerId)
     
@@ -57,7 +57,7 @@ export default function SubscriptionForm(props) {
   
 
   async function createSubscription({customerId, paymentMethodId, priceId}){
-      const datos = await fetch("http://localhost:5000/api/v1/stripe/create-subscription",
+      const datos = await fetch("https://tiendas-unison-web.herokuapp.com/api/v1/stripe/create-subscription",
       {
           method: "POST",
           headers: {

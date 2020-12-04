@@ -15,7 +15,7 @@ import LandingNav from '../Landing-Registro/LandingNav';
                 toast({html: "invalid email",classes:"#c62828 red darken-3"})
                 return
             }
-            fetch('http://localhost:5000/olvidarcontra   ',{
+            fetch('https://tiendas-unison-web.herokuapp.com/olvidarcontra   ',{
                 method:"post",
                 headers:{
                     "Content-Type":"application/json"
@@ -88,7 +88,7 @@ const OlvidarContra = ()=> {
             try{
                 const body = data;
                 console.log(body);
-                const response = await fetch('http://localhost:5000/api/v1/olvidarcontra',
+                const response = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/olvidarcontra',
                 {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},

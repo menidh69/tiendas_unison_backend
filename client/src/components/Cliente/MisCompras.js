@@ -39,7 +39,7 @@ const calculaRating = (reviews)=>{
 }
 
 const fetchVentas = async()=>{
-    const datos = await fetch(`http://localhost:5000/api/v1/compras/cliente/${user.id}`)
+    const datos = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/compras/cliente/${user.id}`)
     const json = await datos.json()
     return json.compras
 }
@@ -185,7 +185,7 @@ function Calificar (props) {
     
     
     const fetchitems = async () => {
-        const data = await fetch(`http://localhost:5000/api/v1/usuarios/calificacion/${props.item.producto.id}/${user.id}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/usuarios/calificacion/${props.item.producto.id}/${user.id}`);
         const  it= await data.json();
         console.log(it.result)
         return it.result
@@ -247,7 +247,7 @@ function ModalC(props){
     const calificarClick = async() => {
         data.calificacion = stars[rating];
         console.log(props.item.producto.id)
-        const response = await fetch(`http://localhost:5000/api/v1/usuarios/calificar/${props.item.producto.id}`, {
+        const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/usuarios/calificar/${props.item.producto.id}`, {
             method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -328,7 +328,7 @@ function ModalE(props){
     const editarClick = async() => {
         data.calificacion = stars[rating];
         console.log(props.item.producto.id)
-        const response = await fetch(`http://localhost:5000/api/v1/usuarios/calificarEditar/${props.item.producto.id}`, {
+        const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/usuarios/calificarEditar/${props.item.producto.id}`, {
             method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

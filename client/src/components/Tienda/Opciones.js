@@ -44,7 +44,7 @@ function Items() {
     }, []);
 
     const fetchitems = async (id)=>{
-        const data = await fetch(`http://localhost:5000/api/v1/tiendafecha/${user.id}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/tiendafecha/${user.id}`);
         const items = await data.json();
         console.log(items)
         let finaldate = new Date();
@@ -66,7 +66,7 @@ function Items() {
 
     const eliminar = async (id)=>{
         try{
-            const response = await fetch(`http://localhost:5000/api/v1/tiendas/${id}`,
+            const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/tiendas/${id}`,
             {
                 method: "DELETE",
             });

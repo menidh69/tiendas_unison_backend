@@ -79,7 +79,7 @@ function MiInfoTable(props){
 
 //   const fetchitems = async ()=>{
 
-//       const data = await fetch(`http://localhost:5000/api/v1/tiendainfo/${user.id}`);
+//       const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/tiendainfo/${user.id}`);
 //       const json = await data.json();
 //     console.log(json[0])
 //       setItems(json[0]);
@@ -133,7 +133,7 @@ function MiInfoTable(props){
       const body = data;
       console.log(data);
       try{
-            const response = await fetch(`http://localhost:5000/api/v1/tiendas/${user.id}`,
+            const response = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/tiendas/${user.id}`,
             {
                 method: "PUT",
                 headers: {"Content-Type":"application/json"},

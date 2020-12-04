@@ -45,7 +45,7 @@ function Map(props){
     }, []);
 
     const fetchitems = async ()=>{
-        const data = await fetch(`http://localhost:5000/api/v1/universidades/tiendas/${user.id_universidad}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/universidades/tiendas/${user.id_universidad}`);
         const json = await data.json();
         console.log(json)
 
@@ -53,7 +53,7 @@ function Map(props){
         
     };
     const fetchuniversidad = async ()=>{
-        const data = await fetch(`http://localhost:5000/api/v1/universidades/ubi/${user.id_universidad}`);
+        const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/universidades/ubi/${user.id_universidad}`);
         const json = await data.json();
         const ubicacion = {
             lat: parseFloat(json.lat),

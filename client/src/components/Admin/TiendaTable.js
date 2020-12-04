@@ -19,12 +19,12 @@ const TiendaTable = ()=>{
 
     const fetchitems = async ()=>{
         if(universidad){
-            const data = await fetch(`http://localhost:5000/api/v1/universidades/tiendas/${universidad}/all`);
+            const data = await fetch(`https://tiendas-unison-web.herokuapp.com/api/v1/universidades/tiendas/${universidad}/all`);
             const json = await data.json();
             console.log(json)
             setItems(json)
         }else{
-        const data = await fetch('http://localhost:5000/api/v1/tiendas');
+        const data = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/tiendas');
         const json = await data.json();
         console.log()
         console.log(json)
@@ -33,7 +33,7 @@ const TiendaTable = ()=>{
     };
 
     const fetchUniversidades = async ()=>{
-        const data = await fetch('http://localhost:5000/api/v1/universidades')
+        const data = await fetch('https://tiendas-unison-web.herokuapp.com/api/v1/universidades')
         const json = await data.json();
         console.log(json)
         setUnis(json);
