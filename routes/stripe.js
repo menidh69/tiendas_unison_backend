@@ -92,8 +92,8 @@ router.get("/stripeInfo/accountLink/:id_tienda", async (req, res)=>{
   }else{
       const accountLinks = await stripe.accountLinks.create({
           account: infoStripe.id_stripe,
-          refresh_url: 'https://localhost:3000/',
-          return_url: 'https://localhost:3000/',
+          refresh_url: 'https://tiendas-unison-web.herokuapp.com/panel',
+          return_url: 'https://tiendas-unison-web.herokuapp.com/panel',
           type: 'account_onboarding',
           });
           return res.json({status: "success", accountLink: accountLinks, stripe: false, id: infoStripe.id_stripe})
