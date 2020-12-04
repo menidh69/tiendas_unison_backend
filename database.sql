@@ -37,6 +37,19 @@ CREATE TABLE tipo_tienda(
     descripcion VARCHAR(150)
 );
 
+CREATE TABLE ubicacionUni (
+    id SERIAL PRIMARY KEY,
+    id_universidad BIGINT UNSIGNED,
+    lat DECIMAL(18,15),
+    lng DECIMAL(18,15),
+
+    CONSTRAINT fk_universidad_ubi
+    FOREIGN KEY (id_universidad)
+    REFERENCES universidad(id)
+    ON DELETE CASCADE
+);
+
+
 CREATE TABLE tienda(
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
@@ -127,17 +140,6 @@ CREATE TABLE ubicacion (
     ON DELETE CASCADE
 );
 
-CREATE TABLE ubicacionUni (
-    id SERIAL PRIMARY KEY,
-    id_universidad BIGINT UNSIGNED,
-    lat DECIMAL(18,15),
-    lng DECIMAL(18,15),
-
-    CONSTRAINT fk_universidad_ubi
-    FOREIGN KEY (id_universidad)
-    REFERENCES universidad(id)
-    ON DELETE CASCADE
-);
 
 CREATE TABLE carrito (
     id SERIAL PRIMARY KEY,
@@ -305,3 +307,20 @@ CREATE TABLE review(
 
 INSERT INTO tipo_tienda (tipo_tienda, descripcion) VALUES ("Cooperativa", "Tienda con contrato de la universidad"),
 ("Puesto", "Puesto independiente dentro de la universidad"), ("Cafeteria", "Cafeteria oficial universitaria");
+
+drop table review;
+drop table review_tienda;
+drop table subscripcion_tienda;
+drop table venta;
+drop table stripe_customer;
+drop table info_stripe;
+drop table orden_item;
+drop table orden;
+drop table info_bancaria;
+drop table carrito_item;
+drop table carrito;
+drop table ubicacion;
+drop table productos;
+drop table validar_tienda;
+drop table reporte_tienda;
+drop table tienda;
