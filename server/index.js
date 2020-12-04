@@ -6,7 +6,7 @@ const sgMail = require("@sendgrid/mail");
 const moment = require('moment')
 sgMail.setApiKey('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');
 const indexRoutes = require('./routes/index')
-
+const serveStatic = require('serve-static');
 
 
 app.use(cors());
@@ -22,10 +22,11 @@ moment().format();
 
 
 app.use(express.static('../client/build'));
+app.use()
 
 app.use(indexRoutes);
 
-
-app.listen(5000, ()=>{
+const port = process.env.PORT || 5000
+app.listen(port, ()=>{
     console.log('Server is running')
 })

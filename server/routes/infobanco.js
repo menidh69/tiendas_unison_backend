@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Info_bancaria = require('../models/Info_bancaria');
 const Usuario = require('../models/Usuario');
-const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLXiWLmtRBdyX6M68fdjwuoYbrf1pc8i1R54cN1dVy8D5jfpYkHCHH00KUpKrBFG");
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 const Tienda = require('../models/Tienda');
 const Info_Stripe = require('../models/Info_Stripe');
 

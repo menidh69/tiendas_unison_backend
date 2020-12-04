@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLXiWLmtRBdyX6M68fdjwuoYbrf1pc8i1R54cN1dVy8D5jfpYkHCHH00KUpKrBFG");
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 const uuid = require("uuid")
 const Tienda = require('../models/Tienda');
 const Usuario = require('../models/Usuario');
 const sgMail = require("@sendgrid/mail");
 const Info_Stripe = require('../models/Info_Stripe');
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SGMAIL_KEY);
 const {Carrito, Carrito_item, Productos} = require('../models/entities')
 const bodyParser = require("body-parser");
 const Stripe_Customer=require('../models/Stripe_Customer')
-const webhook_secret = "whsec_iMVkeqCIyczJ6Oj7qUR7Qy3b5OONmSIB"
+const webhook_secret = process.env.WEBHOOKSECRET
 const Orden = require('../models/Orden')
 const Ordenitem = require('../models/OrdenItem')
 const Venta = require('../models/Venta')

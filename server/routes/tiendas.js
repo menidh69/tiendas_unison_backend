@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SGMAIL_KEY);
 const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
@@ -12,7 +12,7 @@ const entities = require('../models/entities');
 
 const Stripe_Customer = require('../models/Stripe_Customer');
 
-const stripe = require("stripe")("sk_test_51HoJ01K9hN8J4SbUcq7jtJksCYl3w6LRNJbLXiWLmtRBdyX6M68fdjwuoYbrf1pc8i1R54cN1dVy8D5jfpYkHCHH00KUpKrBFG");
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 const Orden = require('../models/Orden')
 
 
