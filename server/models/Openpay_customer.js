@@ -5,7 +5,7 @@ const Openpay_customer = db.sequelize.define(
     'openpay_customer',
     {
         id: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             primaryKey: true
         },
         id_usuario: {
