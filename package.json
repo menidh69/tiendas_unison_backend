@@ -20,6 +20,7 @@
   "dependencies": {
     "@sendgrid/mail": "^7.2.6",
     "axios": "^0.20.0",
+    "openpay": "^1.0.5",
     "react-toastify": "^6.0.8"
   }
 }
