@@ -6,6 +6,8 @@ CREATE TABLE universidad(
     nombre VARCHAR (100),
     ciudad VARCHAR(50),
     estado VARCHAR(50),
+    lat DECIMAL(18,15),
+    lng DECIMAL(18,15),
     validada boolean
 );
 
@@ -48,6 +50,8 @@ CREATE TABLE tienda(
     fechaSub Date,
     validada boolean,
     activo boolean,
+    lat DECIMAL(18,15),
+    lng DECIMAL(18,15)
 
 
     CONSTRAINT fk_tipo_tienda
@@ -115,30 +119,6 @@ CREATE TABLE productos (
     ON DELETE SET NULL
 );
 
-CREATE TABLE ubicacion (
-    id SERIAL PRIMARY KEY,
-    id_tienda BIGINT UNSIGNED,
-    lat DECIMAL(18,15),
-    lng DECIMAL(18,15),
-
-    CONSTRAINT fk_tienda_ubi
-    FOREIGN KEY (id_tienda)
-    REFERENCES tienda(id)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE ubicacionUni (
-    id SERIAL PRIMARY KEY,
-    id_universidad BIGINT UNSIGNED,
-    lat DECIMAL(18,15),
-    lng DECIMAL(18,15),
-
-    CONSTRAINT fk_universidad_ubi
-    FOREIGN KEY (id_universidad)
-    REFERENCES universidad(id)
-    ON DELETE CASCADE
-);
-
 CREATE TABLE carrito (
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
@@ -166,21 +146,17 @@ CREATE TABLE carrito_item (
     ON DELETE SET NULL
 );
 
-CREATE TABLE info_bancaria(
-    id SERIAL PRIMARY KEY,
+CREATE TABLE openpay_customer {
+    id VARCHAR(255) PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
+    openpay_id VARCHAR(255),
+    card_id VARCHAR(255)
 
-    nombre_titular VARCHAR (100),
-    num_tarjeta VARCHAR(50),
-    exp_date VARCHAR (20),
-    cvv BIGINT,
-    cpp BIGINT,
-
-    CONSTRAINT fk_usuario4
+    CONSTRAINT fk_usuario_openpay
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
-    ON DELETE CASCADE
-);
+    ON DELETE SET NULL
+}
 
 CREATE TABLE orden (
     id SERIAL PRIMARY KEY,
@@ -217,27 +193,6 @@ CREATE TABLE orden_item (
     ON DELETE SET NULL
 );
 
-CREATE TABLE info_stripe(
-    id SERIAL PRIMARY KEY,
-    id_tienda BIGINT UNSIGNED,
-    id_stripe VARCHAR(255),
-
-     CONSTRAINT fk_tienda3
-    FOREIGN KEY (id_tienda)
-    REFERENCES tienda(id)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE stripe_customer(
-    id SERIAL PRIMARY KEY,
-    id_usuario BIGINT UNSIGNED,
-    id_stripe VARCHAR(255),
-
-     CONSTRAINT fk_usuario6
-    FOREIGN KEY (id_usuario)
-    REFERENCES usuario(id)
-    ON DELETE CASCADE
-);
 
 CREATE TABLE venta(
     id SERIAL PRIMARY KEY,
@@ -250,19 +205,6 @@ CREATE TABLE venta(
     REFERENCES orden(id)
     ON DELETE CASCADE
 );
-
-CREATE TABLE subscripcion_tienda(
-    id SERIAL PRIMARY KEY,
-    id_subscripcion VARCHAR(255),
-    id_tienda BIGINT UNSIGNED,
-
-    CONSTRAINT fk_tienda7
-    FOREIGN KEY (id_tienda)
-    REFERENCES tienda(id)
-    ON DELETE CASCADE
-
-);
-
 
 CREATE TABLE review_tienda(
     id SERIAL PRIMARY KEY,
@@ -280,6 +222,7 @@ CREATE TABLE review_tienda(
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE CASCADE
+);
 
 CREATE TABLE review(
     id SERIAL PRIMARY KEY,
@@ -300,6 +243,18 @@ CREATE TABLE review(
 
 );
 
+CREATE TABLE balance(
+    id SERIAL PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    balance FLOAT(15,2)
+);
+
+CREATE TABLE transaccion (
+    id VARCHAR(255) PRIMARY KEY,
+    timestamp DATETIME,
+    id_tienda BIGINT UNSIGNED,
+    monto FLOAT(15,2)
+);
 -- Agregar tipo tienda
 
 INSERT INTO tipo_tienda (tipo_tienda, descripcion) VALUES ("Cooperativa", "Tienda con contrato de la universidad"),
