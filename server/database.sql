@@ -14,6 +14,7 @@ CREATE TABLE universidad(
 CREATE TABLE usuario(
     id SERIAL PRIMARY KEY,
     nombre VARCHAR (100),
+    apellidos VARCHAR(100),
     email VARCHAR(50),
     contra VARCHAR(100),
     tel VARCHAR(50),
@@ -147,7 +148,7 @@ CREATE TABLE carrito_item (
 );
 
 CREATE TABLE openpay_customer {
-    id VARCHAR(255) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
     openpay_id VARCHAR(255),
     card_id VARCHAR(255)
