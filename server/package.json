@@ -20,6 +20,7 @@
     "mysql2": "^2.2.5",
     "nodemailer": "^6.4.12",
     "nodemailer-sendgrid-transport": "^0.2.0",
+    "openpay": "^1.0.5",
     "pg": "^8.3.3",
     "request": "^2.88.2",
     "sequelize": "^6.3.5",
