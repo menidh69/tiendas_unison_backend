@@ -15,6 +15,9 @@ const Usuario = db.sequelize.define(
         nombre: {
             type: Sequelize.STRING
         },
+        apellidos: {
+            type: Sequelize.STRING
+        },
         email: {
             type: Sequelize.STRING
         },
