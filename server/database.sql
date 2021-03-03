@@ -52,7 +52,7 @@ CREATE TABLE tienda(
     validada boolean,
     activo boolean,
     lat DECIMAL(18,15),
-    lng DECIMAL(18,15)
+    lng DECIMAL(18,15),
 
 
     CONSTRAINT fk_tipo_tienda
@@ -151,7 +151,7 @@ CREATE TABLE openpay_customer {
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
     openpay_id VARCHAR(255),
-    card_id VARCHAR(255)
+    card_id VARCHAR(255),
 
     CONSTRAINT fk_usuario_openpay
     FOREIGN KEY (id_usuario)

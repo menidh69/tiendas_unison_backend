@@ -11,7 +11,7 @@ const Balance = db.sequelize.define (
         id_tienda: {
             type: Sequelize.INTEGER
         },
-        Balance:{
+        balance:{
             type: Sequelize.FLOAT
         }
     },
