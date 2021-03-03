@@ -67,7 +67,7 @@ router.post("/tiendas", async (req, res)=>{
                     balance.id_tienda = tiendacreada.id;
                     await Balance.create(balance)
                     .then(async balancecreado => {
-                        res.json({mensaje: "tienda creada con exito ", tiendacreada})
+                        res.json({mensaje: "tienda creada con exito ", tienda: tiendacreada})
                     })
                     .catch(err=>{
                         res.json({

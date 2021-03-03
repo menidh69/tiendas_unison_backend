@@ -45,7 +45,7 @@ router.post("/universidades", async (req, res)=>{
         if(!universidad){
             Universidad.create(uni)
             .then(universidad=>{
-                res.json({mensaje: "universidad creada con exito ", universidad})
+                res.json({mensaje: "universidad creada con exito ", universidad: universidad})
             })
             .catch(err=>{
                 console.log(err)
