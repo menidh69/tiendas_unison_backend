@@ -7,6 +7,7 @@ const Usuario = require('../models/Usuario');
 const Tienda = require('../models/Tienda');
 const Ubicacion = require('../models/Ubicacion');
 const Info_Stripe = require('../models/Info_Stripe');
+const Balance = require('../models/Balance')
 
 const entities = require('../models/entities');
 
@@ -29,8 +30,11 @@ router.post("/tiendas", async (req, res)=>{
         tarjeta: req.body.tarjeta,
         fechaSub: Date.now(),
         validada: 'false',
-        activo: 'false'
+        activo: 'false',
+        lat: '0',
+        lng: '0'
     }
+    
     const user = {
         nombre: req.body.nombre,
         email: req.body.email,
@@ -39,16 +43,18 @@ router.post("/tiendas", async (req, res)=>{
         id_universidad: req.body.universidad,
         tipo_usuario: 'tienda'
     }
-    const ubicacion = {
+
+    const balance = {
         id_tienda: '',
-        lat: req.body.lat,
-        lng: req.body.lng
+        balance: '0'
     }
+
     Usuario.findOne({
         where:{
             email: req.body.email
         }
     })
+
     .then(async usuario =>{
         if(!usuario){
             await bcrypt.hash(req.body.contra, 10, async (err, hash) => {
@@ -58,43 +64,17 @@ router.post("/tiendas", async (req, res)=>{
                 tienda.id_usuario = usuario.id
                 await Tienda.create(tienda)
                 .then(async tiendacreada=>{
-                    ubicacion.id_tienda = tiendacreada.id
-                    await Ubicacion.create(ubicacion)
-                    .then(async ubi=>{
-                        const account = await stripe.accounts.create({
-                            type: 'express',
-                            country: "MX",
-                            email: usuario.email,
-                            capabilities: {
-                                card_payments: {requested: true},
-                                transfers: {requested: true},
-                              }
-                          });
-                          const customer= await stripe.customers.create({
-                              email: usuario.email
-                          })
-                          const infoStripe = {
-                              id_tienda: tiendacreada.id,
-                              id_stripe: account.id
-                          }
-                          const customer_info={
-                              id_usuario: usuario.id,
-                              id_stripe: customer.id
-                          }
-                          Info_Stripe.create(infoStripe)
-                          Stripe_Customer.create(customer_info);
-                        res.json({
-                            status: tiendacreada.nombre + ': Tienda y usuario creada con exito'
-                        })
-                    }).catch(err=>{
-                        console.log(err)
-                        console.log("ocurrio error en ubi")
-                        res.json({
-                            status: 'Ocurrio un error al crear la tienda, vuelve a intentarlo',
-                            error: err}
-                            )
+                    balance.id_tienda = tiendacreada.id;
+                    await Balance.create(balance)
+                    .then(async balancecreado => {
+                        res.json({mensaje: "tienda creada con exito ", tienda: tiendacreada})
                     })
-                
+                    .catch(err=>{
+                        res.json({
+                            status:"Ocurrio un error al crear la tienda y balance",
+                            error: err
+                        })
+                    })
                 })
                 .catch(err=>{
                     res.json({

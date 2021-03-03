@@ -1,7 +1,8 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
 const Usuario = require("./Usuario");
-const UbicacionUni = require("./UbicacionUni")
+const UbicacionUni = require("./UbicacionUni");
+const { sequelize } = require("../db/db");
 
 const Universidad = db.sequelize.define(
     'universidad',
@@ -19,6 +20,12 @@ const Universidad = db.sequelize.define(
         },
         estado: {
             type: Sequelize.STRING
+        },
+        lat: {
+            type: Sequelize.DECIMAL
+        },
+        lng: {
+            type: Sequelize.DECIMAL
         },
         validada: {
             type: Sequelize.BOOLEAN
