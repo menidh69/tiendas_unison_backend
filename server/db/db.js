@@ -7,7 +7,7 @@ const db = {}
 
 
 const sequelize = new Sequelize('tiendas_unison_2021', 'admin2', 'admin2', {
-r
+
 
     host: 'tiendasunison-3.ckeokuddgwgg.us-east-2.rds.amazonaws.com',
     dialect: 'mysql',

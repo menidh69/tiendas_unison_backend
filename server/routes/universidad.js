@@ -27,18 +27,17 @@ router.get("/universidadesvalidadas", async (req, res)=>{
 //POST NUEVA UNIVERSIDAD
 router.post("/universidades", async (req, res)=>{
     const uni = {
-        nombre: req.body.data.nombre,
-        ciudad: req.body.data.ciudad,
-        estado: req.body.data.estado,
+        nombre: req.body.nombre,
+        ciudad: req.body.ciudad,
+        estado: req.body.estado,
         lat: '0',
         lng: '0',
         validada: "false"
     }
     console.log(uni)
-    console.log(ubi)
     Universidad.findOne({
         where:{
-            nombre: req.body.data.nombre
+            nombre: req.body.nombre
         }
     })
     .then(universidad =>{

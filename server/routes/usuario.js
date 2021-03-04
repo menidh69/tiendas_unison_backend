@@ -4,7 +4,7 @@ const Usuario = require('../models/Usuario');
 const Info_bancaria = require('../models/Info_bancaria');
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SGMAIL_KEY);
+sgMail.setApiKey('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');
 const Carrito_item = require('../models/CarritoItem');
 const Carrito = require('../models/Carrito');
 const Info_Stripe = require('../models/Info_Stripe')
@@ -18,13 +18,16 @@ const Review = require("../models/Review");
 
 
 router.post("/usuarios", async (req, res)=>{
+    console.log(req.body)
     const user = {
         nombre: req.body.nombre,
+        apellidos: req.body.apellidos,
         email: req.body.email,
         contra: req.body.contra,
         tel: req.body.tel,
         id_universidad: req.body.universidad || req.body.id_universidad
     }
+
     console.log(user)
     Usuario.findOne({
         where:{
