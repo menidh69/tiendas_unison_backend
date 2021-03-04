@@ -2,20 +2,21 @@
 const express = require('express');
 const router = express.Router();
 var Openpay = require('openpay');
-const {Carrito, Carrito_item, Productos} = require('../models/entities')
-const Usuario = require('../models/Usuario');
-var openpay = new Openpay('mzow0ra2mxgbaxeyu2uh', 'sk_782e009e6b864f5fa45c015928460f30', [false]);
-const Orden = require('../models/Orden')
-const Ordenitem = require('../models/OrdenItem')
-const Venta = require('../models/Venta')
+const {Carrito, Carrito_item, Productos} = require('../../models/entities')
 const Usuario = require('../../models/Usuario');
+var openpay = new Openpay('mzow0ra2mxgbaxeyu2uh', 'sk_782e009e6b864f5fa45c015928460f30', [false]);
+const Orden = require('../../models/Orden')
+const Ordenitem = require('../../models/OrdenItem')
+const Venta = require('../../models/Venta')
 const Openpay_customer = require('../../models/Openpay_customer')
 //RUTAS PARA GUARDAR TARJETA
 
 //----------RUTAS PARA CARGOS-------------------
 
 //POST
-router.post("/openpay/create_charge", async (req, res)=>{
+
+router.post("/openpay/create_charge", async(req, res)=>{
+
     const user_id = req.body.user_id
     var amount = ""
     var nombre_tienda = ""
@@ -70,7 +71,7 @@ router.post("/openpay/create_charge", async (req, res)=>{
         }
      }
 
-     openpay.customers.charges.create(chargeRequest, function(error, charge) {
+     openpay.customers.charges.create(chargeRequest, async function(error, charge) {
          if(!error || error==""){
             const orden = await Orden.create({
                 id_usuario: infoCliente.id_usuario,
@@ -115,7 +116,7 @@ router.post("/openpay/create_charge", async (req, res)=>{
 })
 
 
-router.post('/api/v2/openpay/savecard', savecard, async (req, res)=> {
+router.post('/openpay/savecard', async (req, res)=> {
     await Usuario.findOne ({
         where:{
             id: req.body.user_id
@@ -172,3 +173,4 @@ router.post('/api/v2/openpay/savecard', savecard, async (req, res)=> {
 });
 
 
+module.exports = router;
