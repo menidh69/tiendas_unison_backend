@@ -30,12 +30,9 @@ router.post("/universidades", async (req, res)=>{
         nombre: req.body.data.nombre,
         ciudad: req.body.data.ciudad,
         estado: req.body.data.estado,
+        lat: '0',
+        lng: '0',
         validada: "false"
-    }
-    const ubi = {
-        id_universidad: '',
-        lat: req.body.ubi.lat,
-        lng: req.body.ubi.lng
     }
     console.log(uni)
     console.log(ubi)
@@ -48,17 +45,7 @@ router.post("/universidades", async (req, res)=>{
         if(!universidad){
             Universidad.create(uni)
             .then(universidad=>{
-                ubi.id_universidad = universidad.id
-                UbicacionUni.create(ubi)
-                .then(ubicacion=>{
-                    res.json({status: ' registrado con exito'})
-                })
-                .catch(err=>{
-                    console.log(err)
-
-                    return res.json({status: "failed",
-                error: err})
-                })
+                res.json({mensaje: "universidad creada con exito ", universidad: universidad})
             })
             .catch(err=>{
                 console.log(err)

@@ -40,6 +40,12 @@ const Tienda = db.sequelize.define(
         },
         activo:{
             type: Sequelize.BOOLEAN
+        },
+        lat: {
+            type: Sequelize.DECIMAL
+        },
+        lng: {
+            type: Sequelize.DECIMAL
         }
     },
     {

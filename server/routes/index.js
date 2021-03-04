@@ -11,10 +11,11 @@ const ordenes = require('./ordenes');
 const stripe = require('./stripe');
 const ventas = require('./ventas');
 const reviews = require('./reviews')
+const openpay = require('./v2/openpay')
 
 const path = require('path');
 
-
+router.use("/api/v2", openpay);
 router.use("/api/v1", productosRoutes);
 router.use("/api/v1", usuarioRoutes);
 router.use("/api/v1", tiendasRoutes);
