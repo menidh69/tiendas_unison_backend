@@ -5,9 +5,9 @@ const db = {}
 //Cada quien configure las variables de conexion
 //Primer argumento=nombre de BD, Segundo argumento=usuario, Tercer argumento=contraseña
 
-const sequelize = new Sequelize(process.env.DATABASE, process.env.USER, process.env.PASSWORD, {
+const sequelize = new Sequelize('tiendas_unison_2021', 'admin2', 'admin2', {
 
-    host: 'localhost',
+    host: 'tiendasunison-3.ckeokuddgwgg.us-east-2.rds.amazonaws.com',
     dialect: 'mysql',
     operatorsAliases: '0',
 

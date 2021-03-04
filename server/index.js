@@ -1,11 +1,11 @@
 const express = require('express')
 const cors = require('cors');
-const bodyParser = require('body-parser')
-const app = express()
+const bodyParser = require('body-parser');
+const app = express();
 const sgMail = require("@sendgrid/mail");
-const moment = require('moment')
+const moment = require('moment');
 sgMail.setApiKey('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');
-const indexRoutes = require('./routes/index')
+const indexRoutes = require('./routes/index');
 const serveStatic = require('serve-static');
 
 
@@ -22,7 +22,6 @@ moment().format();
 
 
 app.use(express.static('../client/build'));
-app.use()
 
 app.use(indexRoutes);
 

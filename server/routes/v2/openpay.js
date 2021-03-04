@@ -15,7 +15,7 @@ const Openpay_customer = require('../../models/Openpay_customer')
 //----------RUTAS PARA CARGOS-------------------
 
 //POST
-router.post("/openpay/create_charge", (req, res)=>{
+router.post("/openpay/create_charge", async (req, res)=>{
     const user_id = req.body.user_id
     var amount = ""
     var nombre_tienda = ""
