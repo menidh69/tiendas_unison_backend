@@ -18,13 +18,16 @@ const Review = require("../models/Review");
 
 
 router.post("/usuarios", async (req, res)=>{
+    console.log(req.body)
     const user = {
         nombre: req.body.nombre,
+        apellidos: req.body.apellidos,
         email: req.body.email,
         contra: req.body.contra,
         tel: req.body.tel,
         id_universidad: req.body.universidad || req.body.id_universidad
     }
+
     console.log(user)
     Usuario.findOne({
         where:{
