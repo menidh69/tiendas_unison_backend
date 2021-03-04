@@ -1,18 +1,14 @@
 const bcrypt = require('bcrypt');
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SGMAIL_KEY);
-const express = require('express');
+sgMail.setApiKey('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');const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
 const Tienda = require('../models/Tienda');
 const Ubicacion = require('../models/Ubicacion');
 const Info_Stripe = require('../models/Info_Stripe');
 const Balance = require('../models/Balance')
-
 const entities = require('../models/entities');
-
 const Stripe_Customer = require('../models/Stripe_Customer');
-
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const Orden = require('../models/Orden')
 
@@ -37,10 +33,11 @@ router.post("/tiendas", async (req, res)=>{
     
     const user = {
         nombre: req.body.nombre,
+        apellidos: req.body.apellidos,
         email: req.body.email,
         contra: req.body.contra,
         tel: req.body.tel,
-        id_universidad: req.body.universidad,
+        id_universidad: req.body.id_universidad,
         tipo_usuario: 'tienda'
     }
 
@@ -102,10 +99,7 @@ router.post("/tiendas", async (req, res)=>{
 //GET INDEX TIENDAS
 router.get("/tiendas", async (req, res)=>{
     const todas = await Tienda.findAll(
-        {
-        where:{
-            activo: 1
-        }},
+       
         {raw:true})
     .then(result => {
         res.json(result)
@@ -122,16 +116,11 @@ router.get("/universidades/tiendas/:id_universidad", async (req, res)=>{
         }, include: [
             {
                 model: Tienda, 
-                where:{activo: 1},
-                include: [
-                    {
-                        model: Ubicacion
-                    }
-                ]
+                
             }
         ], raw:true})
     .then(result => {
-        res.json(result)
+        res.json({"tiendas": result})
     })
 })
 
