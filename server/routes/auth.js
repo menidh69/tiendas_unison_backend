@@ -168,7 +168,7 @@ router.post("/api/v1/auth/fbLogin", async (req, res)=>{
 
 });
 
-router.post("/olvidarcontra",(req,res)=>{
+router.post("/api/v1/olvidarcontra",(req,res)=>{
     crypto.randomBytes(32,(err,buffer)=>{
         if(err){
             console.log(err)
@@ -199,7 +199,7 @@ router.post("/olvidarcontra",(req,res)=>{
         })
     });
 
-router.post('/new-password',(req,res)=>{
+router.post('/api/v1/new-password',(req,res)=>{
    const newPassword = req.body.password
    const sentToken = req.body.token
    console.log(sentToken)
