@@ -172,11 +172,9 @@ router.get("/tiendas/:id", async (req, res)=>{
         {
         where:{
             id: req.params.id,
-            activo: 1
+           
         }, include: [
-            {
-                model: Ubicacion
-            },
+           
             {model: entities.Review_Tienda}
         ]},
         {raw:true})
@@ -191,7 +189,7 @@ router.get("/tiendainfo/:id", async (req, res)=>{
       const tienda = await Tienda.findAll(
           {
               where: {id_usuario: req.params.id},
-              include: Ubicacion, raw: true
+               raw: true
             }
           )
       .then(result =>{
