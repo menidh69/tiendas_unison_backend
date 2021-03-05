@@ -49,7 +49,7 @@ router.post("/usuarios", async (req, res)=>{
                   description: "Usuario tiendas unison",
                   name: usuario.nombre
                 });
-                Stripe_Customer.create({id_usuario: usuario.id, id_stripe: customer.id})
+                
 
                 res.json({status: usuario.email + ' registrado con exito'})
                 const msg ={
@@ -177,14 +177,28 @@ router.post("/carritoCrear/:id", async (req, res) => {
 
 // Carrito_item.hasOne(Productos, {as: 'id_producto', foreignKey:'id'})
 
-router.get("/carritoItem/:id", async (req,res) => {
+router.get("/carrito/:id/items", async (req,res) => {
   try {
+    const Carrito = await entities.Carrito.findOne(
+      {
+        where:
+        {id_usuario: req.params.id}
+      ,
+      include: { model: entities.Carrito_item,
+        include: {
+          model: entities.Productos,
+          include: {
+            model:Tienda 
+          }  
+      }
+    }}
+      )
     // const carritoItem = await Carrito_item.findAll({
     // include: [
-    //   {model: Productos}
+    //   {model: entities.Productos}
     // ],
     // where: {id_carrito: req.params.id}})
-    const carritoItem = await sequelize.query("SELECT carrito_item.id, carrito_item.id_producto, carrito_item.cantidad, productos.nombre, productos.precio, productos.id_tienda, tienda.nombre as tienda_nombre FROM carrito_item INNER JOIN productos ON carrito_item.id_producto = productos.id INNER JOIN tienda ON productos.id_tienda = tienda.id WHERE id_carrito = " + req.params.id)
+    // const carritoItem = await sequelize.query("SELECT carrito_item.id, carrito_item.id_producto, carrito_item.cantidad, productos.nombre, productos.precio, productos.id_tienda, tienda.nombre as tienda_nombre FROM carrito_item INNER JOIN productos ON carrito_item.id_producto = productos.id INNER JOIN tienda ON productos.id_tienda = tienda.id WHERE id_carrito = " + req.params.id)
     // console.log(carritoItem)
     .then(result => {
       res.json(result);
@@ -219,7 +233,7 @@ router.get("/carrito/payment/:id_usuario", async (req,res) => {
 })
 
 
-router.delete("/eliminarCarritoItem/:id", async (req, res)=>{
+router.delete("/carrito/items/:id", async (req, res)=>{
     
   Carrito_item.destroy({where:{
       id: req.params.id
@@ -231,8 +245,8 @@ router.delete("/eliminarCarritoItem/:id", async (req, res)=>{
 
 //router.get("/carritoItems")
 
-router.post("/agregarCarrito/:id_user", async (req,res) => {
-  const carrito = await Carrito.findOne({where: {id_usuario: req.params.id_user}, raw:true})
+router.post("/carrito/agregar", async (req,res) => {
+  const carrito = await Carrito.findOne({where: {id_usuario: req.body.id_user}, raw:true})
   const item = {
     id_producto: req.body.id_producto,
     cantidad: req.body.cantidad,
