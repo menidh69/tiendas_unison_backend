@@ -293,7 +293,7 @@ router.get("/usuarioinfoperfil/:id", async (req, res)=>{
 
 //PUT nueva info en usuario
 router.put("/usuarios/:id", async (req, res)=>{
-  const user = await Usuario.update({nombre: req.body.nombre, contra: req.body.contra,
+  const user = await Usuario.update({nombre: req.body.nombre, apellidos: req.body.apellidos,
     tel: req.body.tel},{where: {id: req.params.id}})
     .then(result=>{
 
