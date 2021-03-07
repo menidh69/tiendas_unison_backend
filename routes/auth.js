@@ -3,7 +3,7 @@ const router = express.Router();
 const Usuario = require('../models/Usuario');
 const auth = require('../middleware/auth');
 const crypto = require("crypto")
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const {Op} = require('sequelize');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');

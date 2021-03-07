@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
 const Info_bancaria = require('../models/Info_bancaria');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey('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');
 const Carrito_item = require('../models/CarritoItem');
