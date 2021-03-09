@@ -20,13 +20,13 @@ router.post("/tiendas", async (req, res)=>{
     const tienda = {
         id_usuario: '',
         id_tipo_tienda: req.body.tipo_tienda,
-        nombre: req.body.nombretienda,
+        nombre: req.body.nombre_tienda,
         horario: req.body.horario,
         url_imagen: req.body.url_imagen,
         tarjeta: req.body.tarjeta,
         fechaSub: Date.now(),
         validada: 'false',
-        activo: 'false',
+        activo: 'true',
         lat: '0',
         lng: '0'
     }
@@ -35,8 +35,8 @@ router.post("/tiendas", async (req, res)=>{
         nombre: req.body.nombre,
         apellidos: req.body.apellidos,
         email: req.body.email,
-        contra: req.body.contra,
-        tel: req.body.tel,
+        contra: req.body.contraseña,
+        tel: req.body.telefono,
         id_universidad: req.body.id_universidad,
         tipo_usuario: 'tienda'
     }
