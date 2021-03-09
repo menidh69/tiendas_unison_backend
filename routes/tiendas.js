@@ -67,31 +67,31 @@ router.post("/tiendas", async (req, res)=>{
                         res.json({mensaje: "tienda creada con exito ", tienda: tiendacreada})
                     })
                     .catch(err=>{
-                        res.json({
-                            status:"Ocurrio un error al crear la tienda y balance",
+                        res.status(400).json({
+                            mensaje: "Ocurrio un error al crear la tienda y balance",
                             error: err
                         })
                     })
                 })
                 .catch(err=>{
-                    res.json({
+                    res.status(400).json({
                         status: 'Ocurrio un error al crear la tienda, vuelve a intentarlo',
                         error: err}
                         )
                 })
               }).catch(err=>{
-                res.status(204).json({'error: ': err})
+                res.status(400).json({'error: ': err})
               })
 
 
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })
+            res.status(400).json({ error: "Ya existe un usuario con esa cuenta" })
 
         }
     })
     .catch(err =>{
-        res.send('error: ' +err)
+        res.status(400).send('error: ' +err)
     })
 })
 
