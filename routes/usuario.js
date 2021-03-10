@@ -55,15 +55,15 @@ router.post("/usuarios", async (req, res)=>{
                 sgMail.send(msg);
               })
               .catch(err=>{
-                res.status(400).send('message: ' + err)
+                res.status(400).json('message: ' + err)
               })
             })
         }else{
-            res.status(400).json({ error: "Ya existe un usuario con esa cuenta" })
+            res.status(400).json({ "message": "Ya existe un usuario con esa cuenta" })
         }
     })
     .catch(err =>{
-        res.status(400).send('error: ' +err)
+        res.status(400).json({'message': err})
     })
 })
 
