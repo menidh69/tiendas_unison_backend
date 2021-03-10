@@ -23,8 +23,8 @@ router.post("/usuarios", async (req, res)=>{
         nombre: req.body.nombre,
         apellidos: req.body.apellidos,
         email: req.body.email,
-        contra: req.body.contra,
-        tel: req.body.tel,
+        contra: req.body.contraseña,
+        tel: req.body.telefono,
         id_universidad: req.body.universidad || req.body.id_universidad
     }
 
@@ -44,14 +44,7 @@ router.post("/usuarios", async (req, res)=>{
                   id_usuario: usuario.id
                 }
                 Carrito.create(cart)
-                const customer = await stripe.customers.create({
-                  email: usuario.email,
-                  description: "Usuario tiendas unison",
-                  name: usuario.nombre
-                });
-                
-
-                res.json({status: usuario.email + ' registrado con exito'})
+                res.json({"message": usuario.email + ' registrado con exito'})
                 const msg ={
                     to: user.email,
                     from: "tiendasuniv@hotmail.com",
@@ -62,15 +55,15 @@ router.post("/usuarios", async (req, res)=>{
                 sgMail.send(msg);
               })
               .catch(err=>{
-                res.send('error: ' + err)
+                res.status(400).send('message: ' + err)
               })
             })
         }else{
-            res.json({ error: "Ya existe un usuario con esa cuenta" })
+            res.status(400).json({ error: "Ya existe un usuario con esa cuenta" })
         }
     })
     .catch(err =>{
-        res.send('error: ' +err)
+        res.status(400).send('error: ' +err)
     })
 })
 
