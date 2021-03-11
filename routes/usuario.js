@@ -15,7 +15,7 @@ const entities = require('../models/entities')
 const Stripe_Customer = require("../models/Stripe_Customer")
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const Review = require("../models/Review");
-
+const {QueryTypes} = require("sequelize")
 
 router.post("/usuarios", async (req, res)=>{
     console.log(req.body)
@@ -306,6 +306,14 @@ router.delete("/usuariosdelete/:id", async (req, res)=>{
   }catch(err){
       console.error(err)
   }
+})
+
+router.get("/usuarios/pedidosPendientes/:id_usuario", async(req,res)=>{
+  const ordenes = await sequelize.query("SELECT t1.fecha, t1.id_tienda, t2.cantidad, t3.nombre, t3.precio, t3.url_imagen FROM orden t1" 
+  +" INNER JOIN orden_item t2 ON t1.id=t2.id_orden INNER JOIN productos t3 ON t2.id_producto = t3.id WHERE t1.id_usuario="+req.params.id_usuario
+  , 
+  { type: QueryTypes.SELECT });
+  return res.json({"result": ordenes})
 })
 
 //GET ordenes no completadas usuario
