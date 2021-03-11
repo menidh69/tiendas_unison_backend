@@ -36,7 +36,7 @@ router.post("/usuarios", async (req, res)=>{
     })
     .then(usuario =>{
         if(!usuario){
-            bcrypt.hash(req.body.contra, 10, (err, hash) => {
+            bcrypt.hash(req.body.contraseña, 10, (err, hash) => {
               user.contra = hash
               Usuario.create(user)
               .then(async usuario=> {
