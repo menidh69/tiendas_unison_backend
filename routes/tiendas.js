@@ -54,7 +54,7 @@ router.post("/tiendas", async (req, res)=>{
 
     .then(async usuario =>{
         if(!usuario){
-            await bcrypt.hash(req.body.contra, 10, async (err, hash) => {
+            await bcrypt.hash(req.body.contraseña, 10, async (err, hash) => {
               user.contra = hash
               await Usuario.create(user)
               .then(async usuario=> {
