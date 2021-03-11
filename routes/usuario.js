@@ -309,7 +309,7 @@ router.delete("/usuariosdelete/:id", async (req, res)=>{
 })
 
 router.get("/usuarios/pedidosPendientes/:id_usuario", async(req,res)=>{
-  const ordenes = await sequelize.query("SELECT t1.fecha, t1.id_tienda, t4.nombre AS nombre_tienda, t2.cantidad, t3.nombre, t3.precio, t3.url_imagen FROM orden t1" 
+  const ordenes = await sequelize.query("SELECT t1.id AS orden_id, t1.fecha, t1.id_tienda, t4.nombre AS nombre_tienda, t2.cantidad, t3.nombre, t3.precio, t3.url_imagen FROM orden t1" 
   +" INNER JOIN orden_item t2 ON t1.id=t2.id_orden INNER JOIN productos t3 ON t2.id_producto = t3.id INNER JOIN tienda t4 ON t1.id_tienda=t4.id WHERE t1.id_usuario="
   +req.params.id_usuario+" AND t1.entregado=false"
   , 
