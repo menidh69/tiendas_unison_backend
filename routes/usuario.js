@@ -330,9 +330,6 @@ router.get("/usuarios/pedidos/:id_usuario", async(req, res) => {
                   model: entities.Ordenitem,
                   include: {
                       model: entities.Productos,
-                      include: {
-                          model: entities.Tienda
-                      }
                   }
               }
           ]
