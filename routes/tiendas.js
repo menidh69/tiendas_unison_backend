@@ -276,7 +276,7 @@ router.put("/tiendas/ubicacion/:id_tienda", async(req, res)=>{
 router.get("/tiendas/pedidosPendientes/:id_tienda", async (req,res)=>{
     const ordenes = await sequelize.query("SELECT t1.id, t1.fecha, t3.nombre AS nombre_producto, t2.cantidad, t3.precio, t3.url_imagen, t4.nombre, t4.apellidos FROM orden t1" 
     +" INNER JOIN orden_item t2 ON t1.id=t2.id_orden INNER JOIN productos t3 ON t2.id_producto = t3.id INNER JOIN usuario t4 ON t1.id_usuario" + 
-    "= t4.id WHERE t1.id_tienda="+req.params.id_tienda
+    "= t4.id WHERE t1.id_tienda="+req.params.id_tienda+" AND t1.entregado=false"
     , 
     { type: QueryTypes.SELECT });
 
