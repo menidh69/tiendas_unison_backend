@@ -10,7 +10,10 @@ const Balance = require('../models/Balance')
 const entities = require('../models/entities');
 const Stripe_Customer = require('../models/Stripe_Customer');
 const stripe = require("stripe")(process.env.STRIPE_KEY);
-const Orden = require('../models/Orden')
+const Orden = require('../models/Orden');
+const { route } = require('./usuario');
+const {QueryTypes} = require("sequelize")
+const { sequelize } = require('../db/db');
 
 
 
@@ -268,6 +271,16 @@ router.put("/tiendas/ubicacion/:id_tienda", async(req, res)=>{
     .catch(err=>{
         return res.json({status: err})
     })
+})
+
+router.get("/tiendas/pedidosPendientes/:id_tienda", async (req,res)=>{
+    const ordenes = await sequelize.query("SELECT t1.fecha, t4.nombre AS nombrepila, t2.cantidad, t3.precio, t3.url_imagen, t3.nombre, t4.apellidos FROM orden t1" 
+    +" INNER JOIN orden_item t2 ON t1.id=t2.id_orden INNER JOIN productos t3 ON t2.id_producto = t3.id INNER JOIN usuario t4 ON t1.id_usuario" + 
+    "= t4.id WHERE t1.id_tienda="+req.params.id_tienda
+    , 
+    { type: QueryTypes.SELECT });
+
+    return res.json({"result": ordenes})
 })
 
 //GET pedidos de la tienda
