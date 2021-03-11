@@ -331,6 +331,7 @@ router.put("/tiendas/entregar/:id_orden", async(req,res) => {
             res.json({status: 'success'})
         })
     } catch (error) {
+        res.status(400).json({"error": error})
         console.log(error)
     }
 })
