@@ -4,6 +4,7 @@ const router = express.Router();
 const {Productos, Tienda, Usuario} = require('../models/entities');
 const { Op } = require("sequelize");
 const entities = require('../models/entities');
+const Categoria = require('../models/Categoria')
 
 
 router.get("/productosTienda/:id", async (req, res)=>{
@@ -79,6 +80,12 @@ router.post("/nuevoProducto", async (req, res)=>{
     .then(producto => {
         res.json({status: producto.nombre + ' registrado con exito'})
     })
+})
+
+router.get("/categorias", async (req,res)=>{
+    const categorias = await Categoria.findAll()
+    return res.json({categorias: categorias})
+
 })
 
 

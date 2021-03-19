@@ -111,15 +111,26 @@ CREATE TABLE productos (
     id_tienda BIGINT UNSIGNED,
     nombre VARCHAR (50),
     precio FLOAT (6,2),
-    categoria VARCHAR (20),
+    categoria BIGINT UNSIGNED,
     url_imagen VARCHAR (255),
     descripcion VARCHAR (150),
 
     CONSTRAINT fk_tienda
     FOREIGN KEY (id_tienda)
     REFERENCES tienda(id)
+    ON DELETE SET NULL,
+
+    CONSTRAINT fk_categoria
+    FOREIGN KEY (id_categoria)
+    REFERENCES categoria(id)
     ON DELETE SET NULL
 );
+
+CREATE TABLE categoria (
+    id SERIAL PRIMARY KEY,
+    categoria VARCHAR(20) UNIQUE,
+    descripcion VARCHAR(50)
+)
 
 CREATE TABLE carrito (
     id SERIAL PRIMARY KEY,
@@ -261,3 +272,7 @@ CREATE TABLE transaccion (
 
 INSERT INTO tipo_tienda (tipo_tienda, descripcion) VALUES ("Cooperativa", "Tienda con contrato de la universidad"),
 ("Puesto", "Puesto independiente dentro de la universidad"), ("Cafeteria", "Cafeteria oficial universitaria");
+
+INSERT INTO categoria (categoria, descripcion) VALUES ("Desayuno", "Comida mañanera"),
+("Comida", "Comida completa"), ("Saludable", "Comida baja en calorias"),
+("Bebidas", "Productos liquidos"), ("Postres", "Aperitivos dulces"), ("Snacks", "Snacks");
