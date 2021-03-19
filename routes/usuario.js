@@ -307,11 +307,20 @@ router.delete("/usuariosdelete/:id", async (req, res)=>{
       console.error(err)
   }
 })
-
+//GET ordenes no completadas usuario
 router.get("/usuarios/pedidosPendientes/:id_usuario", async(req,res)=>{
   const ordenes = await sequelize.query("SELECT t1.id AS orden_id, t1.fecha, t1.id_tienda, t4.nombre AS nombre_tienda, t2.cantidad, t3.nombre, t3.precio, t3.url_imagen FROM orden t1" 
   +" INNER JOIN orden_item t2 ON t1.id=t2.id_orden INNER JOIN productos t3 ON t2.id_producto = t3.id INNER JOIN tienda t4 ON t1.id_tienda=t4.id WHERE t1.id_usuario="
   +req.params.id_usuario+" AND t1.entregado=false"
+  , 
+  { type: QueryTypes.SELECT });
+  return res.json({"result": ordenes})
+})
+//GET ordenes completadas usuario
+router.get("/usuarios/pedidos/entregado/:id_usuario", async(req,res)=>{
+  const ordenes = await sequelize.query("SELECT t1.id AS orden_id, t1.fecha, t1.id_tienda, t4.nombre AS nombre_tienda, t2.cantidad, t3.nombre, t3.precio, t3.url_imagen FROM orden t1" 
+  +" INNER JOIN orden_item t2 ON t1.id=t2.id_orden INNER JOIN productos t3 ON t2.id_producto = t3.id INNER JOIN tienda t4 ON t1.id_tienda=t4.id WHERE t1.id_usuario="
+  +req.params.id_usuario+" AND t1.entregado=true"
   , 
   { type: QueryTypes.SELECT });
   return res.json({"result": ordenes})

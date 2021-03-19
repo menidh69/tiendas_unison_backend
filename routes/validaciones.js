@@ -5,13 +5,14 @@ const Tienda = require('../models/Tienda');
 const Validar_tienda = require ('../models/Validar_tienda');
 
 
-router.post("/validar_tienda/:id_usuario/:id_tienda", async (req,res) =>{
+router.post("/validar_tienda", async (req,res) =>{
     const validar= {
-        id_usuario: req.params.id_usuario,
-        id_tienda:  req.params.id_tienda
+        id_usuario: req.body.id_usuario,
+        id_tienda:  req.body.id_tienda,
+        verificada: req.body.verificada
     } 
 
-Validar_tienda.findOne({where:{id_usuario: req.params.id_usuario, id_tienda: req.params.id_tienda}})
+Validar_tienda.findOne({where:{id_usuario: req.body.id_usuario, id_tienda: req.body.id_tienda}})
 .then(found=>{
     if(!found || found==''){
         Validar_tienda.create(validar)
@@ -19,14 +20,14 @@ Validar_tienda.findOne({where:{id_usuario: req.params.id_usuario, id_tienda: req
                 console.log(validar)
                 Validar_tienda.count(
                     {
-                        where:{id_tienda: req.params.id_tienda}
+                        where:{id_tienda: req.body.id_tienda}
                     })
                     .then(result=>{
                         console.log(result.count)
                         console.log(result.rows)
                         console.log(result)
                         if(result>5){
-                            Tienda.findOne({where:{id: req.params.id_tienda}})
+                            Tienda.findOne({where:{id: req.body.id_tienda}})
                             .then(tienda=>{
                                 tienda.validada = 'true';
                                 tienda.save()
@@ -46,7 +47,7 @@ Validar_tienda.findOne({where:{id_usuario: req.params.id_usuario, id_tienda: req
  
 
 router.get("/validar_tienda/:id_usuario/tiendas/:id_tienda", (req, res)=>{
-    Validar_tienda.findOne({where:{id_usuario: req.params.id_usuario, id_tienda: req.params.id_tienda}})
+    Validar_tienda.findOne({where:{id_usuario: req.params.id_usuario, id_tienda: req.params.id_tienda, verificada: "true"}})
     .then(validacion=>{
         if(!validacion || validacion==''){
             console.log('false')

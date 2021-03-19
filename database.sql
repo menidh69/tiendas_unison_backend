@@ -91,6 +91,7 @@ CREATE TABLE validar_tienda(
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
     id_tienda BIGINT UNSIGNED,
+    verificado BOOLEAN,
 
 
     CONSTRAINT fk_usuario2

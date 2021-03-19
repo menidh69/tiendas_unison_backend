@@ -14,7 +14,11 @@ module.exports = db.sequelize.define(
         },
         id_tienda: {
             type: Sequelize.INTEGER
-        }
+        },
+        verificado: {
+            type: Sequelize.BOOLEAN
+        },
+        
 
     },
     {
