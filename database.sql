@@ -121,7 +121,7 @@ CREATE TABLE productos (
     ON DELETE SET NULL,
 
     CONSTRAINT fk_categoria
-    FOREIGN KEY (id_categoria)
+    FOREIGN KEY (categoria)
     REFERENCES categoria(id)
     ON DELETE SET NULL
 );
