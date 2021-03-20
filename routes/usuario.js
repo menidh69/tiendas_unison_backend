@@ -4,7 +4,7 @@ const Usuario = require('../models/Usuario');
 const Info_bancaria = require('../models/Info_bancaria');
 const bcrypt = require('bcryptjs');
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const Carrito_item = require('../models/CarritoItem');
 const Carrito = require('../models/Carrito');
 const Info_Stripe = require('../models/Info_Stripe')
@@ -47,7 +47,7 @@ router.post("/usuarios", async (req, res)=>{
                 res.json({"message": usuario.email + ' registrado con exito'})
                 const msg ={
                     to: user.email,
-                    from: "tiendasuniv@hotmail.com",
+                    from: "tiendasunisonweb@gmail.com",
                     subject: "Registro a Tiendas Universitarias",
                     text: "Bienvenida",
                     html: "<h1>Espero y la pases bomba y te guste la pagina bye</h1>",

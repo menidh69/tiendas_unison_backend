@@ -6,7 +6,7 @@ const crypto = require("crypto")
 const bcrypt = require('bcryptjs')
 const {Op} = require('sequelize');
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const jwt = require('jsonwebtoken');
 const FBUser = require('../models/FBUser');
 const request = require('request');
