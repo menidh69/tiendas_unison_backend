@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 const {Carrito, Carrito_item, Productos} = require('../../models/entities')
 const bodyParser = require("body-parser");
 const Orden = require('../../models/Orden')

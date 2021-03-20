@@ -6,7 +6,8 @@ const Tienda = require('../models/Tienda');
 const Usuario = require('../models/Usuario');
 const sgMail = require("@sendgrid/mail");
 const Info_Stripe = require('../models/Info_Stripe');
-sgMail.setApiKey('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');const {Carrito, Carrito_item, Productos} = require('../models/entities')
+sgMail.setApiKey('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');
+const {Carrito, Carrito_item, Productos} = require('../models/entities')
 const bodyParser = require("body-parser");
 const Stripe_Customer=require('../models/Stripe_Customer')
 const webhook_secret = process.env.WEBHOOKSECRET

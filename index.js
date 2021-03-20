@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const sgMail = require("@sendgrid/mail");
 const moment = require('moment');
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 const indexRoutes = require('./routes/index');
 const serveStatic = require('serve-static');
 

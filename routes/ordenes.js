@@ -6,7 +6,7 @@ const sgMail = require("@sendgrid/mail");
 const Info_Stripe = require('../models/Info_Stripe');
 const Tienda = require('../models/Tienda');
 const { Carrito_item, Carrito } = require('../models/entities');
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const {Productos, Orden, Ordenitem, Venta} = require('../models/entities')
 
