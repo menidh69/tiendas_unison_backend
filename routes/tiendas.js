@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');

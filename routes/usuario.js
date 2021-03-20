@@ -4,7 +4,7 @@ const Usuario = require('../models/Usuario');
 const Info_bancaria = require('../models/Info_bancaria');
 const bcrypt = require('bcryptjs');
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 const Carrito_item = require('../models/CarritoItem');
 const Carrito = require('../models/Carrito');
 const Info_Stripe = require('../models/Info_Stripe')
