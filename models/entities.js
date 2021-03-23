@@ -11,7 +11,8 @@ const entities = {
     Venta: require("./Venta"),
     Review_Tienda: require("./Review_Tienda"),
     Ubicacion: require("./Ubicacion"),
-    Review: require("./Review")
+    Review: require("./Review"),
+    Balance: require('./Balance')
 };
 
 entities.Carrito.hasMany(entities.Carrito_item, {foreignKey: "id_carrito"})
@@ -25,7 +26,7 @@ entities.Ordenitem.belongsTo(entities.Orden, {foreignKey: "id_orden"})
 entities.Productos.hasMany(entities.Ordenitem, {foreignKey: "id_producto"})
 entities.Ordenitem.belongsTo(entities.Productos, {foreignKey: "id_producto"})
 entities.Orden.hasOne(entities.Venta, {foreignKey: "id_orden"})
-
+entities.Tienda.hasOne(entities.Balance, {foreignKey: "id_tienda"})
 entities.Usuario.hasMany(entities.Orden, {foreignKey: "id_usuario"})
 entities.Orden.belongsTo(entities.Usuario, {foreignKey: "id_usuario"})
 entities.Tienda.hasMany(entities.Orden, {foreignKey: "id_tienda"})

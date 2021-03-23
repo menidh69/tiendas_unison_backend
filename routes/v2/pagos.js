@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const {Carrito, Carrito_item, Productos} = require('../../models/entities')
+const {Carrito, Carrito_item, Productos, Balance} = require('../../models/entities')
 const bodyParser = require("body-parser");
 const Orden = require('../../models/Orden')
 const Ordenitem = require('../../models/OrdenItem')
@@ -53,10 +53,14 @@ router.post("/order", async (req,res)=>{
         cantidad: item['carrito_items.cantidad'],
       }
       console.log(item)
-      const newordenitem = await Ordenitem.create(ordenitem) 
+      const newordenitem = await Ordenitem.create(ordenitem)
       Carrito_item.destroy({where:{id_carrito: item.id, id_producto: newordenitem.id_producto}})
     })
+    let BalanceTienda = await Balance.findOne({where: {id_tienda: tienda}}) 
+    BalanceTienda.balance = BalanceTienda.balance-2
+    await BalanceTienda.save();
     })
+    
     return res.json({"message": "La orden creada con exito"})
 })
 
@@ -107,6 +111,9 @@ router.post("/order/tarjeta/webhook", async (req,res)=>{
     const newordenitem = await Ordenitem.create(ordenitem) 
     Carrito_item.destroy({where:{id_carrito: item.id, id_producto: newordenitem.id_producto}})
   })
+  let BalanceTienda = await Balance.findOne({where: {id_tienda: tienda}}) 
+    BalanceTienda.balance = BalanceTienda.balance+total
+    await BalanceTienda.save();
   })
   return res.json({"message": "La orden creada con exito"})
 })
