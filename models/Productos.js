@@ -19,8 +19,8 @@ const Productos = db.sequelize.define(
         precio: {
             type: Sequelize.FLOAT
         },
-        categoria: {
-            type: Sequelize.STRING
+        id_categoria: {
+            type: Sequelize.INTEGER
         },
         url_imagen:{
             type: Sequelize.STRING

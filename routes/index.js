@@ -14,12 +14,13 @@ const reviews = require('./reviews');
 const openpay = require('./v2/openpay');
 const pagos = require('./v2/pagos');
 const busqueda = require('./v2/buscar')
-
+const categorias = require('./v2/categorias')
 const path = require('path');
 
 router.use("/api/v2", openpay);
 router.use("/api/v2", pagos);
 router.use("/api/v2", busqueda);
+router.use("/api/v2", categorias);
 router.use("/api/v1", productosRoutes);
 router.use("/api/v1", usuarioRoutes);
 router.use("/api/v1", tiendasRoutes);

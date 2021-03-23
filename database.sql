@@ -111,7 +111,7 @@ CREATE TABLE productos (
     id_tienda BIGINT UNSIGNED,
     nombre VARCHAR (50),
     precio FLOAT (6,2),
-    categoria BIGINT UNSIGNED,
+    id_categoria BIGINT UNSIGNED,
     url_imagen VARCHAR (255),
     descripcion VARCHAR (150),
 
@@ -121,7 +121,7 @@ CREATE TABLE productos (
     ON DELETE SET NULL,
 
     CONSTRAINT fk_categoria
-    FOREIGN KEY (categoria)
+    FOREIGN KEY (id_categoria)
     REFERENCES categoria(id)
     ON DELETE SET NULL
 );
