@@ -2,33 +2,24 @@ const express = require('express');
 const router = express.Router();
 const {Carrito, Carrito_item, Productos} = require('../../models/entities')
 
-router.get('/productos/postres', async (req, res) => {
 
+
+  router.get('/categoria/:nombre_categoria', async (req, res) => {
+    const categorias = ["desayuno", "comida", "saludable", "bebidas", "postre", "snack"]   
+    if(categorias.includes(req.params.nombre_categoria)){
     //Holds value of the query param 'searchquery'.
-      const searchQuery = req.query.producto;
-  
+      const page = 0
+      if(req.query.page){page=req.query.page}      
     //Do something when the searchQuery is not null.
-    if(searchQuery != null){
-        let productos = Productos.findAll({where:{nombre: searchQuery}})
+    if(page != null){
+        let productos = Productos.findAll({where:{id_categoria: categorias.indexOf(req.params.nombre_categoria)+1}, offset: 10*page, limit: 10 })
         return res.json({productos: productos})
     }else{
       res.end();
     }
-  });
-
-  router.get('/productos/postres', async (req, res) => {
-
-    //Holds value of the query param 'searchquery'.
-      const page = req.query.page;
-      const categorias = ["postre", "comida", "snack", "saludable", "desayuno", "bebidas"]
-  
-    //Do something when the searchQuery is not null.
-    if(searchQuery != null){
-        let productos = Productos.findAll({where:{categoria: "1"}, offset: 10*page, limit: 10 })
-        return res.json({productos: productos})
-    }else{
-      res.end();
-    }
+}else{
+    return res.status(400).json({error: "Esa categoria no existe"})
+}
   });
 
 module.exports = router;
