@@ -12,7 +12,7 @@ const {Carrito, Carrito_item, Productos} = require('../../models/entities')
       if(req.query.page){page=req.query.page}      
     //Do something when the searchQuery is not null.
     if(page != null){
-        let productos = Productos.findAll({where:{id_categoria: categorias.indexOf(req.params.nombre_categoria)+1}, offset: 10*page, limit: 10 })
+        let productos = Productos.findAll({where:{id_categoria: categorias.indexOf(req.params.nombre_categoria)+1}, offset: 100*page, limit: 100 })
         return res.json({productos: productos})
     }else{
       res.end();
