@@ -126,8 +126,8 @@ router.post('/openpay/savecard', async (req, res)=> {
         console.log(user)
         
         var customerRequest = {
-            'name': user.nombre,
-            'email': user.email,
+            'name': req.body.nombre,
+            'email': req.body.email,
             'requires_account': false
         };
         
