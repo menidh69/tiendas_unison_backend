@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {Carrito, Carrito_item, Productos} = require('../../models/entities')
 
-router.get('/search', async (req, res) => {
+router.get('/producto/search', async (req, res) => {
 
     //Holds value of the query param 'searchquery'.
       const searchQuery = req.query.producto;
