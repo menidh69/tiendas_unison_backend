@@ -9,6 +9,7 @@ const Orden = require('../../models/Orden')
 const Ordenitem = require('../../models/OrdenItem')
 const Venta = require('../../models/Venta')
 const Openpay_customer = require('../../models/Openpay_customer')
+const Openpay_card = require('../../models/Openpay_card')
 //RUTAS PARA GUARDAR TARJETA
 
 //----------RUTAS PARA CARGOS-------------------
@@ -120,67 +121,106 @@ router.post('/openpay/savecard', async (req, res)=> {
     await Usuario.findOne ({
         where:{
             id: req.body.user_id
-        }
+        },
     })
     .then(async user => {
         console.log(user)
         
-        var customerRequest = {
-            'name': req.body.nombre,
-            'email': req.body.email,
-            'requires_account': false
-        };
+
+        await Openpay_customer.findOne({where: {id_usuario: user.id}})
+        .then(async customer_existe=>{
+            if(!customer_existe || customer_existe==""){
+                //Si no existe openpay.customer
+                var customerRequest = {
+                    'name': req.body.nombre,
+                    'email': req.body.email,
+                    'requires_account': false
+                };
+                openpay.customers.create(customerRequest, function(error, customer) {
+                    // ...
+                    if(!error){
+                        
+                            var cardRequest = {
+                            'token_id' : req.body.token_id,
+                            'device_session_id' : req.body.device_session_id
+                            }
+                            
+                            openpay.customers.cards.create(customer.id, cardRequest, function(error, card)  {
+                            // ...
+                            if(!error){
+                                var customer_openpay = {
+                                    'id_usuario': user.id,
+                                    'openpay_id': customer.id,
+                                }
+                                var card = {
+                                    'id_usuario': user.id,
+                                    'card_id': card.id,
+                                }
         
-        openpay.customers.create(customerRequest, function(error, customer) {
-            // ...
-            if(!error){
-                
-                    var cardRequest = {
+                                Openpay_customer.create(customer_openpay, function(error, cuenta) {
+                                    if(!error){
+                                        Openpay_card.create(card, function(err, creado){
+                                            if(!error){
+                                            return res.json({"Mensaje": creado})
+                                            }
+                                            else{
+                                                return res.json({"mensaje": "no se pudo crear tarjeta"})
+                                            }
+                                        })
+                                        
+                                    }else{
+                                        return res.json({"mensaje": "no se pudo crear el customer",
+                                "error": error})
+                                    }
+                                })
+        
+                            }
+                                
+                            else{
+                                return res.json({"mensaje": "no se pudo crear el customer de openpay",
+                                "error": error})
+                            } 
+                        });
+                           
+                            
+                         
+                    }else{
+                        return res.json({"mensaje": "no se pudo crear la tarjeta",
+                        "error": error})
+                    }
+                });
+            }
+            else{
+                var cardRequest = {
                     'token_id' : req.body.token_id,
                     'device_session_id' : req.body.device_session_id
                     }
                     
-                    openpay.customers.cards.create(customer.id, cardRequest, function(error, card)  {
+                    openpay.customers.cards.create(customer_existe.openpay_id, cardRequest, function(error, card)  {
                     // ...
                     if(!error){
-                        var customer_openpay = {
+                        var card_openpay = {
                             'id_usuario': user.id,
-                            'openpay_id': customer.id,
                             'card_id': card.id
                         }
-
-                        Openpay_customer.create(customer_openpay, function(error, cuenta) {
-                            if(!error){
-                                return res.json({"Mensaje": cuenta})
-                            }else{
-                                return res.json({"mensaje": "no se pudo crear el customer",
-                        "error": error})
-                            }
+                        await Openpay_card.create(card_openpay)
+                        .then(creado=>{
+                            return res.json({mensaje: "Se creó la tarjeta con exito"})
                         })
 
                     }
-                        
-                    else{
-                        return res.json({"mensaje": "no se pudo crear el customer de openpay",
-                        "error": error})
-                    } 
-                });
-                   
-                    
-                 
-            }else{
-                return res.json({"mensaje": "no se pudo crear la tarjeta",
-                "error": error})
-            }
-        });
 
-    })
+            
+        })
+
+    }})
     .catch(err=>{
         console.log(err)
         res.json({"error": err})
     });
 
 });
+})
 
 
 module.exports = router;

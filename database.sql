@@ -163,9 +163,19 @@ CREATE TABLE openpay_customer {
     id SERIAL PRIMARY KEY,
     id_usuario BIGINT UNSIGNED,
     openpay_id VARCHAR(255),
-    card_id VARCHAR(255),
 
     CONSTRAINT fk_usuario_openpay
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id)
+    ON DELETE SET NULL
+}
+
+CREATE TABLE openpay_card {
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+    card_id VARCHAR(255),
+    
+    CONSTRAINT fk_usuario_card_openpay
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id)
     ON DELETE SET NULL
