@@ -137,7 +137,7 @@ router.post('/openpay/savecard', async (req, res)=> {
 
                 var cardRequest = {
                 'token_id' : req.body.token_id,
-                'device_session_id' : req.body.device_session_id
+                // 'device_session_id' : req.body.device_session_id
                 }
                   
                 openpay.customers.cards.create(customer.id, cardRequest, function(error, card)  {
