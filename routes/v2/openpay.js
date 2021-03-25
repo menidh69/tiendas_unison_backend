@@ -145,7 +145,7 @@ router.post('/openpay/savecard', async (req, res)=> {
                     if(!error){
                         var customer_openpay = {
                             'id_usuario': user.id,
-                            'customer_id': customer.id,
+                            'openpay_id': customer.id,
                             'card_id': card.id
                         }
 
