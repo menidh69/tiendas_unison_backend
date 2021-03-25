@@ -133,35 +133,44 @@ router.post('/openpay/savecard', async (req, res)=> {
         
         openpay.customers.create(customerRequest, function(error, customer) {
             // ...
-            try {
-
-                var cardRequest = {
-                'token_id' : req.body.token_id,
-                'device_session_id' : req.body.device_session_id
-                }
-                  
-                openpay.customers.cards.create(customer.id, cardRequest, function(error, card)  {
-                // ...
-                try {
-                    var customer_openpay = {
-                        'id_usuario': user.id,
-                        'customer_id': customer.id,
-                        'card_id': card.id
-                    }
-
-                    Openpay_customer.create(customer_openpay, function(error, cuenta) {
-                        res.json({"Mensaje": cuenta})
-                    })
-                    
-                } catch (error) {
-                    res.json({"mensaje": "no se pudo crear el customer",
-                    "error": error})
-                }
-                });
+            if(!error){
                 
-            } catch (error) {
-                res.json({"mensaje": "no se pudo crear la tarjeta",
-            "error": error})
+                    var cardRequest = {
+                    'token_id' : req.body.token_id,
+                    'device_session_id' : req.body.device_session_id
+                    }
+                    
+                    openpay.customers.cards.create(customer.id, cardRequest, function(error, card)  {
+                    // ...
+                    if(!error){
+                        var customer_openpay = {
+                            'id_usuario': user.id,
+                            'customer_id': customer.id,
+                            'card_id': card.id
+                        }
+
+                        Openpay_customer.create(customer_openpay, function(error, cuenta) {
+                            if(!error){
+                                return res.json({"Mensaje": cuenta})
+                            }else{
+                                return res.json({"mensaje": "no se pudo crear el customer",
+                        "error": error})
+                            }
+                        })
+
+                    }
+                        
+                    else{
+                        return res.json({"mensaje": "no se pudo crear el customer de openpay",
+                        "error": error})
+                    } 
+                });
+                   
+                    
+                 
+            }else{
+                return res.json({"mensaje": "no se pudo crear la tarjeta",
+                "error": error})
             }
         });
 
