@@ -154,12 +154,14 @@ router.post('/openpay/savecard', async (req, res)=> {
                     })
                     
                 } catch (error) {
-                    res.json({error: error})
+                    res.json({"mensaje": "no se pudo crear el customer",
+                    "error": error})
                 }
                 });
                 
             } catch (error) {
-                res.json({error: error})
+                res.json({"mensaje": "no se pudo crear la tarjeta",
+            "error": error})
             }
         });
 
