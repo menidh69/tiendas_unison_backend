@@ -4,7 +4,7 @@ const {Carrito, Carrito_item, Productos} = require('../../models/entities')
 
 
 
-  router.get('/categoria/:nombre_categoria', async (req, res) => {
+  router.get('/tiendas/:id_tienda/categoria/:nombre_categoria', async (req, res) => {
     const categorias = ["desayuno", "comida", "saludable", "bebidas", "postre", "snack"]   
     if(categorias.includes(req.params.nombre_categoria)){
     //Holds value of the query param 'searchquery'.
