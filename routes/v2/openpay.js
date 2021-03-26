@@ -119,8 +119,7 @@ router.post("/openpay/create_charge", async (req, res) => {
         await Balance.increment(
           { balance: +charge.amount - 2 },
           { where: { id_tienda: id_tienda } }
-        )
-        .then((new_balance) => {
+        ).then((new_balance) => {
           res.json({ success: new_balance });
         });
       } else {
@@ -204,7 +203,26 @@ router.get("/openpay/cards/:id_user", async (req, res) => {
   const tarjetas = await Openpay_customer.findAll({
     where: { id_usuario: req.params.id_user },
   });
-  return res.json({ tarjetas: tarjetas });
+  console.log(tarjetas);
+  try {
+    let arrayTarjetas = [];
+    tarjetas.map((tarjeta) => {
+      openpay.customers.cards.get(
+        tarjeta.openpay_id,
+        tarjeta.card_id,
+        function (err, card) {
+          if (!err) {
+            arrayTarjetas.push(card);
+          }
+        }
+      );
+    });
+    return res.json({ tarjetas: tarjetas });
+  } catch (e) {
+    return res
+      .status(400)
+      .json({ error: "ocurrió un error al mandar la tarjeta" });
+  }
 });
 
 module.exports = router;
