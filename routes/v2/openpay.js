@@ -137,61 +137,77 @@ router.post("/openpay/savecard", async (req, res) => {
   })
     .then(async (user) => {
       console.log(user);
+      await Openpay_customer.findOne({ where: { id_usuario: user.id } })
+        .then((found) => {
+          if (!found || found == "") {
+            var customerRequest = {
+              name: req.body.nombre,
+              email: req.body.email,
+              requires_account: false,
+            };
 
-      var customerRequest = {
-        name: req.body.nombre,
-        email: req.body.email,
-        requires_account: false,
-      };
+            openpay.customers.create(
+              customerRequest,
+              function (error, customer) {
+                // ...
+                if (!error) {
+                  var cardRequest = {
+                    token_id: req.body.token_id,
+                    device_session_id: req.body.device_session_id,
+                  };
 
-      openpay.customers.create(customerRequest, function (error, customer) {
-        // ...
-        if (!error) {
-          var cardRequest = {
-            token_id: req.body.token_id,
-            device_session_id: req.body.device_session_id,
-          };
+                  openpay.customers.cards.create(
+                    customer.id,
+                    cardRequest,
+                    function (error, card) {
+                      // ...
+                      if (!error) {
+                        var customer_openpay = {
+                          id_usuario: user.id,
+                          openpay_id: customer.id,
+                          card_id: card.id,
+                        };
 
-          openpay.customers.cards.create(
-            customer.id,
-            cardRequest,
-            function (error, card) {
-              // ...
-              if (!error) {
-                var customer_openpay = {
-                  id_usuario: user.id,
-                  openpay_id: customer.id,
-                  card_id: card.id,
-                };
-
-                Openpay_customer.create(
-                  customer_openpay,
-                  function (error, cuenta) {
-                    if (!error) {
-                      return res.json({ Mensaje: cuenta });
-                    } else {
-                      return res.json({
-                        mensaje: "no se pudo crear el customer",
-                        error: error,
-                      });
+                        Openpay_customer.create(
+                          customer_openpay,
+                          function (error, cuenta) {
+                            if (!error) {
+                              return res.json({ Mensaje: cuenta });
+                            } else {
+                              return res.json({
+                                mensaje: "no se pudo crear el customer",
+                                error: error,
+                              });
+                            }
+                          }
+                        );
+                      } else {
+                        return res.json({
+                          mensaje: "no se pudo crear el customer de openpay",
+                          error: error,
+                        });
+                      }
                     }
-                  }
-                );
-              } else {
-                return res.json({
-                  mensaje: "no se pudo crear el customer de openpay",
-                  error: error,
-                });
+                  );
+                } else {
+                  return res.json({
+                    mensaje: "no se pudo crear la tarjeta",
+                    error: error,
+                  });
+                }
               }
-            }
-          );
-        } else {
+            );
+          } else {
+            return res.json({ error: "Usted ya tiene registrada una tarjeta" });
+          }
+        })
+        .catch((e) => {
+          console.log(e);
           return res.json({
-            mensaje: "no se pudo crear la tarjeta",
-            error: error,
+            error: e,
+            mensaje: "Ocurrio un error, intente mas tarde",
           });
-        }
-      });
+        });
     })
     .catch((err) => {
       console.log(err);
@@ -227,6 +243,31 @@ router.get("/openpay/cards/:id_user", async (req, res) => {
   );
 });
 
-router.delete("/openpay/card/:id_card", (req, res) => {});
+router.delete("/openpay/cards/:id_card", async (req, res) => {
+  try {
+    const card = await Openpay_customer.findOne({
+      where: {
+        card_id: req.params.id_card,
+      },
+    });
+    if (!card || card == "") {
+      return res
+        .status(400)
+        .json({ error: "No hay nunguna tarjeta guardada con ese id" });
+    }
+    openpay.customers.delete(card.openpay_id, async function (err) {
+      if (!err || err == "") {
+        await card.destroy();
+        return res.json({ exito: "Eliminado con exito" });
+      } else {
+        return res
+          .status(400)
+          .json({ error: "Ocurrio un erro y no se eliminó" });
+      }
+    });
+  } catch (e) {
+    return res.status(400).json({ error: "Ocurrio un erro y no se eliminó" });
+  }
+});
 
 module.exports = router;
