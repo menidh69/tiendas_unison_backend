@@ -200,29 +200,33 @@ router.post("/openpay/savecard", async (req, res) => {
 });
 
 router.get("/openpay/cards/:id_user", async (req, res) => {
-  const tarjetas = await Openpay_customer.findAll({
+  const tarjeta = await Openpay_customer.findOne({
     where: { id_usuario: req.params.id_user },
   });
-  console.log(tarjetas);
-  try {
-    let arrayTarjetas = [];
-    tarjetas.map((tarjeta) => {
-      openpay.customers.cards.get(
-        tarjeta.openpay_id,
-        tarjeta.card_id,
-        function (err, card) {
-          if (!err) {
-            arrayTarjetas.push(card);
-          }
-        }
-      );
+  if (!tarjeta || tarjeta == "") {
+    return res.json({
+      error:
+        "ocurrio un error al consultar el error de openpay, intenta mas tarde",
     });
-    return res.json({ tarjetas: tarjetas });
-  } catch (e) {
-    return res
-      .status(400)
-      .json({ error: "ocurrió un error al mandar la tarjeta" });
   }
+  openpay.customers.cards.get(
+    tarjeta.openpay_id,
+    tarjeta.card_id,
+    function (err, card) {
+      if (!err) {
+        console.log(card);
+        return res.json({ tarjeta: card });
+      } else {
+        console.log(err);
+        return res.json({
+          error:
+            "ocurrio un error al consultar el error de openpay, intenta mas tarde",
+        });
+      }
+    }
+  );
 });
+
+router.delete("/openpay/card/:id_card", (req, res) => {});
 
 module.exports = router;
