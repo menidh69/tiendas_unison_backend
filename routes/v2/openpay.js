@@ -20,12 +20,7 @@ const Openpay_customer = require("../../models/Openpay_customer");
 
 router.post("/openpay/create_charge", async (req, res) => {
   const user_id = req.body.user_id;
-  var amount = "";
   var nombre_tienda = "";
-  var first_name = "";
-  var last_name = "";
-  var phone_number = "";
-  var email = "";
   //METODO PARA OBTENER PRECIO Y PRODUCTOS
   const items = await Carrito.findAll({
     where: {
@@ -58,7 +53,9 @@ router.post("/openpay/create_charge", async (req, res) => {
     },
     raw: true,
   });
-
+  if (!openpay_customer || openpay_customer == "") {
+    return res.json({ error: "no tiene tarjetas registradas" });
+  }
   //METODO PARA OBTENER USUARIO
   const user = await Usuario.findOne({
     where: {
@@ -75,8 +72,8 @@ router.post("/openpay/create_charge", async (req, res) => {
     device_session_id: req.body.device_session_id,
     customer: {
       name: user.nombre,
-      last_name: user.apellido,
-      phone_number: user.telefono,
+      last_name: user.apellidos,
+      phone_number: user.tel,
       email: user.email,
     },
   };
