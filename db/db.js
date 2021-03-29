@@ -1,30 +1,31 @@
 //------------MYSQL CONFIG -----------------------
-const Sequelize = require('sequelize')
-const db = {}
-
+const Sequelize = require("sequelize");
+const db = {};
+const { DATABASE_CONFIG } = require("../config/index");
 //Cada quien configure las variables de conexion
 //Primer argumento=nombre de BD, Segundo argumento=usuario, Tercer argumento=contraseña
 
+const sequelize = new Sequelize(
+  DATABASE_CONFIG.DB_NAME,
+  DATABASE_CONFIG.USER,
+  DATABASE_CONFIG.PASSWORD,
+  {
+    host: DATABASE_CONFIG.HOST,
+    dialect: "mysql",
+    operatorsAliases: "0",
 
-const sequelize = new Sequelize('tiendas_unison_2021', 'admin2', 'admin2', {
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+  },
+  { query: { raw: true } }
+);
 
-
-    host: 'tiendasunison-3.ckeokuddgwgg.us-east-2.rds.amazonaws.com',
-    dialect: 'mysql',
-    operatorsAliases: '0',
-
-
-    pool:{
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
-},
-{query:{raw:true}});
-
-db.sequelize = sequelize
-db.Sequelize = Sequelize
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
 module.exports = db;
 
