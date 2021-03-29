@@ -189,7 +189,8 @@ router.post("/api/v1/olvidarcontra", (req, res) => {
           subject: "Reestablecer Contraseña",
           html: `
                     <h1> Reestablece tu contraseña </h1>
-                    <h5> Haz click en este <a href="https://localhost:3000/reestablecer/${token}">link</a> para reestablecer tu contraseña.
+                    <h5> Copia y pega est código para reestablecer tu contraseña.</h5>
+                    <h5>Codigo: ${token}</h5>
                     `,
         };
         sgMail.send(msg);
