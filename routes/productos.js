@@ -46,13 +46,12 @@ router.put("/editarProducto/:id", async (req, res) => {
     {
       nombre: req.body.nombre,
       precio: req.body.precio,
-      categoria: req.body.categoria,
+      id_categoria: req.body.id_categoria,
       url_imagen: req.body.url_imagen,
       descripcion: req.body.descripcion,
     },
     { where: { id: req.params.id, id_tienda: req.body.id_tienda } }
-  )
-  .then((result) => {
+  ).then((result) => {
     console.log(result);
     res.json({ status: "success" });
   });
@@ -63,7 +62,7 @@ router.post("/nuevoProducto", async (req, res) => {
     nombre: req.body.nombre,
     id_tienda: req.body.id_tienda,
     precio: req.body.precio,
-    categoria: req.body.categoria || null,
+    id_categoria: req.body.id_categoria || null,
     url_imagen: req.body.url_imagen || "",
     descripcion: req.body.descripcion,
   };
