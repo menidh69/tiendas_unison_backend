@@ -169,13 +169,14 @@ router.post("/api/v1/auth/fbLogin", async (req, res) => {
 });
 
 router.post("/api/v1/olvidarcontra", (req, res) => {
+  console.log(SG_MAIL_API);
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
       console.log(err);
     }
     const token = buffer.toString("hex");
     Usuario.findOne({ where: { email: req.body.email } }).then((user) => {
-      if (!user) {
+      if (!user || user == "") {
         return res
           .status(422)
           .json({ error: "User doesnt exist with that email" });
@@ -185,7 +186,7 @@ router.post("/api/v1/olvidarcontra", (req, res) => {
       user.save().then((result) => {
         const msg = {
           to: user.email,
-          from: "tiendasuniv@hotmail.com",
+          from: "tiendasunisonweb@gmail.com",
           subject: "Reestablecer Contraseña",
           html: `
                     <h1> Reestablece tu contraseña </h1>
