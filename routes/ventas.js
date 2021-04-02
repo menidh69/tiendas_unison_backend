@@ -14,22 +14,30 @@ const { QueryTypes } = require("sequelize");
 const Review_Tienda = require("../models/Review_Tienda");
 
 router.get("/ventas/:id_user", async (req, res) => {
-  const { mes } = req.query;
   const tienda = await Tienda.findOne({
     where: { id_usuario: req.params.id_user },
     raw: true,
   });
-  const ordenes = await Orden.findAll({
-    where: { id_tienda: tienda.id },
-    include: Venta,
-  });
-  const ordenes2 = await db.sequelize.query(
-    `SELECT * FROM orden INNER JOIN venta ON orden.id=venta.id_orden WHERE MONTH(orden.fecha)=${mes} && orden.id_tienda=${tienda.id} 
+  const { mes, date } = req.query;
+  if (mes) {
+    const ordenes2 = await db.sequelize.query(
+      `SELECT * FROM orden INNER JOIN venta ON orden.id=venta.id_orden WHERE MONTH(orden.fecha)=${mes} && orden.id_tienda=${tienda.id} 
     `,
-    { type: QueryTypes.SELECT }
-  );
-  console.log(ordenes2);
-  res.json({ ventas: ordenes2 });
+      { type: QueryTypes.SELECT }
+    );
+    console.log(ordenes2);
+    return res.json({ ventas: ordenes2 });
+  }
+  if (date) {
+    const ordenes2 = await db.sequelize.query(
+      `SELECT * FROM orden INNER JOIN venta ON orden.id=venta.id_orden WHERE DATE(orden.fecha)=${date} && orden.id_tienda=${tienda.id} 
+        `,
+      { type: QueryTypes.SELECT }
+    );
+    console.log(ordenes2);
+    return res.json({ ventas: ordenes2 });
+  }
+  return res.json({ error: "Especifica un mes o la fecha" });
 });
 
 router.get("/compras/cliente/:id_user", async (req, res) => {
