@@ -7,4 +7,11 @@ router.get("/balance", async (req, res) => {
   return res.json({ balances: balance });
 });
 
+router.get("/balance/:id_tienda", async (req, res) => {
+  const balance = await Balance.findOne({
+    where: { id_tienda: req.params.id_tienda },
+  });
+  return res.json({ balance: balance });
+});
+
 module.exports = router;
