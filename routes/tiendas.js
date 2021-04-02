@@ -144,6 +144,7 @@ router.get("/miTienda/:id", async (req, res) => {
     where: {
       id_usuario: req.params.id,
     },
+    include: { model: Balance, attributes: ["balance"] },
   }).then((result) => {
     console.log(result);
     res.json(result);
