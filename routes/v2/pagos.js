@@ -8,6 +8,7 @@ const {
   Carrito_item,
   Productos,
   Balance,
+  Venta,
 } = require("../../models/entities");
 const bodyParser = require("body-parser");
 const Orden = require("../../models/Orden");
