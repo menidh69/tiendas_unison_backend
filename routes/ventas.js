@@ -18,7 +18,7 @@ router.get("/ventas/:id_user", async (req, res) => {
     where: { id_usuario: req.params.id_user },
     raw: true,
   });
-  const { mes, date } = req.query;
+  const { mes, date, year } = req.query;
   if (mes) {
     const ordenes2 = await db.sequelize.query(
       `SELECT * FROM orden INNER JOIN venta ON orden.id=venta.id_orden WHERE MONTH(orden.fecha)=${mes} && orden.id_tienda=${tienda.id} 
@@ -32,6 +32,15 @@ router.get("/ventas/:id_user", async (req, res) => {
     const ordenes2 = await db.sequelize.query(
       `SELECT * FROM orden INNER JOIN venta ON orden.id=venta.id_orden WHERE DATE(orden.fecha)=${date} && orden.id_tienda=${tienda.id} 
         `,
+      { type: QueryTypes.SELECT }
+    );
+    console.log(ordenes2);
+    return res.json({ ventas: ordenes2 });
+  }
+  if (year) {
+    const ordenes2 = await db.sequelize.query(
+      `SELECT MONTHNAME(orden.fecha) as mes, SUM(amount) as total FROM orden INNER JOIN venta ON orden.id=venta.id_orden WHERE YEAR(orden.fecha)=${year} && orden.id_tienda=${tienda.id} 
+      GROUP BY MONTH(orden.fecha) ORDER BY MONTH(orden.fecha)`,
       { type: QueryTypes.SELECT }
     );
     console.log(ordenes2);
