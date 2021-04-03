@@ -64,6 +64,12 @@ router.post("/order", async (req, res) => {
         where: { id_carrito: item.id, id_producto: newordenitem.id_producto },
       });
     });
+    let venta = {
+      id_orden: orden.id,
+      id_transaccion: null,
+      amount: total,
+    };
+    await Venta.create(venta);
     let BalanceTienda = await Balance.findOne({ where: { id_tienda: tienda } });
     BalanceTienda.balance = BalanceTienda.balance - 2;
     await BalanceTienda.save();
