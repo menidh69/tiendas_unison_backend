@@ -7,6 +7,9 @@ const {
   Carrito_item,
   Productos,
   Balance,
+  Openpay_Bank_Account,
+  Balance,
+  Transaccion,
 } = require("../../models/entities");
 const Usuario = require("../../models/Usuario");
 const openpay = new Openpay(
@@ -18,6 +21,7 @@ const Orden = require("../../models/Orden");
 const Ordenitem = require("../../models/OrdenItem");
 const Venta = require("../../models/Venta");
 const Openpay_customer = require("../../models/Openpay_customer");
+const { route } = require("../ventas");
 //RUTAS PARA GUARDAR TARJETA
 
 //----------RUTAS PARA CARGOS-------------------
@@ -284,6 +288,155 @@ router.delete("/openpay/cards/:id_card", async (req, res) => {
     });
   } catch (e) {
     return res.status(400).json({ error: "Ocurrio un erro y no se eliminó" });
+  }
+});
+
+router.post("/openpay/bank_account", async (req, res) => {
+  var bankaccountRequest = {
+    clabe: req.body.clabe,
+    alias: req.body.alias,
+    holder_name: req.body.holder_name,
+  };
+
+  await Usuario.findOne({
+    where: {
+      id: req.body.user_id,
+      tipo_usuario: "tienda",
+    },
+  }).then(async (user) => {
+    console.log(user);
+    if (!user || user == "")
+      return res.status(400).json({
+        error:
+          "Este usuario no tiene permiso a crear cuenta bancaria porque no es una tienda",
+      });
+    await Openpay_customer.findOne({ where: { id_usuario: user.id } }).then(
+      (found) => {
+        if (!found || found == "") {
+          var customerRequest = {
+            name: user.nombre,
+            email: user.email,
+            requires_account: false,
+          };
+
+          openpay.customers.create(customerRequest, function (error, customer) {
+            if (!error) {
+              openpay.customers.bankaccounts.create(
+                customer.id,
+                bankaccountRequest,
+                async function (error, bankaccount) {
+                  if (!error) {
+                    const new_bankaccount = {
+                      id_tienda: req.body.id_tienda,
+                      id_bank_account: bankaccount.id,
+                    };
+                    await Openpay_customer.create({
+                      id_usuario: user.id,
+                      openpay_id: customer.id,
+                    });
+                    await Openpay_Bank_Account.create(new_bankaccount).then(
+                      (created) => {
+                        return res.json({
+                          message: "Exito",
+                          bankaccount: bankaccount,
+                        });
+                      }
+                    );
+                  } else {
+                    return res.json({ error: error });
+                  }
+                }
+              );
+            } else {
+              return res.json({ error: error });
+            }
+          });
+        } else {
+          return res.json({
+            error:
+              "Ya hay una cuenta bancaria registrada, eliminela y vuelva a crear una",
+          });
+        }
+      }
+    );
+  });
+});
+
+router.get("/openpay/bank_account/:id_tienda", async (req, res) => {
+  const datos = await sequelize.query(
+    "SELECT t3.openpay_id as customer_id, t4.id_bank_account FROM usuario t1" +
+      " INNER JOIN tienda t2 ON t1.id=t2.id_usuario INNER JOIN openpay_customer t3 ON t1.id = t3.id_usuario INNER JOIN openpay_bank_account t4 ON t2.id=t4.id_tienda WHERE t2.id=" +
+      req.params.id_tienda +
+      " AND t1.tipo_usuario='tienda",
+    { type: QueryTypes.SELECT }
+  );
+  console.log(datos);
+  if (!datos || datos == "")
+    return res.json({ error: "No existen registros con esos datos" });
+  openpay.customers.bankaccounts.get(
+    datos.customer_id,
+    datos.id_bank_account,
+    function (error, bankaccount) {
+      if (!error) {
+        return res.json({ bankaccount: bankaccount });
+      }
+      return res.json({ error: error });
+    }
+  );
+});
+
+router.post("/openpay/payout", async (req, res) => {
+  const datos = await sequelize.query(
+    "SELECT t3.openpay_id as customer_id, t4.id_bank_account FROM usuario t1" +
+      " INNER JOIN tienda t2 ON t1.id=t2.id_usuario INNER JOIN openpay_customer t3 ON t1.id = t3.id_usuario INNER JOIN openpay_bank_account t4 ON t2.id=t4.id_tienda WHERE t2.id=" +
+      req.body.id_tienda +
+      " AND t1.tipo_usuario='tienda",
+    { type: QueryTypes.SELECT }
+  );
+  const balance_actual = await Balance.findOne({
+    where: { id_tienda: req.body.id_tienda },
+  });
+  if (balance_actual.balance < 100) {
+    return res
+      .status(400)
+      .json({
+        error:
+          "Usted no tiene fondos suficientes, el retiro minimo es de 100 pesos",
+      });
+  } else {
+    if (req.body.amount < 100)
+      return res
+        .status(400)
+        .json({ error: "No puedo retirar menos de 100 pesos" });
+    const new_transaccion = await Transaccion.create({
+      timestamp: Date.now(),
+      id_tienda: req.body.id_tienda,
+      monto: req.body.amount,
+    });
+    var payoutRequest = {
+      method: "bank_account",
+      destination_id: datos.id_bank_account,
+      amount: req.body.amount,
+      description: "Retiro de saldo",
+      order_id: new_transaccion.id,
+    };
+    openpay.customers.payouts.create(
+      datos.customer_id,
+      payoutRequest,
+      async function (error, payout) {
+        if (!error) {
+          balance_actual.balance = balance_actual.balance - req.body.amount;
+          await Balance.save();
+          return res.json({
+            message:
+              "Exito al solicitar su retiro, espere 24 horas para ver los cambios reflejados",
+            data: payout,
+          });
+        } else {
+          return res.status(400).json({ error: error });
+        }
+      }
+    );
   }
 });
 

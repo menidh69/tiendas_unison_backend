@@ -268,6 +268,17 @@ CREATE TABLE transaccion (
     id_tienda BIGINT UNSIGNED,
     monto FLOAT(15,2)
 );
+
+CREATE TABLE openpay_bank_account (
+    id VARCHAR(255) PRIMARY KEY,
+    id_tienda BIGINT UNSIGNED,
+    id_bank_account VARCHAR(255),
+
+    CONSTRAINT fk_tienda_7
+    FOREIGN KEY (id_tienda)
+    REFERENCES  tienda(id)
+    ON DELETE CASCADE
+);
 -- Agregar tipo tienda
 
 INSERT INTO tipo_tienda (tipo_tienda, descripcion) VALUES ("Cooperativa", "Tienda con contrato de la universidad"),
