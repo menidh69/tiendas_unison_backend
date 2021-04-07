@@ -2,13 +2,14 @@ const express = require("express");
 const router = express.Router();
 var Openpay = require("openpay");
 const { OPENPAY_CONFIG } = require("../../config/index");
+const { sequelize } = require("../../db/db");
+const { QueryTypes } = require("sequelize");
 const {
   Carrito,
   Carrito_item,
   Productos,
   Balance,
   Openpay_Bank_Account,
-  Balance,
   Transaccion,
 } = require("../../models/entities");
 const Usuario = require("../../models/Usuario");
@@ -180,7 +181,7 @@ router.post("/openpay/savecard", async (req, res) => {
                   openpay.customers.cards.create(
                     customer.id,
                     cardRequest,
-                    function (error, card) {
+                    async function (error, card) {
                       // ...
                       if (!error) {
                         var customer_openpay = {
@@ -189,16 +190,15 @@ router.post("/openpay/savecard", async (req, res) => {
                           card_id: card.id,
                         };
 
-                        Openpay_customer.create(
-                          customer_openpay,
-                          function (error, cuenta) {
-                            if (!error) {
-                              return res.json({ Mensaje: cuenta });
-                            } else {
+                        await Openpay_customer.create(customer_openpay).then(
+                          (created_customer) => {
+                            if (!created_customer) {
                               return res.json({
                                 mensaje: "no se pudo crear el customer",
                                 error: error,
                               });
+                            } else {
+                              return res.json({ Mensaje: created_customer });
                             }
                           }
                         );
@@ -313,129 +313,177 @@ router.post("/openpay/bank_account", async (req, res) => {
     await Openpay_customer.findOne({ where: { id_usuario: user.id } }).then(
       (found) => {
         if (!found || found == "") {
-          var customerRequest = {
-            name: user.nombre,
-            email: user.email,
-            requires_account: false,
-          };
-
-          openpay.customers.create(customerRequest, function (error, customer) {
-            if (!error) {
-              openpay.customers.bankaccounts.create(
-                customer.id,
-                bankaccountRequest,
-                async function (error, bankaccount) {
-                  if (!error) {
-                    await Openpay_customer.create({
-                      id_usuario: user.id,
-                      openpay_id: customer.id,
-                    });
-                    const new_bankaccount = {
-                      id_tienda: req.body.id_tienda,
-                      id_bank_account: bankaccount.id,
-                    };
-                    await Openpay_Bank_Account.create(new_bankaccount).then(
-                      (created) => {
-                        return res.json({
-                          message: "Exito",
-                          bankaccount: bankaccount,
-                        });
-                      }
-                    );
-                  } else {
-                    return res.json({ error: error });
-                  }
-                }
-              );
-            } else {
-              return res.json({ error: error });
-            }
+          return res.status(400).json({
+            error:
+              "Para agregar una cuenta bancaria primero hay que registrar una tarjeta",
           });
         } else {
-          return res.json({
-            error:
-              "Ya hay una cuenta bancaria registrada, eliminela y vuelva a crear una",
-          });
+          openpay.customers.bankaccounts.create(
+            found.openpay_id,
+            bankaccountRequest,
+            async function (error, bankaccount) {
+              if (!error) {
+                const new_bankaccount = {
+                  id: bankaccount.id,
+                  id_tienda: req.body.id_tienda,
+                  id_bank_account: bankaccount.id,
+                };
+                await Openpay_Bank_Account.create(new_bankaccount).then(
+                  (created) => {
+                    return res.json({
+                      message: "Exito",
+                      bankaccount: bankaccount,
+                    });
+                  }
+                );
+              } else {
+                return res.json({ error: error });
+              }
+            }
+          );
         }
       }
     );
   });
+});
+
+router.delete("/openpay/bank_account/:id_bankaccount", async (req, res) => {
+  // openpay.customers.bankaccounts.delete(
+  //   "ajiaqdpnhjw1ihi3rni4",
+  //   "bms2kcfmnfyhj7lnxcbs",
+  //   async function (err) {
+  //     if (!err || err == "") {
+  //       return res.json({ exito: "Eliminado con exito" });
+  //     } else {
+  //       return res
+  //         .status(400)
+  //         .json({ error: "Ocurrio un erro y no se eliminó" });
+  //     }
+  //   }
+  // );
+
+  try {
+    const bank = await sequelize
+      .query(
+        "SELECT t3.openpay_id as customer_id, t4.id_bank_account FROM usuario t1" +
+          " INNER JOIN tienda t2 ON t1.id=t2.id_usuario INNER JOIN openpay_customer t3 ON t1.id = t3.id_usuario INNER JOIN openpay_bank_account t4 ON t2.id=t4.id_tienda WHERE t4.id_bank_account='" +
+          req.params.id_bankaccount +
+          "' AND t1.tipo_usuario='tienda'",
+        { type: QueryTypes.SELECT }
+      )
+      .then((bankaccount) => {
+        console.log(bankaccount);
+        if (!bankaccount || bankaccount == "") {
+          return res.status(400).json({
+            error: "No hay nunguna cuenta bancaria guardada con ese id",
+          });
+        }
+        openpay.customers.bankaccounts.delete(
+          bankaccount[0].customer_id,
+          bankaccount[0].id_bank_account,
+          async function (err) {
+            if (!err || err == "") {
+              const registro = await Openpay_Bank_Account.findOne({
+                where: { id_bank_account: req.params.id_bankaccount },
+              });
+              await registro.destroy();
+              return res.json({ exito: "Eliminado con exito" });
+            } else {
+              return res.status(400).json({
+                error: "Ocurrio un erro y no se eliminó",
+                openpay_err: err,
+              });
+            }
+          }
+        );
+      });
+  } catch (e) {
+    return res
+      .status(400)
+      .json({ error: "Ocurrio un erro y no se eliminó", e: e });
+  }
 });
 
 router.get("/openpay/bank_account/:id_tienda", async (req, res) => {
-  const datos = await sequelize.query(
-    "SELECT t3.openpay_id as customer_id, t4.id_bank_account FROM usuario t1" +
-      " INNER JOIN tienda t2 ON t1.id=t2.id_usuario INNER JOIN openpay_customer t3 ON t1.id = t3.id_usuario INNER JOIN openpay_bank_account t4 ON t2.id=t4.id_tienda WHERE t2.id=" +
-      req.params.id_tienda +
-      " AND t1.tipo_usuario='tienda",
-    { type: QueryTypes.SELECT }
-  );
-  console.log(datos);
-  if (!datos || datos == "")
-    return res.json({ error: "No existen registros con esos datos" });
-  openpay.customers.bankaccounts.get(
-    datos.customer_id,
-    datos.id_bank_account,
-    function (error, bankaccount) {
-      if (!error) {
-        return res.json({ bankaccount: bankaccount });
-      }
-      return res.json({ error: error });
-    }
-  );
+  const datosBank = await sequelize
+    .query(
+      "SELECT t3.openpay_id as customer_id, t4.id_bank_account FROM usuario t1" +
+        " INNER JOIN tienda t2 ON t1.id=t2.id_usuario INNER JOIN openpay_customer t3 ON t1.id = t3.id_usuario INNER JOIN openpay_bank_account t4 ON t2.id=t4.id_tienda WHERE t2.id='" +
+        req.params.id_tienda +
+        "' AND t1.tipo_usuario='tienda'",
+      { type: QueryTypes.SELECT }
+    )
+    .then((datos) => {
+      console.log(datos);
+      if (!datos || datos == "")
+        return res.json({ error: "No existen registros con esos datos" });
+      openpay.customers.bankaccounts.get(
+        datos[0].customer_id,
+        datos[0].id_bank_account,
+        function (error, bankaccount) {
+          if (!error) {
+            return res.json({ bankaccount: bankaccount });
+          }
+          return res.json({ error: error });
+        }
+      );
+    });
 });
 
 router.post("/openpay/payout", async (req, res) => {
-  const datos = await sequelize.query(
-    "SELECT t3.openpay_id as customer_id, t4.id_bank_account FROM usuario t1" +
-      " INNER JOIN tienda t2 ON t1.id=t2.id_usuario INNER JOIN openpay_customer t3 ON t1.id = t3.id_usuario INNER JOIN openpay_bank_account t4 ON t2.id=t4.id_tienda WHERE t2.id=" +
-      req.body.id_tienda +
-      " AND t1.tipo_usuario='tienda",
-    { type: QueryTypes.SELECT }
-  );
-  const balance_actual = await Balance.findOne({
-    where: { id_tienda: req.body.id_tienda },
-  });
-  if (balance_actual.balance < 100) {
-    return res.status(400).json({
-      error:
-        "Usted no tiene fondos suficientes, el retiro minimo es de 100 pesos",
-    });
-  } else {
-    if (req.body.amount < 100)
-      return res
-        .status(400)
-        .json({ error: "No puedo retirar menos de 100 pesos" });
-    const new_transaccion = await Transaccion.create({
-      timestamp: Date.now(),
-      id_tienda: req.body.id_tienda,
-      monto: req.body.amount,
-    });
-    var payoutRequest = {
-      method: "bank_account",
-      destination_id: datos.id_bank_account,
-      amount: req.body.amount,
-      description: "Retiro de saldo",
-      order_id: new_transaccion.id,
-    };
-    openpay.customers.payouts.create(
-      datos.customer_id,
-      payoutRequest,
-      async function (error, payout) {
-        if (!error) {
-          balance_actual.balance = balance_actual.balance - req.body.amount;
-          await Balance.save();
-          return res.json({
-            message:
-              "Exito al solicitar su retiro, espere 24 horas para ver los cambios reflejados",
-            data: payout,
-          });
-        } else {
-          return res.status(400).json({ error: error });
-        }
+  const datosBank = await sequelize
+    .query(
+      "SELECT t3.openpay_id as customer_id, t4.id_bank_account FROM usuario t1" +
+        " INNER JOIN tienda t2 ON t1.id=t2.id_usuario INNER JOIN openpay_customer t3 ON t1.id = t3.id_usuario INNER JOIN openpay_bank_account t4 ON t2.id=t4.id_tienda WHERE t2.id='" +
+        req.body.id_tienda +
+        "' AND t1.tipo_usuario='tienda'",
+      { type: QueryTypes.SELECT }
+    )
+    .then(async (datos) => {
+      const balance_actual = await Balance.findOne({
+        where: { id_tienda: req.body.id_tienda },
+      });
+      if (balance_actual.balance < 100) {
+        return res.status(400).json({
+          error:
+            "Usted no tiene fondos suficientes, el retiro minimo es de 100 pesos",
+        });
+      } else {
+        if (req.body.amount < 100)
+          return res
+            .status(400)
+            .json({ error: "No puedo retirar menos de 100 pesos" });
+        const new_transaccion = await Transaccion.create({
+          timestamp: Date.now(),
+          id_tienda: req.body.id_tienda,
+          monto: req.body.amount,
+        });
+        var payoutRequest = {
+          method: "bank_account",
+          destination_id: datos[0].id_bank_account,
+          amount: req.body.amount,
+          description: "Retiro de saldo",
+          order_id: new_transaccion.id,
+        };
+        openpay.customers.payouts.create(
+          datos.customer_id,
+          payoutRequest,
+          async function (error, payout) {
+            if (!error) {
+              balance_actual.balance = balance_actual.balance - req.body.amount;
+              await Balance.save();
+              return res.json({
+                message:
+                  "Exito al solicitar su retiro, espere 24 horas para ver los cambios reflejados",
+                data: payout,
+              });
+            } else {
+              return res.status(400).json({ error: error });
+            }
+          }
+        );
       }
-    );
-  }
+    });
 });
 
 module.exports = router;
