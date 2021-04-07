@@ -326,14 +326,14 @@ router.post("/openpay/bank_account", async (req, res) => {
                 bankaccountRequest,
                 async function (error, bankaccount) {
                   if (!error) {
-                    const new_bankaccount = {
-                      id_tienda: req.body.id_tienda,
-                      id_bank_account: bankaccount.id,
-                    };
                     await Openpay_customer.create({
                       id_usuario: user.id,
                       openpay_id: customer.id,
                     });
+                    const new_bankaccount = {
+                      id_tienda: req.body.id_tienda,
+                      id_bank_account: bankaccount.id,
+                    };
                     await Openpay_Bank_Account.create(new_bankaccount).then(
                       (created) => {
                         return res.json({
@@ -397,12 +397,10 @@ router.post("/openpay/payout", async (req, res) => {
     where: { id_tienda: req.body.id_tienda },
   });
   if (balance_actual.balance < 100) {
-    return res
-      .status(400)
-      .json({
-        error:
-          "Usted no tiene fondos suficientes, el retiro minimo es de 100 pesos",
-      });
+    return res.status(400).json({
+      error:
+        "Usted no tiene fondos suficientes, el retiro minimo es de 100 pesos",
+    });
   } else {
     if (req.body.amount < 100)
       return res
