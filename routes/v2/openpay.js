@@ -443,6 +443,7 @@ router.post("/openpay/payout", async (req, res) => {
       const balance_actual = await Balance.findOne({
         where: { id_tienda: req.body.id_tienda },
       });
+      console.log(datos);
       if (balance_actual.balance < 100) {
         return res.status(400).json({
           error:
@@ -466,7 +467,7 @@ router.post("/openpay/payout", async (req, res) => {
           order_id: new_transaccion.id,
         };
         openpay.customers.payouts.create(
-          datos.customer_id,
+          datos[0].customer_id,
           payoutRequest,
           async function (error, payout) {
             if (!error) {
