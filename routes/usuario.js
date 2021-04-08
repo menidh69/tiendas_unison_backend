@@ -143,8 +143,7 @@ router.get("/carrito/:id", async (req, res) => {
   try {
     const carrito = await Carrito.findAll({
       where: { id_usuario: req.params.id },
-    })
-    .then((result) => {
+    }).then((result) => {
       res.json(result);
     });
   } catch (error) {
@@ -157,8 +156,7 @@ router.post("/carritoCrear/:id", async (req, res) => {
     const c = {
       id_usuario: req.params.id,
     };
-    const crear = await Carrito.create(c)
-    .then((result) => {
+    const crear = await Carrito.create(c).then((result) => {
       res.json(result);
     });
   } catch (error) {
@@ -368,10 +366,10 @@ router.get("/usuarios/pedidos/:id_usuario", async (req, res) => {
   }
 });
 
-router.post("/usuarios/calificar/:id_producto", async (req, res) => {
+router.post("/usuarios/calificar", async (req, res) => {
   try {
     const calificar = {
-      id_producto: req.params.id_producto,
+      id_producto: req.body.id_producto,
       id_usuario: req.body.id_usuario,
       calificacion: req.body.calificacion,
       comentario: req.body.comentario,
