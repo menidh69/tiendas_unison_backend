@@ -445,6 +445,11 @@ router.post("/openpay/payout", async (req, res) => {
       { type: QueryTypes.SELECT }
     )
     .then(async (datos) => {
+      if (!datos || datos == "") {
+        return res
+          .status(400)
+          .json({ error: "Aun no ha registrado una cuenta bancaria" });
+      }
       const balance_actual = await Balance.findOne({
         where: { id_tienda: req.body.id_tienda },
       });
@@ -475,16 +480,16 @@ router.post("/openpay/payout", async (req, res) => {
           datos[0].customer_id,
           payoutRequest,
           async function (error, payout) {
-            if (!error) {
+            if (error) {
+              return res.status(400).json({ error: error });
+            } else {
               balance_actual.balance = balance_actual.balance - req.body.amount;
-              await Balance.save();
+              await balance_actual.save();
               return res.json({
                 message:
                   "Exito al solicitar su retiro, espere 24 horas para ver los cambios reflejados",
                 data: payout,
               });
-            } else {
-              return res.status(400).json({ error: error });
             }
           }
         );
