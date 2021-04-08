@@ -263,10 +263,15 @@ CREATE TABLE balance(
 );
 
 CREATE TABLE transaccion (
-    id VARCHAR(255) PRIMARY KEY,
-    timestamp DATETIME,
+    id SERIAL PRIMARY KEY,
+    fecha DATETIME,
     id_tienda BIGINT UNSIGNED,
-    monto FLOAT(15,2)
+    monto FLOAT(15,2),
+
+    CONSTRAINT fk_tienda_8
+    FOREIGN KEY (id_tienda)
+    REFERENCES  tienda(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE openpay_bank_account (

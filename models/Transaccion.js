@@ -9,7 +9,7 @@ const transaccion = db.sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    timestamp: {
+    fecha: {
       type: Sequelize.DATE,
     },
     id_tienda: {
@@ -20,7 +20,7 @@ const transaccion = db.sequelize.define(
     },
   },
   {
-    timestamps: true,
+    timestamps: false,
     freezeTableName: true,
     tableName: "transaccion",
   }
