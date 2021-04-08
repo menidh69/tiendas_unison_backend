@@ -16,6 +16,7 @@ router.get("/producto/search", async (req, res) => {
           [Op.like]: `%${searchQuery}%`,
         },
       },
+      limit: 25,
     });
     return res.json({ productos: productos });
   } else {
