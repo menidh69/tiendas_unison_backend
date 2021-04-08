@@ -101,10 +101,15 @@ router.post("/openpay/create_charge", async (req, res) => {
         console.log(charge);
         console.log(error);
         if (!error || error == "") {
+          const today = new Date();
+          const dd = String(today.getDate()).padStart(2, "0");
+          const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+          const yyyy = today.getFullYear();
+          const dateString = yyyy + "-" + mm + "-" + dd;
           const orden = await Orden.create({
             id_usuario: user_id,
             id_tienda: id_tienda,
-            fecha: Date.now(),
+            fecha: dateString,
             entregado: false,
           });
           console.log("Se creo la orden");
