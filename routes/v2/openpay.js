@@ -475,7 +475,9 @@ router.post("/openpay/payout", async (req, res) => {
           datos[0].customer_id,
           payoutRequest,
           async function (error, payout) {
-            if (!error) {
+            if (error) {
+              return res.status(400).json({ error: error });
+            } else {
               balance_actual.balance = balance_actual.balance - req.body.amount;
               await Balance.save();
               return res.json({
@@ -483,8 +485,6 @@ router.post("/openpay/payout", async (req, res) => {
                   "Exito al solicitar su retiro, espere 24 horas para ver los cambios reflejados",
                 data: payout,
               });
-            } else {
-              return res.status(400).json({ error: error });
             }
           }
         );
