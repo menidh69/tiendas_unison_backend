@@ -15,6 +15,7 @@ const entities = {
   Balance: require("./Balance"),
   Openpay_Bank_Account: require("./Openpay_Bank_Account"),
   Transaccion: require("./Transaccion"),
+  User_Device: require("./User_Device"),
 };
 
 entities.Carrito.hasMany(entities.Carrito_item, { foreignKey: "id_carrito" });
@@ -22,6 +23,8 @@ entities.Usuario.hasOne(entities.Carrito, { foreignKey: "id_usuario" });
 entities.Productos.hasMany(entities.Carrito_item, {
   foreignKey: "id_producto",
 });
+entities.Usuario.hasOne(entities.User_Device, { foreignKey: "id_usuario" });
+entities.User_Device.belongsTo(entities.Usuario, { foreignKey: "id_usuario" });
 entities.Tienda.hasMany(entities.Productos, { foreignKey: "id_tienda" });
 entities.Productos.belongsTo(entities.Tienda, { foreignKey: "id_tienda" });
 entities.Carrito_item.belongsTo(entities.Productos, {

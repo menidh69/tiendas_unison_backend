@@ -26,7 +26,7 @@ CREATE TABLE usuario(
     CONSTRAINT fk_universidad
     FOREIGN KEY (id_universidad)
     REFERENCES universidad(id)
-    ON DELETE SET NULL
+    ON DELETE CASCADE
 );
 
 CREATE TABLE fbuser(
@@ -284,6 +284,17 @@ CREATE TABLE openpay_bank_account (
     REFERENCES  tienda(id)
     ON DELETE CASCADE
 );
+
+CREATE TABLE user_device (
+    id SERIAL PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED,
+    expoToken VARCHAR(255),
+
+    CONSTRAINT usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES  usuario(id)
+    ON DELETE CASCADE
+)
 -- Agregar tipo tienda
 
 INSERT INTO tipo_tienda (tipo_tienda, descripcion) VALUES ("Cooperativa", "Tienda con contrato de la universidad"),
