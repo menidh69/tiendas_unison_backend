@@ -17,6 +17,7 @@ const Stripe_Customer = require("../models/Stripe_Customer");
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const Review = require("../models/Review");
 const { QueryTypes } = require("sequelize");
+const { User_Device } = require("../models/entities");
 
 router.post("/usuarios", async (req, res) => {
   console.log(req.body);
@@ -45,6 +46,11 @@ router.post("/usuarios", async (req, res) => {
                 id_usuario: usuario.id,
               };
               Carrito.create(cart);
+              const device = {
+                id_usuario: usuario.id,
+                expoToken: req.body.expoToken || "",
+              };
+              User_Device.create(device);
               res.json({ message: usuario.email + " registrado con exito" });
               const msg = {
                 to: user.email,
