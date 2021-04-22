@@ -25,6 +25,19 @@ router.get("/usuario/:id_user/expo-token", async (req, res) => {
   res.json({ datos: datos });
 });
 
+router.put("/usuario/:id_user/expo-token", async (req, res) => {
+  await User_Device.update(
+    { expoToken: req.body.expoToken },
+    {
+      where: {
+        id: req.params.id_user,
+      },
+    }
+  ).then((device) => {
+    return res.json({ message: "Actualizado con exito", device: device });
+  });
+});
+
 //METODO PARA NOTIFICACION TIENDA
 
 //METODO PARA NOTIFICACION CLIENTE
