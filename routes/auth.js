@@ -53,6 +53,7 @@ router.post("/api/v1/usuario/login", async (req, res) => {
           (err, token) => {
             if (err) throw err;
             console.log(token);
+            console.log(user);
             res.json({
               user: {
                 token,
@@ -64,7 +65,7 @@ router.post("/api/v1/usuario/login", async (req, res) => {
                 telefono: user.tel,
                 tipo_usuario: user.tipo_usuario,
                 id_universidad: user.id_universidad,
-                deviceToken: user.user_device.expoToken || "",
+                userDevice: user.user_device,
               },
             });
           }

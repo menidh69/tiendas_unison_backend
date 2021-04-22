@@ -220,6 +220,8 @@ router.put("/tiendas/:id", async (req, res) => {
       horario: req.body.horario,
       url_imagen: req.body.url_imagen,
       tarjeta: req.body.tarjeta,
+      lat: req.body.lat,
+      lng: req.body.lng,
     },
     { where: { id_usuario: req.params.id } }
   ).then((result) => {
