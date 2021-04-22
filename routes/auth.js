@@ -11,6 +11,7 @@ sgMail.setApiKey(SG_MAIL_API);
 const jwt = require("jsonwebtoken");
 const FBUser = require("../models/FBUser");
 const request = require("request");
+const { User_Device } = require("../models/entities");
 
 router.get("/api/v1/auth/user", auth, async (req, res) => {
   await Usuario.findOne({
@@ -33,6 +34,7 @@ router.post("/api/v1/usuario/login", async (req, res) => {
     where: {
       email: req.body.email,
     },
+    include: User_Device,
   })
     .then((user) => {
       if (!user) {
@@ -62,6 +64,7 @@ router.post("/api/v1/usuario/login", async (req, res) => {
                 telefono: user.tel,
                 tipo_usuario: user.tipo_usuario,
                 id_universidad: user.id_universidad,
+                deviceToken: user.user_device.expoToken,
               },
             });
           }

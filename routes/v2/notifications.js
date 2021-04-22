@@ -15,4 +15,18 @@ router.post("/expo-token", async (req, res) => {
   }
 });
 
+router.get("/usuario/:id_user/expo-token", async (req, res) => {
+  const datos = await Usuario.findOne({
+    where: {
+      id: req.params.id_user,
+    },
+    include: User_Device,
+  });
+  res.json({ datos: datos });
+});
+
+//METODO PARA NOTIFICACION TIENDA
+
+//METODO PARA NOTIFICACION CLIENTE
+
 module.exports = router;
