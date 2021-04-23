@@ -28,6 +28,7 @@ router.post("/usuarios", async (req, res) => {
     contra: req.body.contraseña,
     tel: req.body.telefono,
     id_universidad: req.body.universidad || req.body.id_universidad,
+    expoToken: req.body.expoToken,
   };
 
   console.log(user);
@@ -46,11 +47,6 @@ router.post("/usuarios", async (req, res) => {
                 id_usuario: usuario.id,
               };
               Carrito.create(cart);
-              const device = {
-                id_usuario: usuario.id,
-                expoToken: req.body.expoToken || "",
-              };
-              User_Device.create(device);
               res.json({ message: usuario.email + " registrado con exito" });
               const msg = {
                 to: user.email,

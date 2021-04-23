@@ -34,7 +34,6 @@ router.post("/api/v1/usuario/login", async (req, res) => {
     where: {
       email: req.body.email,
     },
-    include: User_Device,
   })
     .then((user) => {
       if (!user) {
@@ -65,7 +64,7 @@ router.post("/api/v1/usuario/login", async (req, res) => {
                 telefono: user.tel,
                 tipo_usuario: user.tipo_usuario,
                 id_universidad: user.id_universidad,
-                userDevice: user.user_device,
+                userDevice: user.expoToken,
               },
             });
           }
