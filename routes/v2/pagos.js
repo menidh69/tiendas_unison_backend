@@ -86,7 +86,7 @@ router.post("/order", async (req, res) => {
       include: Usuario,
     });
     console.log(usuarioTienda);
-    sendNotificationNuevaOrden(usuarioTienda.usuario.expoToken);
+    // sendNotificationNuevaOrden(usuarioTienda.usuario.expoToken);
   });
 
   return res.json({ message: "La orden creada con exito" });
