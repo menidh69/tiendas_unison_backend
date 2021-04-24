@@ -22,6 +22,7 @@ CREATE TABLE usuario(
     tipo_usuario VARCHAR(50) DEFAULT 'cliente',
     resetToken VARCHAR(100) DEFAULT NULL,
     expireToken DATETIME DEFAULT NULL,
+    expoToken VARCHAR(255),
 
     CONSTRAINT fk_universidad
     FOREIGN KEY (id_universidad)
@@ -285,16 +286,7 @@ CREATE TABLE openpay_bank_account (
     ON DELETE CASCADE
 );
 
-CREATE TABLE user_device (
-    id SERIAL PRIMARY KEY,
-    id_usuario BIGINT UNSIGNED,
-    expoToken VARCHAR(255),
 
-    CONSTRAINT usuario
-    FOREIGN KEY (id_usuario)
-    REFERENCES  usuario(id)
-    ON DELETE CASCADE
-)
 -- Agregar tipo tienda
 
 INSERT INTO tipo_tienda (tipo_tienda, descripcion) VALUES ("Cooperativa", "Tienda con contrato de la universidad"),

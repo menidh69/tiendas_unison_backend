@@ -9,10 +9,15 @@ const {
   Productos,
   Balance,
   Venta,
+  Tienda,
+  Usuario,
 } = require("../../models/entities");
 const bodyParser = require("body-parser");
 const Orden = require("../../models/Orden");
 const Ordenitem = require("../../models/OrdenItem");
+const {
+  sendNotificationNuevaOrden,
+} = require("../../controllers/notifications");
 
 router.post("/order", async (req, res) => {
   const id_user = req.body.user;
@@ -74,6 +79,14 @@ router.post("/order", async (req, res) => {
     let BalanceTienda = await Balance.findOne({ where: { id_tienda: tienda } });
     BalanceTienda.balance = BalanceTienda.balance - 2;
     await BalanceTienda.save();
+    const usuarioTienda = await Tienda.findOne({
+      where: {
+        id: tienda,
+      },
+      include: Usuario,
+    });
+    console.log(usuarioTienda);
+    sendNotificationNuevaOrden(usuarioTienda.usuario.expoToken);
   });
 
   return res.json({ message: "La orden creada con exito" });
