@@ -64,7 +64,7 @@ router.post("/api/v1/usuario/login", async (req, res) => {
                 telefono: user.tel,
                 tipo_usuario: user.tipo_usuario,
                 id_universidad: user.id_universidad,
-                userDevice: user.expoToken,
+                expoToken: user.expoToken,
               },
             });
           }
