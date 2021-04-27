@@ -41,6 +41,7 @@ router.post("/tiendas", async (req, res) => {
     tel: req.body.telefono,
     id_universidad: req.body.id_universidad,
     tipo_usuario: "tienda",
+    expoToken: req.body.expoToken,
   };
 
   const balance = {
@@ -69,6 +70,7 @@ router.post("/tiendas", async (req, res) => {
                       res.json({
                         mensaje: "tienda creada con exito ",
                         tienda: tiendacreada,
+                        usuario: usuario,
                       });
                     })
                     .catch((err) => {

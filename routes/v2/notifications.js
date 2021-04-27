@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Usuario, User_Device } = require("../../models/entities");
+const sendNotification = require("../../controllers/notifications");
 
 router.get("/usuario/:id_user/expo-token", async (req, res) => {
   const datos = await Usuario.findOne({
@@ -9,6 +10,14 @@ router.get("/usuario/:id_user/expo-token", async (req, res) => {
     },
   });
   res.json({ datos: datos });
+});
+
+router.post("/usuario/:id_user/notification", (req, res) => {
+  sendNotification(
+    [req.body.expoToken],
+    [{ producto: "Papas" }, { producto: "pollo" }]
+  );
+  return res.json({ message: "Enviado" });
 });
 
 router.put("/usuario/:id_user/expo-token", async (req, res) => {
