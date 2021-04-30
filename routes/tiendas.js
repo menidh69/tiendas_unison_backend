@@ -16,6 +16,7 @@ const Orden = require("../models/Orden");
 const { route } = require("./usuario");
 const { QueryTypes } = require("sequelize");
 const { sequelize } = require("../db/db");
+const sendNotification = require("../controllers/notifications");
 
 //POST TIENDA + NEW USUARIO + NUEVA UBICACION
 router.post("/tiendas", async (req, res) => {
@@ -328,13 +329,18 @@ router.get("/tiendas/pedidos/:id_usuario", async (req, res) => {
 //PUT entregar pedido al cliente
 router.put("/tiendas/entregar/:id_orden", async (req, res) => {
   try {
-    const orden = await Orden.update(
-      { entregado: 1 },
-      { where: { id: req.params.id_orden } }
-    ).then((result) => {
-      console.log(result);
-      res.json({ status: "success" });
+    const orden = await Orden.findOne({
+      where: { id: req.params.id_orden },
+      include: Usuario,
     });
+    orden.entregado = 1;
+    await orden.save();
+    console.log(orden.toJSON());
+    sendNotification(
+      [orden.usuario.expoToken],
+      "Has recibido tu pedido, ayudanos a calificarlo!"
+    );
+    return res.json({ status: "success" });
   } catch (error) {
     res.status(400).json({ error: error });
     console.log(error);

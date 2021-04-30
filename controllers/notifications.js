@@ -52,7 +52,7 @@ const sendMultipleNotifications = (somePushTokens, message) => {
     messages.push({
       to: pushToken,
       sound: "default",
-      body: "Has recogido tu pedido, ayudanos a calificarlo!",
+      body: message,
       data: { withSome: "data" },
     });
   }

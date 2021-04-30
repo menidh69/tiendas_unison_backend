@@ -15,9 +15,7 @@ const {
 const bodyParser = require("body-parser");
 const Orden = require("../../models/Orden");
 const Ordenitem = require("../../models/OrdenItem");
-const {
-  sendNotificationNuevaOrden,
-} = require("../../controllers/notifications");
+const sendNotification = require("../../controllers/notifications");
 
 router.post("/order", async (req, res) => {
   const id_user = req.body.user;
@@ -33,8 +31,8 @@ router.post("/order", async (req, res) => {
     },
     raw: true,
   });
-
   let tiendas = [];
+
   //Obtiene las diferentes tiendas y las coloca en un array
   await items.map((item) => {
     if (!tiendas.includes(item["carrito_items.producto.id_tienda"]))
@@ -43,7 +41,7 @@ router.post("/order", async (req, res) => {
   console.log(tiendas);
 
   //Iteramos las tiendas
-  tiendas.map(async (tienda) => {
+  const promises = tiendas.map(async (tienda) => {
     const orden = await Orden.create({
       id_usuario: id_user,
       id_tienda: tienda,
@@ -76,7 +74,9 @@ router.post("/order", async (req, res) => {
       amount: total,
     };
     await Venta.create(venta);
-    let BalanceTienda = await Balance.findOne({ where: { id_tienda: tienda } });
+    let BalanceTienda = await Balance.findOne({
+      where: { id_tienda: tienda },
+    });
     BalanceTienda.balance = BalanceTienda.balance - 2;
     await BalanceTienda.save();
     const usuarioTienda = await Tienda.findOne({
@@ -84,11 +84,17 @@ router.post("/order", async (req, res) => {
         id: tienda,
       },
       include: Usuario,
+      raw: true,
     });
     console.log(usuarioTienda);
+    return usuarioTienda["usuario.expoToken"];
+
     // sendNotificationNuevaOrden(usuarioTienda.usuario.expoToken);
   });
 
+  const expoTokens = await Promise.all(promises);
+  console.log("Aqui expos" + expoTokens);
+  sendNotification(expoTokens, "Tienes un nuevo pedido pendiente");
   return res.json({ message: "La orden creada con exito" });
 });
 
