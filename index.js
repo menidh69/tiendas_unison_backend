@@ -16,8 +16,9 @@ app.use((req, res, next) => {
   }
 });
 moment().format();
-
+app.use(express.static("./public"));
 app.use(indexRoutes);
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("Server is running");
