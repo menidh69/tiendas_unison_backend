@@ -12,6 +12,7 @@ const {
   Openpay_Bank_Account,
   Transaccion,
   Tienda,
+  Openpay_customer,
 } = require("../../models/entities");
 const sendNotification = require("../../controllers/notifications");
 const Usuario = require("../../models/Usuario");
@@ -23,7 +24,6 @@ const openpay = new Openpay(
 const Orden = require("../../models/Orden");
 const Ordenitem = require("../../models/OrdenItem");
 const Venta = require("../../models/Venta");
-const Openpay_customer = require("../../models/Openpay_customer");
 const { route } = require("../ventas");
 //RUTAS PARA GUARDAR TARJETA
 
@@ -164,6 +164,68 @@ router.post("/openpay/create_charge", async (req, res) => {
   const expoTokens = await Promise.all(promises);
   sendNotification(expoTokens, "Tienes un nuevo pedido pendiente");
   return res.json({ message: "Orden creada con exito" });
+});
+
+//TRANSFER
+router.post("/openpay/comprar", async (req, res) => {
+  const user_id = req.body.user_id;
+  var nombre_tienda = "";
+  //METODO PARA OBTENER PRECIO Y PRODUCTOS
+  const items = await Carrito.findAll({
+    where: {
+      id_usuario: user_id,
+    },
+    include: {
+      model: Carrito_item,
+      include: {
+        model: Productos,
+      },
+    },
+    raw: true,
+  });
+
+  let tiendas = [];
+  //Obtiene las diferentes tiendas y las coloca en un array
+  await items.map((item) => {
+    if (!tiendas.includes(item["carrito_items.producto.id_tienda"]))
+      tiendas.push(item["carrito_items.producto.id_tienda"]);
+  });
+
+  tiendas.map(async (tienda) => {
+    const tiendaDatos = await Tienda.findOne({
+      where: { id: tienda },
+      include: { model: Usuario, include: { model: Openpay_customer } },
+    });
+    const usuarioDatos = await Usuario.findOne({
+      where: { id: user_id },
+      include: Openpay_customer,
+    });
+    let total = 0;
+    await items.map((item) => {
+      if (tienda == item["carrito_items.producto.id_tienda"]) {
+        total +=
+          item["carrito_items.producto.precio"] *
+          item["carrito_items.cantidad"];
+      }
+    });
+    var transferRequest = {
+      customer_id: tiendaDatos.usuario.openpay_customer.openpay_id,
+      amount: total,
+      description: "Transferencia entre cliente y tienda",
+      order_id: "",
+    };
+    openpay.customers.transfers.create(
+      usuarioDatos.openpay_customer.openpay_id,
+      transferRequest,
+      function (error, transfer) {
+        if (!error || error == "") {
+          return res.json({ transfer: transfer });
+        } else {
+          return res.status(400).json({ error: error });
+        }
+      }
+    );
+  });
 });
 
 router.post("/openpay/savecard-w-account", async (req, res) => {

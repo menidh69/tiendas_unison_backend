@@ -14,10 +14,17 @@ const entities = {
   Review: require("./Review"),
   Balance: require("./Balance"),
   Openpay_Bank_Account: require("./Openpay_Bank_Account"),
+  Openpay_customer: require("./Openpay_customer"),
   Transaccion: require("./Transaccion"),
   User_Device: require("./User_Device"),
 };
 
+entities.Usuario.hasOne(entities.Openpay_customer, {
+  foreignKey: "id_usuario",
+});
+entities.Openpay_customer.belongsTo(entities.Usuario, {
+  foreignKey: "id_usuario",
+});
 entities.Carrito.hasMany(entities.Carrito_item, { foreignKey: "id_carrito" });
 entities.Usuario.hasOne(entities.Carrito, { foreignKey: "id_usuario" });
 entities.Productos.hasMany(entities.Carrito_item, {
