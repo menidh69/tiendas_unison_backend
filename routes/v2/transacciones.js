@@ -120,4 +120,20 @@ router.get("/openpay/tienda/:id_tienda/retiros", async (req, res) => {
     });
 });
 
+router.post("/openpay&payout/test", (req,res)=>{
+  var payoutRequest = {
+    'method':'bank_account',
+    'bank_account':{
+       'clabe':'012298026516924616',
+       'holder_name':'Mi empresa'
+    },
+    'amount':10.50,
+    'description':'Retiro de saldo semanal',
+    'order_id':'oid-1110011'
+ };
+  openpay.customers.payouts.create('ag4nktpdzebjiye1tlze', payoutRequest, function(error, payout) {
+    // ...
+  });
+})
+
 module.exports = router;

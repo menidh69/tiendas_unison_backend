@@ -41,8 +41,10 @@ router.use("/api/v1", stripe);
 router.use("/api/v1", ventas);
 router.use("/api/v1", reviews);
 router.use("/", authRoutes);
-
-router.use(function (req, res) {
+router.use("/privacy", function (req, res) {
+  res.sendFile(path.join(__dirname, "../public/privacy.html"));
+});
+router.use("/", function (req, res) {
   res.sendFile(path.join(__dirname, "../public/landing.html"));
 });
 
